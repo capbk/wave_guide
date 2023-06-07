@@ -1,10 +1,4 @@
 TODO:
-    leave big logo for login, take less vertical space on index.html
-
-TODO:
-    center text for moods
-
-TODO:
     create central list of acceptable moods
     add a calm mood
     add a sad mood

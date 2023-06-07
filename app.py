@@ -1,12 +1,15 @@
+import logging
 import os
+import sys
+
 from flask import Flask, session, request, redirect, render_template, jsonify
 from flask_session import Session
-from werkzeug.exceptions import abort
 import spotipy
+from werkzeug.exceptions import abort
 
 import app_env  # not stored in git
-from search.autocomplete import search_tracks
 from recommendation_engine import controller as recommendation
+from search.autocomplete import search_tracks
 
 # App setup =================================
 # ===========================================
@@ -34,6 +37,10 @@ def create_app():
     app.config["SECRET_KEY"] = os.urandom(64)
     app.config["SESSION_TYPE"] = "filesystem"
     app.config["SESSION_FILE_DIR"] = "./.flask_session/"
+
+    # setup logging
+    app.logger.setLevel(logging.DEBUG)
+    app.logger.info("created app")
     return app
 
 
@@ -64,7 +71,9 @@ def index():
 
     # Step 3. Signed in, display data
     app.spotify = spotipy.Spotify(auth_manager=app.auth_manager)
-    return render_template("index.html", user_name=app.spotify.me()["display_name"])
+    user_name = app.spotify.me()["display_name"]
+    app.logger.info(f"user {user_name} logged in")
+    return render_template("index.html", user_name=user_name)
 
 
 @app.route("/log_out")
@@ -75,7 +84,7 @@ def log_out():
 
 @app.route("/autocomplete", methods=["POST"])
 def autocomplete():
-    if not request.json or not "query" in request.json:
+    if not request.json or "query" not in request.json:
         abort(400)
     query = request.json["query"]
     if not validate_token():
@@ -100,54 +109,55 @@ def new_playlist():
     destination_mode = request.json["destination_mode"]
 
     if source_mode == SONG_MODE and destination_mode == MOOD_MODE:
+        app.logger.info("creating song to mood playlist")
         seed_track_id = request.json["seed_track_id"]
         mood = request.json["destination_mood"]
         resp = recommendation.create_song_to_mood_playlist(app.spotify, seed_track_id, mood)
         return jsonify(resp)
     elif source_mode == SONG_MODE and destination_mode == SONG_MODE:
+        app.logger.info("creating song to song playlist")
         seed_track_id = request.json["seed_track_id"]
         destination_track_id = request.json["destination_track_id"]
         resp = recommendation.create_song_to_song_playlist(app.spotify, seed_track_id, destination_track_id)
         return jsonify(resp)
     elif source_mode == MOOD_MODE and destination_mode == MOOD_MODE:
+        app.logger.info("creating mood to mood playlist")
         source_mood = request.json["source_mood"]
         destination_mood = request.json["destination_mood"]
         resp = recommendation.create_mood_to_mood_playlist(app.spotify, source_mood, destination_mood)
         return jsonify(resp)
     elif source_mode == MOOD_MODE and destination_mode == SONG_MODE:
+        app.logger.info("creating mood to song playlist")
         source_mood = request.json["source_mood"]
         destination_track_id = request.json["destination_track_id"]
         resp = recommendation.create_mood_to_song_playlist(app.spotify, source_mood, destination_track_id)
         return jsonify(resp)
-    # TODO: proper logging
-    print(
-        f"Unkonwn source mode: {source_mode} or destination mode: {destination_mode} provided.  Must provide one of the modes 'song' or 'mood'"
-    )
+    app.logger.error(f"Unkonwn source mode: {source_mode} or destination mode: {destination_mode} provided.  Must provide one of the modes 'song' or 'mood'")
     abort(400)
 
 
 def _validate_new_playlist_request(request):
     if not request.json or "source_mode" not in request.json:
-        print("request must include source_mode")
+        app.logger.error("request must include source_mode")
         abort(400)
     if "destination_mode" not in request.json:
-        print("request must include destination_mode")
+        app.logger.error("request must include destination_mode")
         abort(400)
 
     source_mode = request.json["source_mode"]
     destination_mode = request.json["destination_mode"]
 
     if source_mode == SONG_MODE and "seed_track_id" not in request.json:
-        print("source mode is song but no seed_track_id requeted")
+        app.logger.error("source mode is song but no seed_track_id requeted")
         abort(400)
     if source_mode == MOOD_MODE and "source_mood" not in request.json:
-        print("source mode is song but no source_mood requeted")
+        app.logger.error("source mode is song but no source_mood requeted")
         abort(400)
     if destination_mode == SONG_MODE and "seed_track_id" not in request.json:
-        print("destination mode is song but no seed_track_id requeted")
+        app.logger.error("destination mode is song but no seed_track_id requeted")
         abort(400)
     if destination_mode == MOOD_MODE and "destination_mood" not in request.json:
-        print("destination mode is song but no destination_mood requeted")
+        app.logger.error("destination mode is song but no destination_mood requeted")
         abort(400)
 
 

@@ -1,6 +1,7 @@
 import spotipy
-from typing import Dict, Any, Optional, List
+from typing import Dict
 import pprint
+from statistics import median
 
 
 # TODO: make global?
@@ -13,19 +14,20 @@ COUNTRY = "US"  # TODO: get this from user metadata
 
 class MoodTrackFinder:
     def __init__(self, sp: spotipy.Spotify, mood:str, num_tracks: int):
+        mood = mood.lower()
         if mood not in SUPPORTED_MOODS:
             raise ValueError(
                 f"Unknown mood: {mood} provided. Supported moods include {SUPPORTED_MOODS}"
             )
         if num_tracks < 1:
             # TODO: is this the right error to return?
-            raise ValueError("find_tracks_for_mood requires num_trakcks greater than 0")
+            raise ValueError("find_tracks_for_mood requires num_tracks greater than 0")
 
         self.sp = sp
-        self.mood = mood.lower()
+        self.mood = mood
         self.num_tracks = num_tracks
 
-    def find(self) -> Dict[str: Any]:
+    def find(self):
         """
         returns a list of tracks from spotify reccomendations response
         https://developer.spotify.com/documentation/web-api/reference/get-recommendations
@@ -56,7 +58,7 @@ class MoodTrackFinder:
             limit=self.num_tracks, seed_tracks=top_track_ids[:5], country=COUNTRY, **recommendation_kwargs,
         )
         print("recommendations from spotify API")
-        pp.pprint(recs["tracks"])
+        pprint.PrettyPrinter(indent=4, width=120).pprint(recs["tracks"])
         return recs["tracks"]
 
     @staticmethod
@@ -75,6 +77,7 @@ class MoodTrackFinder:
 
         # TODO: reduce time complexity without adding too much readability complexity
         # take the max valence and danceability.  Take the median energy
+        # TODO: max danceability may not be ideal
         for feature in our_features:
             # get all feature values across top tracks
             values = [track[feature] for track in top_tracks_features]

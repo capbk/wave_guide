@@ -64,7 +64,7 @@ def create_mood_to_song_playlist(sp: spotipy.Spotify, source_mood: str, destinat
     recommendation_uris.reverse()
     return _create_playlist(sp, recommendation_uris, source_mood, destination_track["name"])
 
-
+# TODO: remove in refactor
 def _get_song_to_mood_tracks(sp: spotipy.Spotify, seed_track: Dict[str, Any], destination_mood: str):
     num_tracks = 5
     # get metdata for track.

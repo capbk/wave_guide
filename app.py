@@ -9,7 +9,10 @@ from werkzeug.exceptions import abort
 
 import app_env  # not stored in git
 from recommendation_engine import controller as recommendation
+from recommendation_engine.mood_track_finder import MoodTrackFinder
 from search.autocomplete import search_tracks
+
+# Top level entry point for wave-guide flask application
 
 # App setup =================================
 # ===========================================
@@ -82,6 +85,7 @@ def log_out():
     return redirect("/")
 
 
+# TODO: rename to /search or maybe /track_search, /tracks/search
 @app.route("/autocomplete", methods=["POST"])
 def autocomplete():
     if not request.json or "query" not in request.json:
@@ -101,39 +105,39 @@ def autocomplete():
 def new_playlist():
     if not validate_token():
         return redirect("/")
-
     _validate_new_playlist_request(request)
 
-    # TODO: move this to reccomendation_engine.controller?
+    # track to start the playlist
     source_mode = request.json["source_mode"]
-    destination_mode = request.json["destination_mode"]
+    source_track_id = ""
+    if source_mode == SONG_MODE:
+        source_track_id = request.json["seed_track_id"]
+    elif source_mode == MOOD_MODE:
+        track_finder = MoodTrackFinder(app.spotify, request.json["source_mood"], 1)
+        source_track_id = track_finder.find()[0][["id"]]
+    else:
+        app.logger.error(f"Unkonwn source mode: {source_mode}. Must provide one of the modes 'song' or 'mood'")
+        abort(400)
 
-    if source_mode == SONG_MODE and destination_mode == MOOD_MODE:
-        app.logger.info("creating song to mood playlist")
-        seed_track_id = request.json["seed_track_id"]
-        mood = request.json["destination_mood"]
-        resp = recommendation.create_song_to_mood_playlist(app.spotify, seed_track_id, mood)
-        return jsonify(resp)
-    elif source_mode == SONG_MODE and destination_mode == SONG_MODE:
-        app.logger.info("creating song to song playlist")
-        seed_track_id = request.json["seed_track_id"]
+    # track to end the playlist
+    destination_mode = request.json["destination_mode"]
+    destination_track_id = ""
+    if destination_mode == SONG_MODE:
         destination_track_id = request.json["destination_track_id"]
-        resp = recommendation.create_song_to_song_playlist(app.spotify, seed_track_id, destination_track_id)
-        return jsonify(resp)
-    elif source_mode == MOOD_MODE and destination_mode == MOOD_MODE:
-        app.logger.info("creating mood to mood playlist")
-        source_mood = request.json["source_mood"]
-        destination_mood = request.json["destination_mood"]
-        resp = recommendation.create_mood_to_mood_playlist(app.spotify, source_mood, destination_mood)
-        return jsonify(resp)
-    elif source_mode == MOOD_MODE and destination_mode == SONG_MODE:
-        app.logger.info("creating mood to song playlist")
-        source_mood = request.json["source_mood"]
-        destination_track_id = request.json["destination_track_id"]
-        resp = recommendation.create_mood_to_song_playlist(app.spotify, source_mood, destination_track_id)
-        return jsonify(resp)
-    app.logger.error(f"Unkonwn source mode: {source_mode} or destination mode: {destination_mode} provided.  Must provide one of the modes 'song' or 'mood'")
-    abort(400)
+    elif destination_mode == MOOD_MODE:
+        track_finder = MoodTrackFinder(app.spotify, request.json["destination_mood"], 2)
+        recs = track_finder.find()
+        for rec in recs:
+            if rec["id"] != source_track_id:
+                destination_track_id = rec["id"]
+                break
+    else:
+        app.logger.error(f"Unkonwn destination mode: {destination_mode}. Must provide one of the modes 'song' or 'mood'")
+        abort(400)
+
+    app.logger.info("creating song to song playlist")
+    resp = recommendation.create_song_to_song_playlist(app.spotify, source_track_id, destination_track_id)
+    return jsonify(resp)
 
 
 def _validate_new_playlist_request(request):

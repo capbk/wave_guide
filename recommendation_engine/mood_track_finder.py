@@ -49,7 +49,7 @@ class MoodTrackFinder:
         if self.mood == MOOD_HAPPY:
             user_features = self.create_happy_features(top_tracks_features)
         if self.mood == MOOD_ENERGIZED:
-            raise ValueError("not implemented for energized yet")
+            user_features = self.create_energized_features(top_tracks_features)
 
         # get tracks
         recommendation_kwargs = {}
@@ -92,3 +92,21 @@ class MoodTrackFinder:
         # happy_features["danceability"] = happy_features["danceability"] * 1.25
 
         return happy_features
+
+    @staticmethod
+    def create_energized_features(top_tracks_features) -> Dict[str, float]:
+        default_features = {"valence": 0.8, "danceability": 0.8, "energy": 1}
+        if top_tracks_features == {} or top_tracks_features is None:
+            return default_features
+
+        our_features = ["valence", "danceability", "energy"]
+        energized_features = {}
+
+        for feature in our_features:
+            values = [track[feature] for track in top_tracks_features]
+            energized_features[feature] = max(values)
+
+        # energized_features["valence"] = energized_features["valence"] * 1.4
+        # energized_features["danceability"] = energized_features["danceability"] * 1.4
+
+        return energized_features

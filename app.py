@@ -8,7 +8,7 @@ import spotipy
 from werkzeug.exceptions import abort
 
 import app_env  # not stored in git
-from recommendation_engine import controller as recommendation
+from recommendation_engine import playlist
 from recommendation_engine.mood_track_finder import MoodTrackFinder
 from search.autocomplete import search_tracks
 
@@ -114,7 +114,7 @@ def new_playlist():
         source_track_id = request.json["seed_track_id"]
     elif source_mode == MOOD_MODE:
         track_finder = MoodTrackFinder(app.spotify, request.json["source_mood"], 1)
-        source_track_id = track_finder.find()[0][["id"]]
+        source_track_id = track_finder.find()[0]["id"]
     else:
         app.logger.error(f"Unkonwn source mode: {source_mode}. Must provide one of the modes 'song' or 'mood'")
         abort(400)
@@ -136,7 +136,7 @@ def new_playlist():
         abort(400)
 
     app.logger.info("creating song to song playlist")
-    resp = recommendation.create_song_to_song_playlist(app.spotify, source_track_id, destination_track_id)
+    resp = playlist.create_song_to_song_playlist(app.spotify, source_track_id, destination_track_id)
     return jsonify(resp)
 
 

@@ -1,7 +1,9 @@
 TODO:
     create central list of acceptable moods
-    add a calm mood
-    add a sad mood
+    consolidate happy and energized?
+    be more transparent with spotify features??
+    add a calm mood?
+    add a somber mood?
 
 TODO:
     review all TODOs in code

@@ -2,7 +2,7 @@ import spotipy
 from typing import Dict
 import pprint
 from statistics import median
-
+from random import choices
 
 # TODO: make global?
 MOOD_HAPPY = "happy"
@@ -37,7 +37,7 @@ class MoodTrackFinder:
         # TODO: experiment with including override seed track ids to make resulting playlist more cohesive
         # TODO: cache this in a multi tenant safe way
         print("fetching top tracks to analyze preferences")
-        top_tracks = self.sp.current_user_top_tracks(limit=20, time_range="medium_term")  # 50 is max limit
+        top_tracks = self.sp.current_user_top_tracks(limit=50, time_range="medium_term")  # 50 is max limit
         top_track_ids = []
         top_tracks_features = None
         if top_tracks["total"] != 0:
@@ -56,8 +56,10 @@ class MoodTrackFinder:
         for feature in user_features:
             recommendations_request_key = f"target_{feature}"
             recommendation_kwargs[recommendations_request_key] = user_features[feature]
+
+        randomized_seed_tracks=choices(top_track_ids, k=5)
         recs = self.sp.recommendations(
-            limit=self.num_tracks, seed_tracks=top_track_ids[:5], country=COUNTRY, **recommendation_kwargs,
+            limit=self.num_tracks, seed_tracks=randomized_seed_tracks, country=COUNTRY, **recommendation_kwargs,
         )
         print("recommendations from spotify API")
         pprint.PrettyPrinter(indent=4, width=120).pprint(recs["tracks"])

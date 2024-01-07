@@ -1,15 +1,14 @@
-import spotipy
-from typing import Dict
 import pprint
-from statistics import median
 from random import choices
+import spotipy
+from statistics import median
+from typing import Dict
 
 # TODO: make global?
 MOOD_HAPPY = "happy"
 MOOD_ENERGIZED = "energized"
 SUPPORTED_MOODS = [MOOD_HAPPY, MOOD_ENERGIZED]
 COUNTRY = "US"  # TODO: get this from user metadata
-
 
 
 class MoodTrackFinder:

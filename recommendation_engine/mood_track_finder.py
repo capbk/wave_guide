@@ -1,3 +1,4 @@
+from numpy import percentile
 import pprint
 from random import choices
 import spotipy
@@ -7,7 +8,10 @@ from typing import Dict
 # TODO: make global?
 MOOD_HAPPY = "happy"
 MOOD_ENERGIZED = "energized"
-SUPPORTED_MOODS = [MOOD_HAPPY, MOOD_ENERGIZED]
+MOOD_CALM = "calm"
+# MOOD_SAD = "sad"
+# MOOD_ANGRY = "angry"
+SUPPORTED_MOODS = [MOOD_HAPPY, MOOD_ENERGIZED, MOOD_CALM]
 COUNTRY = "US"  # TODO: get this from user metadata
 
 
@@ -36,7 +40,7 @@ class MoodTrackFinder:
         # TODO: experiment with including override seed track ids to make resulting playlist more cohesive
         # TODO: cache this in a multi tenant safe way
         print("fetching top tracks to analyze preferences")
-        top_tracks = self.sp.current_user_top_tracks(limit=50, time_range="medium_term")  # 50 is max limit
+        top_tracks = self.sp.current_user_top_tracks(limit=50, time_range="long_term")  # 50 is max limit
         top_track_ids = []
         top_tracks_features = None
         if top_tracks["total"] != 0:
@@ -47,8 +51,10 @@ class MoodTrackFinder:
         user_features = {}
         if self.mood == MOOD_HAPPY:
             user_features = self.create_happy_features(top_tracks_features)
-        if self.mood == MOOD_ENERGIZED:
+        elif self.mood == MOOD_ENERGIZED:
             user_features = self.create_energized_features(top_tracks_features)
+        elif self.mood == MOOD_CALM:
+            user_features = self.create_calm_features(top_tracks_features)
 
         # get tracks
         recommendation_kwargs = {}
@@ -56,7 +62,7 @@ class MoodTrackFinder:
             recommendations_request_key = f"target_{feature}"
             recommendation_kwargs[recommendations_request_key] = user_features[feature]
 
-        randomized_seed_tracks=choices(top_track_ids, k=5)
+        randomized_seed_tracks = choices(top_track_ids, k=5)
         recs = self.sp.recommendations(
             limit=self.num_tracks, seed_tracks=randomized_seed_tracks, country=COUNTRY, **recommendation_kwargs,
         )
@@ -91,7 +97,7 @@ class MoodTrackFinder:
         # boost even higher
         # happy_features["valence"] = track["valence"] * 1.4
         # happy_features["danceability"] = happy_features["danceability"] * 1.25
-
+        print("personalized happy_features ", happy_features)
         return happy_features
 
     @staticmethod
@@ -100,14 +106,41 @@ class MoodTrackFinder:
         if top_tracks_features == {} or top_tracks_features is None:
             return default_features
 
-        our_features = ["valence", "danceability", "energy"]
         energized_features = {}
 
-        for feature in our_features:
-            values = [track[feature] for track in top_tracks_features]
-            energized_features[feature] = max(values)
+        # max valence
+        valence_values = [track["valence"] for track in top_tracks_features]
+        energized_features["valence"] = max(valence_values)
+        # max danceability
+        danceability_values = [track["danceability"] for track in top_tracks_features]
+        energized_features["danceability"] = max([max(danceability_values), 0.7])
+        # min energy with a cieling of 0.3
+        energy_values = [track["energy"] for track in top_tracks_features]
+        energized_features["energy"] = max([max(energy_values), 0.7])
 
-        # energized_features["valence"] = energized_features["valence"] * 1.4
-        # energized_features["danceability"] = energized_features["danceability"] * 1.4
-
+        print("personalized energized features", energized_features)
         return energized_features
+
+    @staticmethod
+    def create_calm_features(top_tracks_features) -> Dict[str, float]:
+        default_features = {"valence": 0.6, "danceability": 0.1, "energy": 0.25, "acousticness": 0.75}
+        if top_tracks_features == {} or top_tracks_features is None:
+            return default_features
+
+        calm_features = {}
+
+        # median valence
+        valence_values = [track["valence"] for track in top_tracks_features]
+        calm_features["valence"] = max([percentile(valence_values, 0.7), 0.5])
+        # min danceability
+        danceability_values = [track["danceability"] for track in top_tracks_features]
+        calm_features["danceability"] = min([min(danceability_values), 0.4])
+        # min energy with a cieling of 0.3
+        energy_values = [track["energy"] for track in top_tracks_features]
+        calm_features["energy"] = min([percentile(energy_values, 0.25), 0.25])
+        # 75th percentile acousticness
+        acousticness_values = [track["acousticness"] for track in top_tracks_features]
+        calm_features["acousticness"] = max([percentile(acousticness_values, 75), 0.7])
+        print("personalized calm features", calm_features)
+
+        return calm_features

@@ -1,9 +1,10 @@
 TODO:
-    create central list of acceptable moods
-    consolidate happy and energized?
-    be more transparent with spotify features??
-    add a calm mood?
-    add a somber mood?
+    add moods
+        add acousticness feature to bookend reccomender?
+        add tempo feature to bookend reccomender??
+        ability to pass min/max features to bookend reccomender?
+
+TODO: experiment with seed tracks for bookend recommender
 
 TODO:
     review all TODOs in code

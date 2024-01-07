@@ -33,6 +33,8 @@ class MoodTrackFinder:
         https://developer.spotify.com/documentation/web-api/reference/get-recommendations
         """
         # TODO: experiment with time_range
+        # TODO: experiment with randomness when grabbing 5 top tracks
+        # TODO: experiment with including override seed track ids to make resulting playlist more cohesive
         # TODO: cache this in a multi tenant safe way
         print("fetching top tracks to analyze preferences")
         top_tracks = self.sp.current_user_top_tracks(limit=20, time_range="medium_term")  # 50 is max limit

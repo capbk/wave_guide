@@ -1,8 +1,10 @@
-TODO:
+TODO Mood upgrades:
     add moods
-        add acousticness feature to bookend reccomender?
-        add tempo feature to bookend reccomender??
-        ability to pass min/max features to bookend reccomender?
+        calm
+        sad
+        angry
+
+    experiment with using seed artists/genres instead of seed tracks
 
 TODO: experiment with seed tracks for bookend recommender
 

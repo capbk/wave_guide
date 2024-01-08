@@ -35,26 +35,31 @@ class MoodTrackFinder:
         returns a list of tracks from spotify reccomendations response
         https://developer.spotify.com/documentation/web-api/reference/get-recommendations
         """
-        # TODO: experiment with time_range
-        # TODO: experiment with randomness when grabbing 5 top tracks
         # TODO: experiment with including override seed track ids to make resulting playlist more cohesive
         # TODO: cache this in a multi tenant safe way
-        print("fetching top tracks to analyze preferences")
-        top_tracks = self.sp.current_user_top_tracks(limit=50, time_range="long_term")  # 50 is max limit
+
         top_track_ids = []
         top_tracks_features = None
+
+        print("fetching top tracks to analyze preferences")
+        top_tracks = self.sp.current_user_top_tracks(limit=50, time_range="long_term")  # 50 is max limit
         if top_tracks["total"] != 0:
             top_track_ids = [item["id"] for item in top_tracks["items"]]
             top_tracks_features = self.sp.audio_features(top_track_ids)
 
-        # get personalized features for corresponding mood
+        ################################
+        ################################
+        # PERSONALIZED TRACK FEATURES ARE TURNED OFF
+        personalize_features = False
+
+        # get features for corresponding mood
         user_features = {}
         if self.mood == MOOD_HAPPY:
-            user_features = self.create_happy_features(top_tracks_features)
+            user_features = self.create_happy_features(top_tracks_features, personalize_features)
         elif self.mood == MOOD_ENERGIZED:
-            user_features = self.create_energized_features(top_tracks_features)
+            user_features = self.create_energized_features(top_tracks_features, personalize_features)
         elif self.mood == MOOD_CALM:
-            user_features = self.create_calm_features(top_tracks_features)
+            user_features = self.create_calm_features(top_tracks_features, personalize_features)
 
         # get tracks
         recommendation_kwargs = {}
@@ -62,7 +67,10 @@ class MoodTrackFinder:
             recommendations_request_key = f"target_{feature}"
             recommendation_kwargs[recommendations_request_key] = user_features[feature]
 
-        randomized_seed_tracks = choices(top_track_ids, k=5)
+        randomized_seed_tracks = []
+        if top_track_ids:
+            # can provide max of 5 seed tracks to spotify API
+            randomized_seed_tracks = choices(top_track_ids, k=5)
         recs = self.sp.recommendations(
             limit=self.num_tracks, seed_tracks=randomized_seed_tracks, country=COUNTRY, **recommendation_kwargs,
         )
@@ -71,14 +79,20 @@ class MoodTrackFinder:
         return recs["tracks"]
 
     @staticmethod
-    def create_happy_features(top_tracks_features) -> Dict[str, float]:
+    def create_happy_features(top_tracks_features, personalize: bool) -> Dict[str, float]:
         """
         Uses the user's top tracks, when available, to derive 'happy' track features
         that will fit their tastes
         """
         # TODO: experiment with defaults.
-        default_features = {"valence": 1, "danceability": 0.6, "energy": 0.6}
-        if top_tracks_features == {} or top_tracks_features is None:
+        default_features = {
+            "acousticness": 0.35,  # experimental
+            "instrumentalness": 0.2,  # experimental
+            "valence": 1,
+            "danceability": 0.7,
+            "energy": 0.65,
+        }
+        if not personalize or not top_tracks_features:
             return default_features
 
         our_features = ["valence", "danceability", "energy"]
@@ -101,9 +115,15 @@ class MoodTrackFinder:
         return happy_features
 
     @staticmethod
-    def create_energized_features(top_tracks_features) -> Dict[str, float]:
-        default_features = {"valence": 0.8, "danceability": 0.8, "energy": 1}
-        if top_tracks_features == {} or top_tracks_features is None:
+    def create_energized_features(top_tracks_features, personalize: bool) -> Dict[str, float]:
+        default_features = {
+            "energy": 1,
+            "danceability": 0.85,
+            "valence": 0.8,
+            "acousticness": 0.25
+        }
+
+        if not personalize or not top_tracks_features:
             return default_features
 
         energized_features = {}
@@ -122,9 +142,16 @@ class MoodTrackFinder:
         return energized_features
 
     @staticmethod
-    def create_calm_features(top_tracks_features) -> Dict[str, float]:
-        default_features = {"valence": 0.6, "danceability": 0.1, "energy": 0.25, "acousticness": 0.75}
-        if top_tracks_features == {} or top_tracks_features is None:
+    def create_calm_features(top_tracks_features, personalize: bool) -> Dict[str, float]:
+        default_features = {
+            "acousticness": 0.75,  # experimental
+            "danceability": 0.25,
+            "energy": 0.25,
+            "instrumentalness": 0.75,  # experimental
+            "valence": 0.7,
+        }
+
+        if not personalize or not top_tracks_features:
             return default_features
 
         calm_features = {}

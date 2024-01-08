@@ -165,6 +165,46 @@ def _validate_new_playlist_request(request):
         abort(400)
 
 
+# Test utility to experiment with feature paramaters
+# TODO: make it easier to pass token in
+@app.route("/tracks", methods=["GET"])
+def get_tracks():
+    if not validate_token():
+        return redirect("/")
+    mood = request.args.get('mood')
+    if not mood:
+        abort(400, "Include a mood query paramater. Example: /tracks?mood=calm")
+    track_finder = MoodTrackFinder(app.spotify, mood, 5)
+    recs = track_finder.find()
+    wg_resp = {}
+    track_ids = []
+    for track in recs:
+        simplified_track = {
+            "name": track["name"],
+            "artist": track["artists"][0]["name"],
+            "url": track["external_urls"]["spotify"]
+        }
+        wg_resp[track["id"]] = simplified_track
+        track_ids.append(track["id"])
+    track_features = app.spotify.audio_features(track_ids)
+    for features in track_features:
+        wg_resp[features["id"]]["features"] = {
+            "acousticness": features["acousticness"],
+            "danceability": features["danceability"],
+            "energy": features["energy"],
+            "instrumentalness": features["instrumentalness"],
+            "valence": features["valence"],
+            "key": features["key"],
+            "liveness": features["liveness"],
+            "loudness": features["loudness"],
+            "mode": features["mode"],
+            "speechiness": features["speechiness"],
+            "tempo": features["tempo"],
+        }
+
+    return jsonify(wg_resp)
+
+
 """
 Following lines allow application to be run more conveniently with
 `python app.py` (Make sure you're using python3)

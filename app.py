@@ -33,7 +33,7 @@ def create_app():
         scope="user-library-read user-top-read playlist-modify-private",
         open_browser=False,
     )
-    spotify = spotipy.Spotify(auth_manager=auth_manager)
+    spotify = spotipy.Spotify(auth_manager=auth_manager, requests_timeout=45, retries=0)
     app.cache_handler = cache_handler
     app.auth_manager = auth_manager
     app.spotify = spotify
@@ -174,7 +174,7 @@ def get_tracks():
     mood = request.args.get('mood')
     if not mood:
         abort(400, "Include a mood query paramater. Example: /tracks?mood=calm")
-    track_finder = MoodTrackFinder(app.spotify, mood, 5)
+    track_finder = MoodTrackFinder(app.spotify, mood, 3)
     recs = track_finder.find()
     wg_resp = {}
     track_ids = []
@@ -186,7 +186,9 @@ def get_tracks():
         }
         wg_resp[track["id"]] = simplified_track
         track_ids.append(track["id"])
+    print("getting track features")
     track_features = app.spotify.audio_features(track_ids)
+    print("got features")
     for features in track_features:
         wg_resp[features["id"]]["features"] = {
             "acousticness": features["acousticness"],

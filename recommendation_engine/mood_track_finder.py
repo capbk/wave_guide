@@ -4,6 +4,8 @@ from random import choices
 import spotipy
 from statistics import median
 from typing import Dict
+from werkzeug.exceptions import abort
+
 
 # TODO: make global?
 MOOD_HAPPY = "happy"
@@ -12,7 +14,7 @@ MOOD_CALM = "calm"
 # MOOD_SAD = "sad"
 # MOOD_ANGRY = "angry"
 SUPPORTED_MOODS = [MOOD_HAPPY, MOOD_ENERGIZED, MOOD_CALM]
-COUNTRY = "US"  # TODO: get this from user metadata
+MARKET = "US"  # TODO: get this from user metadata
 
 
 class MoodTrackFinder:
@@ -46,7 +48,7 @@ class MoodTrackFinder:
         if top_tracks_resp["total"] != 0:
             top_tracks = top_tracks_resp["items"]
 
-            top_tracks_page_2_resp = top_tracks_resp = self.sp.current_user_top_tracks(limit=50, offset=50, time_range="long_term")  # 50 is max limit
+            top_tracks_page_2_resp = self.sp.current_user_top_tracks(limit=50, offset=51, time_range="long_term")  # 50 is max limit
             if top_tracks_page_2_resp["total"] != 0:
                 top_tracks.extend(top_tracks_page_2_resp["items"])
             top_track_ids = [track["id"] for track in top_tracks]
@@ -150,10 +152,8 @@ class MoodTrackFinder:
         user_features = {
             # acousticness
             "target_acousticness": 0.75,
-            "min_acousticness": 0.35,
             # danceability
             "target_danceability": 0.25,
-            "max_danceability": 0.55,
             # energy
             "target_energy": 0.25,
             "max_energy": 0.6,
@@ -161,8 +161,7 @@ class MoodTrackFinder:
             # "target_instrumentalness": 0.75,
             # valence
             "target_valence": 0.7,
-            "max_valence": 0.85,
-            "min_valence": 0.4,
+            "min_valence": 0.53,
         }
 
         if not personalize or not top_tracks_features:
@@ -170,15 +169,20 @@ class MoodTrackFinder:
 
         # valence on the upper side of user tastes
         valence_values = [track["valence"] for track in top_tracks_features]
-        user_features["target_valence"] = percentile(valence_values, 0.7)
+        target_valence = percentile(valence_values, 0.7)
+        if target_valence >= user_features["min_valence"]:
+            user_features["target_valence"] = target_valence
         # min danceability
         danceability_values = [track["danceability"] for track in top_tracks_features]
-        user_features["target_danceability"] = min([min(danceability_values), 0.4])
-        # min energy with a cieling of 0.3
+        user_features["target_danceability"] = min(danceability_values)
+
+        # energy on lower side of tastes
         energy_values = [track["energy"] for track in top_tracks_features]
-        user_features["target_energy"] = min([percentile(energy_values, 0.25), 0.25])
+        target_energy = percentile(energy_values, 0.25)
+        if target_energy <= user_features["max_energy"]:
+            user_features["target_energy"] = target_energy
         # 75th percentile acousticness
         acousticness_values = [track["acousticness"] for track in top_tracks_features]
-        user_features["target_acousticness"] = max([percentile(acousticness_values, 75), 0.7])
+        user_features["target_acousticness"] = percentile(acousticness_values, 75)
 
         return user_features

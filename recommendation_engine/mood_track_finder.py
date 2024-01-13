@@ -1,6 +1,6 @@
 from numpy import percentile
 import pprint
-from random import choices
+from random import sample
 import spotipy
 from statistics import median
 from typing import Dict
@@ -14,7 +14,7 @@ MOOD_CALM = "calm"
 # MOOD_SAD = "sad"
 # MOOD_ANGRY = "angry"
 SUPPORTED_MOODS = [MOOD_HAPPY, MOOD_ENERGIZED, MOOD_CALM]
-MARKET = "US"  # TODO: get this from user metadata
+COUNTRY = "US"  # TODO: get this from user metadata
 
 
 class MoodTrackFinder:
@@ -39,19 +39,23 @@ class MoodTrackFinder:
         """
         # TODO: experiment with including override seed track ids to make resulting playlist more cohesive
         # TODO: cache this in a multi tenant safe way
-
-        top_tracks = []
         top_tracks_features = None
-
+        top_tracks_resp = None
+        top_artists = {}
         print("fetching top tracks to analyze preferences")
         top_tracks_resp = self.sp.current_user_top_tracks(limit=50, time_range="long_term")  # 50 is max limit
-        if top_tracks_resp["total"] != 0:
+        # TODO: handle brand new users who have no top tracks
+        # I think spotify API needs at least one seed
+        if top_tracks_resp and top_tracks_resp["total"] != 0:
             top_tracks = top_tracks_resp["items"]
-
-            top_tracks_page_2_resp = self.sp.current_user_top_tracks(limit=50, offset=51, time_range="long_term")  # 50 is max limit
-            if top_tracks_page_2_resp["total"] != 0:
-                top_tracks.extend(top_tracks_page_2_resp["items"])
-            top_track_ids = [track["id"] for track in top_tracks]
+            top_tracks_page_2 = self.sp.current_user_top_tracks(limit=50, offset=51, time_range="long_term")
+            top_tracks.extend(top_tracks_page_2["items"])
+            top_track_ids = []
+            # use dict to store deduplicated ids and names. names are useful in logs for tuning algo
+            for track in top_tracks:
+                top_track_ids.append(track["id"])
+                for artist in track["artists"]:
+                    top_artists[artist["id"]] = artist["name"]
             top_tracks_features = self.sp.audio_features(top_track_ids)
 
         ################################
@@ -71,18 +75,17 @@ class MoodTrackFinder:
         print("user features for mood", self.mood)
         pprint.PrettyPrinter(indent=4, width=120).pprint(user_features)
         # get tracks
-        randomized_seed_tracks = []
-        if top_tracks:
+        randomized_seed_artists = []
+        if top_artists:
             # can provide max of 5 seed tracks to spotify API
-            randomized_seed_tracks = choices(top_tracks, k=5)
-            seed_track_ids = [track["id"] for track in randomized_seed_tracks]
+            randomized_seed_artists = sample(list(top_artists.keys()), k=5)
 
-            print("random 5 seed tracks from user_top_tracks", [track["name"] for track in randomized_seed_tracks])
+            print("random 5 seed artists", [top_artists[artist_id] for artist_id in randomized_seed_artists])
         recs = self.sp.recommendations(
-            limit=self.num_tracks, seed_tracks=seed_track_ids, country=COUNTRY, **user_features,
+            limit=self.num_tracks, seed_artists=randomized_seed_artists, country=COUNTRY, **user_features,
         )
-        # print("recommendations from spotify API")
-        # pprint.PrettyPrinter(indent=4, width=120).pprint(recs["tracks"])
+        print("recommendations from spotify API for mood", self.mood)
+        pprint.PrettyPrinter(indent=4, width=120).pprint(recs["tracks"])
         return recs["tracks"]
 
     """
@@ -152,16 +155,17 @@ class MoodTrackFinder:
         user_features = {
             # acousticness
             "target_acousticness": 0.75,
+            # instrumentalness
+            "target_instrumentalness": 0.75,
             # danceability
             "target_danceability": 0.25,
+            "max_danceability": 0.5,
             # energy
             "target_energy": 0.25,
-            "max_energy": 0.6,
-            # instrumentalness
-            # "target_instrumentalness": 0.75,
+            "max_energy": 0.5,
             # valence
             "target_valence": 0.7,
-            "min_valence": 0.53,
+            "min_valence": 0.6,
         }
 
         if not personalize or not top_tracks_features:

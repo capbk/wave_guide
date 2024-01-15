@@ -4,7 +4,7 @@ TODO Mood upgrades:
         sad
         angry
 
-    experiment with using seed artists/genres instead of seed tracks
+    ?? get a subset of seed artists most likely to suit a mood?  How will this impact diversity of recs?
 
 TODO: experiment with seed tracks for bookend recommender
 

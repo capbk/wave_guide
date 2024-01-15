@@ -129,10 +129,11 @@ class MoodTrackFinder:
     @staticmethod
     def get_energized_features() -> Dict[str, float]:
         return {
-            "target_energy": 1,
-            "target_danceability": 0.85,
-            "target_valence": 0.8,
-            "target_acousticness": 0.25
+            "target_energy": 3,
+            "min_energy": 0.71,
+            "target_danceability": 3,
+            "min_danceability": 0.6,
+            "target_valence": 0.76
         }
 
     @staticmethod

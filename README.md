@@ -10,7 +10,7 @@ Guide your mood and discover new songs.
 
 ## Example Wave Guide Journeys
 
-### When you cant get a song out of your head
+### When you can't get a song out of your head
 Search for your earworm to begin the playlist.  
 Choose from one of the moods as your destination.
 

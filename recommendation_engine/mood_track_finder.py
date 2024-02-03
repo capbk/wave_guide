@@ -121,9 +121,10 @@ class MoodTrackFinder:
     @staticmethod
     def get_happy_features() -> Dict[str, float]:
         return {
-            "target_valence": 1,
-            "target_danceability": 0.7,
-            "target_energy": 0.65,
+            "target_valence": 3,
+            "min_valence": 0.8,
+            "min_danceability": 0.7,
+            "target_energy": 0.8,
         }
 
     @staticmethod

@@ -1,7 +1,7 @@
 The time_range argument to get_user_top_tracks produces results with minimal overlap.
 
     Most tracks only appear in one list, very few show up in all three.
-    As of 1/14 for my personal preferences the the number of lists per track looks like
+    As of 1/14/24, for my personal preferences, the the number of lists per track looks like
         1 - 81%
         2 - 15%
         3 - 4%

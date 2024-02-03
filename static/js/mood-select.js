@@ -7,6 +7,7 @@ export function selectMood(
     const moodIcons = {
         happy: "static/images/happy_icon.png",
         energized: "static/images/energized_icon.png",
+        calm: "",
     };
     if (!(cleanedMood in moodIcons)) {
         notify("unknkown mood " + mood + " selected");

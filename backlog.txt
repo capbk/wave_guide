@@ -1,9 +1,21 @@
-TODO:
-    create central list of acceptable moods
-    consolidate happy and energized?
-    be more transparent with spotify features??
-    add a calm mood?
-    add a somber mood?
+TODO Mood upgrades:
+    add moods
+        calm
+        sad
+        angry
+
+    ?? get a subset of seed artists most likely to suit a mood?  How will this impact diversity of recs?
+
+TODO: Transparency and Feedback, show users the origin-destination pattern that makes waveguide unique
+    1. As playlist is building show steps
+        ?? break out mood selection and playlist creation into different endpoints?
+        Show selection of song 1
+        Show selection of song 2
+        Show dotted line animation between the album arts
+            wave guide is finding a path...
+        Playlist created
+
+TODO: experiment with seed tracks for bookend recommender
 
 TODO:
     review all TODOs in code

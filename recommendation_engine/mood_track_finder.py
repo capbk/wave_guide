@@ -1,17 +1,24 @@
+from numpy import percentile
 import pprint
-from random import choices
+from random import sample
 import spotipy
 from statistics import median
 from typing import Dict
+from werkzeug.exceptions import abort
+
 
 # TODO: make global?
 MOOD_HAPPY = "happy"
 MOOD_ENERGIZED = "energized"
-SUPPORTED_MOODS = [MOOD_HAPPY, MOOD_ENERGIZED]
+MOOD_CALM = "calm"
+# MOOD_SAD = "sad"
+# MOOD_ANGRY = "angry"
+SUPPORTED_MOODS = [MOOD_HAPPY, MOOD_ENERGIZED, MOOD_CALM]
 COUNTRY = "US"  # TODO: get this from user metadata
 
 
 class MoodTrackFinder:
+    # TODO: move mood and num_tracks args to find()
     def __init__(self, sp: spotipy.Spotify, mood:str, num_tracks: int):
         mood = mood.lower()
         if mood not in SUPPORTED_MOODS:
@@ -25,89 +32,116 @@ class MoodTrackFinder:
         self.sp = sp
         self.mood = mood
         self.num_tracks = num_tracks
+        # TODO: handle brand new users who have no top tracks
+        # I think spotify API needs at least one seed
+        # TODO: cache this per session.
+        self.top_artists = self._get_top_artists()
+
+    # returns dict{time_period: [artists]}
+    def _get_top_artists(self):
+        print("fetching top artists to seed recommendations")
+        artists_per_time_range = {"short_term": [], "medium_term": [], "long_term": []}
+        for time_range in artists_per_time_range:
+            # 50 is max limit
+            top_artists_resp = self.sp.current_user_top_artists(limit=50, time_range=time_range)
+            if top_artists_resp["total"] == 0:
+                return artists_per_time_range
+            artists_per_time_range[time_range] = top_artists_resp["items"]
+        return artists_per_time_range
+
+    # Fetch 5 randomized, distinct seed artists
+    # 5 is the max seeds allowed
+    # 2 from short term
+    # 2 from medium term
+    # 1 from long term
+    def get_seed_artists(self):
+        # de_duplicate and useful for logging
+        artist_name_per_id = {}
+        seed_artists = []
+        args = [("short_term", 2), ("medium_term", 2), ("long_term", 1)]
+        for time_range, k in args:
+            time_range_artists = []
+            for artist in self.top_artists[time_range]:
+                artist_id = artist["id"]
+                if artist_id in artist_name_per_id:
+                    continue
+                artist_name_per_id[artist_id] = artist["name"]
+                time_range_artists.append(artist_id)
+            if not time_range_artists:
+                continue
+            time_range_seeds = sample(time_range_artists, k)
+            seed_artists.extend(time_range_seeds)
+        print("seed artists for mood", self.mood, [artist_name_per_id[a_id] for a_id in seed_artists])
+        return seed_artists
 
     def find(self):
         """
         returns a list of tracks from spotify reccomendations response
         https://developer.spotify.com/documentation/web-api/reference/get-recommendations
         """
-        # TODO: experiment with time_range
-        # TODO: experiment with randomness when grabbing 5 top tracks
-        # TODO: experiment with including override seed track ids to make resulting playlist more cohesive
-        # TODO: cache this in a multi tenant safe way
-        print("fetching top tracks to analyze preferences")
-        top_tracks = self.sp.current_user_top_tracks(limit=50, time_range="medium_term")  # 50 is max limit
-        top_track_ids = []
-        top_tracks_features = None
-        if top_tracks["total"] != 0:
-            top_track_ids = [item["id"] for item in top_tracks["items"]]
-            top_tracks_features = self.sp.audio_features(top_track_ids)
 
-        # get personalized features for corresponding mood
-        user_features = {}
+        # TODO: handle brand new users who have no top tracks
+        # I think spotify API needs at least one seed
+        top_artists = {}
+
+        # get features for corresponding mood
+        mood_features = {}
         if self.mood == MOOD_HAPPY:
-            user_features = self.create_happy_features(top_tracks_features)
-        if self.mood == MOOD_ENERGIZED:
-            user_features = self.create_energized_features(top_tracks_features)
+            mood_features = self.get_happy_features()
+        elif self.mood == MOOD_ENERGIZED:
+            mood_features = self.get_energized_features()
+        elif self.mood == MOOD_CALM:
+            mood_features = self.get_calm_features()
+        # print("mood features for", self.mood)
+        # print(mood_features)
 
-        # get tracks
-        recommendation_kwargs = {}
-        for feature in user_features:
-            recommendations_request_key = f"target_{feature}"
-            recommendation_kwargs[recommendations_request_key] = user_features[feature]
-
-        randomized_seed_tracks=choices(top_track_ids, k=5)
+        # can provide max of 5 seeds (combined track + artist + genre) to spotify API
+        # Use a random sample for more diverse recommendations
+        seed_artists = self.get_seed_artists()
         recs = self.sp.recommendations(
-            limit=self.num_tracks, seed_tracks=randomized_seed_tracks, country=COUNTRY, **recommendation_kwargs,
+            limit=self.num_tracks, seed_artists=seed_artists, country=COUNTRY, **mood_features,
         )
-        print("recommendations from spotify API")
-        pprint.PrettyPrinter(indent=4, width=120).pprint(recs["tracks"])
+        # print("recommendations from spotify API for mood", self.mood)
+        # pprint.PrettyPrinter(indent=4, width=120).pprint(recs["tracks"])
         return recs["tracks"]
 
-    @staticmethod
-    def create_happy_features(top_tracks_features) -> Dict[str, float]:
-        """
-        Uses the user's top tracks, when available, to derive 'happy' track features
-        that will fit their tastes
-        """
-        # TODO: experiment with defaults.
-        default_features = {"valence": 1, "danceability": 0.6, "energy": 0.6}
-        if top_tracks_features == {} or top_tracks_features is None:
-            return default_features
+    """
+    Mood specific feature creation below
+    each function is responsible for a specific mood's track features
+    It returns a dict of kwargs that can be plugged directly into the sp.recommendations()
+    function as the last argument.
+    https://developer.spotify.com/documentation/web-api/reference/get-recommendations
 
-        our_features = ["valence", "danceability", "energy"]
-        happy_features = {}
+    use min/max sparingly as they can slim down the space to the point where you get no responses
+    for a given set of seeds
 
-        # TODO: reduce time complexity without adding too much readability complexity
-        # take the max valence and danceability.  Take the median energy
-        # TODO: max danceability may not be ideal
-        for feature in our_features:
-            # get all feature values across top tracks
-            values = [track[feature] for track in top_tracks_features]
-            happy_features[feature] = max(values)
-            if feature == "energy":
-                happy_features[feature] = median(values)
-
-        # boost even higher
-        # happy_features["valence"] = track["valence"] * 1.4
-        # happy_features["danceability"] = happy_features["danceability"] * 1.25
-
-        return happy_features
+    acousticness, liveness, and instrumentalness all seem to be very noisy, or low quality signals.
+    """
 
     @staticmethod
-    def create_energized_features(top_tracks_features) -> Dict[str, float]:
-        default_features = {"valence": 0.8, "danceability": 0.8, "energy": 1}
-        if top_tracks_features == {} or top_tracks_features is None:
-            return default_features
+    def get_happy_features() -> Dict[str, float]:
+        return {
+            "target_valence": 3,
+            "min_valence": 0.8,
+            "min_danceability": 0.7,
+            "target_energy": 0.8,
+        }
 
-        our_features = ["valence", "danceability", "energy"]
-        energized_features = {}
+    @staticmethod
+    def get_energized_features() -> Dict[str, float]:
+        return {
+            "target_energy": 3,
+            "min_energy": 0.71,
+            "target_danceability": 3,
+            "min_danceability": 0.6,
+            "target_valence": 0.76
+        }
 
-        for feature in our_features:
-            values = [track[feature] for track in top_tracks_features]
-            energized_features[feature] = max(values)
-
-        # energized_features["valence"] = energized_features["valence"] * 1.4
-        # energized_features["danceability"] = energized_features["danceability"] * 1.4
-
-        return energized_features
+    @staticmethod
+    def get_calm_features() -> Dict[str, float]:
+        return {
+            "target_danceability": 0.27,
+            "target_energy": 0.05,
+            "max_energy": 0.5,  # use min/max sparingly. see Notes folder
+            "target_valence": 0.9,
+        }

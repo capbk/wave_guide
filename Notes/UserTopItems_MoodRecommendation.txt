@@ -1,0 +1,44 @@
+The time_range argument to get_user_top_tracks produces results with minimal overlap.
+
+    Most tracks only appear in one list, very few show up in all three.
+    As of 1/14/24, for my personal preferences, the the number of lists per track looks like
+        1 - 81%
+        2 - 15%
+        3 - 4%
+
+    A track can apear and dissapear at any step along long_term, medium_term, and short_term.
+
+    If you loved a song for a while, but havent listened to it in months, it would only appear in in the long_term response.
+
+In early iterations - we are getting top tracks so that we can use them to derive ranges of track_features.
+
+    We also derive top artists from this list, so that we don't have to make separate calls for top artists
+        This descreases the total number of artists retrieved since there is a 1:many artist:song relationship
+
+**  We need to verify there is actual value in using the top track features.
+        Compare hard coded targets vs personalized targets
+            - reliably produces mood
+            - variation between runs
+            - sticks to the user preferences (which is already modeled in seeds)
+            - complexity of software
+        
+
+        Observation:  the impact of hard coded vs personalized feature targets depends dramatically on the presense of hard min/max values.  Min and maxes make it very predictable that it will find a certain type of song given the same set of seeds.  So this fork in the road reveals yet another fork:
+            Is it worth providing BOTH min_max and targets?
+                NO - If the range is too small, min/max essentially cancel out targets.  If the range is large, then the targets essentially override the min/max
+
+            should we provide hard min and max values??
+
+                NO - for certain seed inputs, using hard min and maxes can filter down the space too much, even down to 0 tracks.  This would provide really unreliable behavior that may not support a wide range of tastes.
+                
+                initial testing from "calm" mood suggests that using min/max produces tracks that fit the mood much more reliably
+
+                min and max will give the same exact recs for a given set of seeds. Using only targets introduced mild variation. So either way, we rely on randomization of seeds, and randomization of returned recommendations
+
+
+** Which make the best seed?
+    - artist
+    - genre
+    - song (seems much to volatile and prone to steering recommendation away from a mood)
+
+

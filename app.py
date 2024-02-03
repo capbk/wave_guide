@@ -33,7 +33,7 @@ def create_app():
         scope="user-library-read user-top-read playlist-modify-private",
         open_browser=False,
     )
-    spotify = spotipy.Spotify(auth_manager=auth_manager)
+    spotify = spotipy.Spotify(auth_manager=auth_manager, requests_timeout=45, retries=0)
     app.cache_handler = cache_handler
     app.auth_manager = auth_manager
     app.spotify = spotify
@@ -163,6 +163,48 @@ def _validate_new_playlist_request(request):
     if destination_mode == MOOD_MODE and "destination_mood" not in request.json:
         app.logger.error("destination mode is song but no destination_mood requeted")
         abort(400)
+
+
+# Test utility to experiment with feature paramaters
+# TODO: make it easier to pass token in
+@app.route("/tracks", methods=["GET"])
+def get_tracks():
+    if not validate_token():
+        return redirect("/")
+    mood = request.args.get('mood')
+    if not mood:
+        abort(400, "Include a mood query paramater. Example: /tracks?mood=calm")
+    track_finder = MoodTrackFinder(app.spotify, mood, 3)
+    recs = track_finder.find()
+    wg_resp = {}
+    track_ids = []
+    for track in recs:
+        simplified_track = {
+            "name": track["name"],
+            "artist": track["artists"][0]["name"],
+            "url": track["external_urls"]["spotify"]
+        }
+        wg_resp[track["id"]] = simplified_track
+        track_ids.append(track["id"])
+    print("getting track features")
+    track_features = app.spotify.audio_features(track_ids)
+    print("got features")
+    for features in track_features:
+        wg_resp[features["id"]]["features"] = {
+            "acousticness": features["acousticness"],
+            "danceability": features["danceability"],
+            "energy": features["energy"],
+            "instrumentalness": features["instrumentalness"],
+            "valence": features["valence"],
+            "key": features["key"],
+            "liveness": features["liveness"],
+            "loudness": features["loudness"],
+            "mode": features["mode"],
+            "speechiness": features["speechiness"],
+            "tempo": features["tempo"],
+        }
+
+    return jsonify(wg_resp)
 
 
 """

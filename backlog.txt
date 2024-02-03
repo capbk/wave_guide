@@ -1,10 +1,4 @@
-TODO Mood upgrades:
-    add moods
-        calm
-        sad
-        angry
 
-    ?? get a subset of seed artists most likely to suit a mood?  How will this impact diversity of recs?
 
 TODO: Transparency and Feedback, show users the origin-destination pattern that makes waveguide unique
     1. As playlist is building show steps
@@ -14,6 +8,12 @@ TODO: Transparency and Feedback, show users the origin-destination pattern that 
         Show dotted line animation between the album arts
             wave guide is finding a path...
         Playlist created
+
+TODO Mood upgrades:
+    experiment: get a subset of seed artists most likely to suit a mood?  How will this impact diversity of recs?
+    add moods
+        sad
+        angry
 
 TODO: experiment with seed tracks for bookend recommender
 
@@ -44,33 +44,21 @@ TODO:
                 calm to happy
 
 
-MAKE SURE ALL CHANGES ARE PUSEHD TO PYTHONANYWHERE
+MAKE SURE ALL CHANGES ARE PUSHED TO PYTHONANYWHERE
 
 ---------------------
-release v1 -- friends and family
+Lower priority
 ----------------------
-
-TODO:
-    rename repo and update the README
 
 TODO:
     rename auto complete to search
 
 TODO:
-    "I'm feeling lucky" random playlist?
-
-TODO:
     read more about Flask-Session, can it be used to cache user data/preferences
 
 TODO:
-    replace "seed" with "source" where appropriate for consistency
+    replace "seed" with "source" where appropriate for consistency -- or unify on "beginning"???
     replace "track" with "song"?
-
-
-TODO:
-    alert when clicking disabled CREATE PLAYLIST
-        update focus depending on what need fixing.
-            update borders colors?
 
 TODO:
     improve smoothness of song to song recommendation algo
@@ -98,7 +86,7 @@ TODO:
     add url query args so refreshing and link sharing works
 
 TODO:
-    show songs as they are added for more of a chat gpt like experience
+    show songs as they are added for more of a streaming experience
 
 TODO:
     use build manager tool so we don't have to pull deps from CDN
@@ -108,11 +96,8 @@ TODO:
     consider canvas api
 
 TODO:
-    support adding multiple "waypoints" not just start and end
+    support adding multiple "waypoints" not just beginning and destination
 
-
-EXPERIMENT:
-    not sure about the energy and valence mins
 
 EXPERIMENT:
     experiment with re-ranking recommendations from spotify API

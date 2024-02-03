@@ -3,6 +3,7 @@
   --bluish-grey: #151c25;
   --background-grey: #313332;
   --accent-blue: #51afca;
+  --card-blue: #51afca91;
   --paper-cream: #efe4d5;
   --accent-red: #be4364;
   --transparent-red: #be436424;
@@ -94,6 +95,11 @@ html {
 
 .explainer-text {
   margin-top: 8px;
+  text-align: center;
+}
+
+.explainer-list {
+  text-align: start;
 }
 
 .close-modal {
@@ -128,7 +134,8 @@ html {
 
 .track-input-card {
   display: flex;
-  background-color: var(--paper-cream);
+  background-color: var(--card-blue);
+  color: var(--paper-cream);
   height: 100%;
   box-shadow: var(--default-box-shadow);
   margin: 4px 8px 8px 8px;
@@ -148,6 +155,7 @@ html {
   padding: 10px 20px;
   box-shadow: var(--default-box-shadow);
   transition: all 0.2s ease-in-out;
+  background-color: var(--paper-cream);
   color: var(--accent-red);
   transform: translateY(-1px);
   border-radius: var(--default-border-radius);
@@ -207,7 +215,8 @@ html {
 }
 
 .mood-input {
-  color: black;
+  background-color: var(--paper-cream);
+  color: var(--bluish-grey);
   height: 40px;
   width: 100%;
   border: var(--outline-border);
@@ -221,6 +230,8 @@ html {
 }
 
 .search-input {
+  background-color: var(--paper-cream);
+  color: var(--bluish-grey);
   height: 38px;
   width: 96%; /* for some reason this overflows otherwise */
   border: var(--outline-border);
@@ -235,6 +246,8 @@ html {
 }
 
 .search-results-list {
+  background-color: var(--paper-cream);
+  color: var(--bluish-grey);
   width: var(--search-input-width);
   background-color: white;
   list-style-type: none;

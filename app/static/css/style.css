@@ -1,0 +1,504 @@
+:root {
+  --default-border-radius: 8px;
+  --bluish-grey: #151c25;
+  --background-grey: #313332;
+  --accent-blue: #51afca;
+  --card-blue: #51afca91;
+  --paper-cream: #efe4d5;
+  --accent-red: #be4364;
+  --transparent-red: #be436424;
+  --transparent-grey: hsla(0, 0%, 100%, 0.15);
+  --minimal-box-shadow: 1px 2px 2px hsl(0deg 0% 0% / 0.45);
+  --default-box-shadow: 3.3px 6.6px 6.6px hsl(0deg 0% 0% / 0.42);
+  --modal-box-shadow: 5px 10px 10px hsl(0deg 0% 0% / 0.32);
+  --outline-border: 1px inset var(--bluish-grey);
+  --stencil-gradient: linear-gradient(
+    to right,
+    hsla(0, 0%, 0%, 0.1),
+    hsla(0, 0%, 0%, 0.22),
+    hsla(0, 0%, 0%, 0.1)
+  );
+  --search-input-width: 250px;
+}
+
+html {
+  font-family: Trebuchet MS, sans-serif;
+  color: var(--bluish-grey);
+  background: linear-gradient(
+      to bottom,
+      var(--bluish-grey),
+      var(--background-grey) 50%,
+      var(--background-grey) 100%
+    )
+    fixed;
+}
+
+.logo {
+  height: 240px;
+  width: 240px;
+  margin-bottom: 16px;
+}
+
+.header-bar {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 16px;
+}
+
+.logo-small {
+  height: 120px;
+  width: 120px;
+  margin: 0px 8px;
+}
+
+.product-name {
+  height: 40px;
+  align-self: center;
+}
+
+.log-out-btn {
+  background-color: var(--transparent-grey);
+  color: var(--paper-cream);
+  border-radius: var(--default-border-radius);
+  box-shadow: var(--default-box-shadow);
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-size: 0.8em;
+  padding: 10px 20px;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.explainer {
+  font-size: 1.2em;
+  border-radius: var(--default-border-radius);
+  padding: 0px 8px 8px 8px;
+  margin: 0px 8px 16px 8px;
+  background-color: var(--transparent-grey);
+  color: var(--paper-cream);
+  box-shadow: var(--minimal-box-shadow);
+
+  display: flex;
+  flex-direction: row;
+}
+
+.explainer-text {
+  margin-top: 8px;
+  text-align: center;
+}
+
+.explainer-list {
+  text-align: start;
+}
+
+.close-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 0px 0px 0px 8px;
+}
+
+.both-cards-container {
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.card-label {
+  color: #51afca;
+  margin: 8px 0px 0px 8px;
+  font-size: 1.2em;
+}
+
+.track-input-card {
+  display: flex;
+  background-color: var(--card-blue);
+  color: var(--paper-cream);
+  height: 100%;
+  box-shadow: var(--default-box-shadow);
+  margin: 4px 8px 8px 8px;
+  padding: 8px;
+  border: var(--outline-border);
+  border-radius: var(--default-border-radius);
+}
+
+/*TODO: rename all mentions of "tab"*/
+.mode-tab-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.mode-tab {
+  padding: 10px 20px;
+  box-shadow: var(--default-box-shadow);
+  transition: all 0.2s ease-in-out;
+  background-color: var(--paper-cream);
+  color: var(--accent-red);
+  transform: translateY(-1px);
+  border-radius: var(--default-border-radius);
+  border: 1px solid lightgray;
+  margin-top: 0px;
+  margin-right: 4px;
+  margin-bottom: 8px;
+  margin-left: 0px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: normal;
+}
+
+.mode-tab-selected {
+  box-shadow: var(--minimal-box-shadow);
+  transition: all 0.2s ease-in-out;
+  color: white;
+  padding: 10px 20px;
+  transform: translateY(0px);
+  border-radius: var(--default-border-radius);
+  background-color: var(--accent-red);
+  border: 1px solid transparent;
+  margin-top: 0px;
+  margin-right: 4px;
+  margin-bottom: 8px;
+  margin-left: 0px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-weight: 700;
+  text-align: center;
+  font-size: 10px;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: normal;
+}
+
+.mode-tab:hover {
+  background-color: var(--transparent-red);
+  cursor: pointer;
+}
+
+/* do nothing */
+.mode-tab-selected:hover {
+  /*  background-color: #1db95421;*/
+  /*  color: #15843c;*/
+  cursor: default;
+}
+
+.mood-input {
+  background-color: var(--paper-cream);
+  color: var(--bluish-grey);
+  height: 40px;
+  width: 100%;
+  border: var(--outline-border);
+  border-radius: var(--default-border-radius);
+  padding: 0px 0px 0px 8px;
+}
+
+.search-input-container {
+  display: block;
+  width: var(--search-input-width);
+}
+
+.search-input {
+  background-color: var(--paper-cream);
+  color: var(--bluish-grey);
+  height: 38px;
+  width: 96%; /* for some reason this overflows otherwise */
+  border: var(--outline-border);
+  border-radius: var(--default-border-radius);
+  padding: 0px 0px 0px 8px;
+  margin: 0px;
+}
+
+::placeholder {
+  color: black;
+  opacity: 1;
+}
+
+.search-results-list {
+  background-color: var(--paper-cream);
+  color: var(--bluish-grey);
+  width: var(--search-input-width);
+  background-color: white;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  border: var(--outline-border);
+  border-radius: var(--default-border-radius);
+  z-index: 300;
+}
+
+.search-results-item {
+  display: flex;
+}
+
+.search-results-item:hover {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+.search-result-thumbnail {
+  width: 56px;
+  height: 56px;
+  margin-right: 4px;
+}
+
+.search-result-track-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 190px;
+}
+
+.search-result-title {
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.search-result-artist {
+  font-size: 0.8em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.selected-track-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 4px;
+}
+
+.selected-thumbnail {
+  height: 140px;
+  width: 140px;
+}
+
+.selected-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font-weight: 600;
+  overflow: hidden;
+  width: 140px;
+  text-overflow: ellipsis;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.selected-artist {
+  font-size: 0.8em;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.placeholder-thumbnail {
+  height: 140px;
+  width: 140px;
+  background-image: var(--stencil-gradient);
+  border: var(--outline-border);
+  border-radius: var(--default-border-radius);
+  background-size: 400% 100%;
+}
+
+.placeholder-track-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.placeholder-title {
+  height: 23px;
+  width: 140px;
+  border: var(--outline-border);
+  border-radius: var(--default-border-radius);
+  background-image: var(--stencil-gradient);
+  background-size: 400% 100%;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.placeholder-artist {
+  height: 15px;
+  width: 100px;
+  border: var(--outline-border);
+  border-radius: var(--default-border-radius);
+  background-image: var(--stencil-gradient);
+  background-size: 400% 100%;
+}
+
+.spotify-logo {
+  vertical-align: middle;
+  margin-right: 10px;
+  height: 21px;
+  width: 21px;
+}
+
+.btn {
+  padding: 16px 24px 16px;
+  align-self: center;
+  box-sizing: border-box;
+  text-decoration: none;
+  word-wrap: break-word;
+  display: inline-block;
+  margin: 4px;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: var(--default-border-radius);
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: 2px;
+  min-width: 160px;
+  text-transform: uppercase;
+  white-space: normal;
+  background-color: var(--accent-red);
+  color: white;
+  box-shadow: var(--default-box-shadow);
+}
+
+.btn span {
+  vertical-align: middle;
+}
+
+.listen-on-spotify-btn {
+  min-width: 290px;
+}
+
+.generate-playllist-btn {
+  z-index: 0;
+  margin-bottom: 40px;
+}
+
+/* generated playlist modal */
+.modal-container {
+  position: fixed; /* Set position to fixed to make the modal stay in place */
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.7
+  ); /* Add semi-transparent background color */
+  z-index: 100; /* Set high value of z-index to ensure the modal is on top */
+}
+
+.modal {
+  display: block;
+  /*  min-width: 480px;
+  min-height: 240px;*/
+  position: absolute; /* Set position to absolute so it can be centered */
+  top: 50%;
+  left: 50%;
+  padding: 0px 5px 20px 20px;
+  transform: translate(-50%, -50%);
+  background-color: var(--paper-cream);
+  box-shadow: var(--modal-box-shadow);
+  border-radius: var(--default-border-radius);
+}
+
+.playlist-result-top {
+  display: flex;
+  flex-direction: row;
+}
+
+.playlist-result-top-right {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.placeholder-playlist-result-top-right {
+  display: flex;
+  justify-content: center;
+}
+
+.placeholder-playlist-thumbnail {
+  height: 140px;
+  width: 140px;
+  padding: 10px;
+}
+
+.shimmer {
+  background: var(--stencil-gradient);
+  background-size: 240% 240%;
+  animation: shimmer 1s infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  cursor: default;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -140px 0;
+  }
+  100% {
+    background-position: 140px 0;
+  }
+}
+
+.placeholder-playlist-title {
+  height: 23px;
+  width: 420px;
+  padding: 10px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  margin-right: 15px; /* facilitate x in top right of modal */
+
+  position: relative;
+  overflow: hidden;
+}
+
+.playlist-thumbnail {
+  height: 140px;
+  width: 140px;
+  padding: 10px;
+}
+
+.playlist-title {
+  font-size: 1.2em;
+  font-weight: 700;
+  overflow: hidden;
+  max-width: 500px;
+  text-overflow: ellipsis;
+}

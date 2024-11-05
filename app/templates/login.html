@@ -1,0 +1,21 @@
+{% import "macros/explainer.html" as explainer %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="main-container">
+      <img src="static/images/wave_guide_logo_with_text.png" class="logo" />
+      <!-- TODO: add argument to not show close x, to avoid js loading -->
+      {{ explainer }}
+      <a href="{{auth_url}}" class="btn">
+        <img src="static/images/spotify_icon.png" class="spotify-logo" />
+        Log In With Spotify
+      </a>
+    </div>
+  </body>
+</html>

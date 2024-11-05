@@ -54,6 +54,8 @@ function setupModeToggle(location) {
 document.addEventListener('DOMContentLoaded', function() {
     setupModeToggle(locationSource);
     setupModeToggle(locationDestination);
+    setupMoodSelection(locationSource);
+    setupMoodSelection(locationDestination);
 });
 
 // Create source search
@@ -83,37 +85,22 @@ function closeElementWhenClickElsewhere(event, elementToHide) {
     }
 }
 
-// add event listeners for mood selection
-// ==================================================
-const sourceSelectedMoodContainer = document.getElementById(
-    "source-selected-mood"
-);
-const sourceMoodSelect = document.getElementById("source-mood-select");
-sourceMoodSelect.addEventListener("change", function () {
-    const mood = sourceMoodSelect.value;
-    selectMood(
-        mood,
-        sourceSelectedMoodContainer,
-        sourceSelectedResultPlaceholder
-    );
-    state.setSourceMood(mood);
-});
-
-const destinationSelectedMoodContainer = document.getElementById(
-    "destination-selected-mood"
-);
-const destinationMoodSelect = document.getElementById(
-    "destination-mood-select"
-);
-destinationMoodSelect.addEventListener("change", function () {
-    const mood = destinationMoodSelect.value;
-    selectMood(
-        mood,
-        destinationSelectedMoodContainer,
-        destinationSelectedResultPlaceholder
-    );
-    state.setDestinationMood(mood);
-});
+// Simplified mood selection setup
+function setupMoodSelection(location) {
+    const selectedMoodContainer = document.getElementById(`${location}-selected-mood`);
+    const moodSelect = document.getElementById(`${location}-mood-select`);
+    
+    moodSelect.addEventListener("change", function () {
+        const mood = moodSelect.value;
+        selectMood(
+            mood,
+            selectedMoodContainer,
+            document.getElementById(`${location}-selected-result-placeholder`)
+        );
+        // Update state using the appropriate method
+        location === locationSource ? state.setSourceMood(mood) : state.setDestinationMood(mood);
+    });
+}
 
 // add listeners to generate playlist button
 // ==================================================

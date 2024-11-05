@@ -68,12 +68,6 @@ function closeElementWhenClickElsewhere(event, elementToHide) {
     }
 }
 
-// close the search results if a user clicks away
-// document.addEventListener("click", function (event) {
-//     const elementToHide = document.querySelector(".search-results-list");
-//     closeElementWhenClickElsewhere(event, elementToHide);
-// });
-
 // add event listeners for mood selection
 // ==================================================
 const sourceSelectedMoodContainer = document.getElementById(

@@ -1,7 +1,5 @@
 import state from "./state.js";
 import { SearchInput } from "./search.js";
-// TODO move ot different file, maybe new-playlist.js?
-import { selectMode } from "./mode-tabs.js";
 import { selectMood } from "./mood-select.js";
 import { createPlaylist, hideModal } from "./new-playlist.js";
 
@@ -10,35 +8,52 @@ const locationDestination = "destination";
 const modeSong = "song";
 const modeMood = "mood";
 
-// allow users to close the eplainer text
+// allow users to close the explainer text
 var explainerCloseButton = document.getElementById("close-explainer");
 explainerCloseButton.addEventListener("click", function () {
     const explainer = document.getElementById("explainer");
     explainer.style.display = "none";
 });
 
-// add listeners to song/mood tabs
+// Replace old tab system with radio button handlers
 // ==================================================
-const sourceMoodTab = document.getElementById("source-mode-tab-mood");
-const sourceSongTab = document.getElementById("source-mode-tab-song");
-sourceMoodTab.addEventListener("click", function () {
-    const mode = modeMood;
-    selectMode(locationSource, mode, state);
-});
-sourceSongTab.addEventListener("click", function () {
-    const mode = modeSong;
-    selectMode(locationSource, mode, state);
-});
+function setupModeToggle(location) {
+    const radioButtons = document.querySelectorAll(`input[name="${location}-mode"]`);
+    const songInput = document.getElementById(`${location}-autocomplete-input`);
+    const moodSelect = document.getElementById(`${location}-mood-select`);
+    const selectedSong = document.getElementById(`${location}-selected-song`);
+    const selectedMood = document.getElementById(`${location}-selected-mood`);
 
-const destinationMoodTab = document.getElementById("destination-mode-tab-mood");
-const destinationSongTab = document.getElementById("destination-mode-tab-song");
-destinationMoodTab.addEventListener("click", function () {
-    const mode = modeMood;
-    selectMode(locationDestination, mode, state);
-});
-destinationSongTab.addEventListener("click", function () {
-    const mode = modeSong;
-    selectMode(locationDestination, mode, state);
+    radioButtons.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            const mode = e.target.value;
+            // Update state
+            if (location === locationSource) {
+                state.setSourceMode(mode);
+            } else {
+                state.setDestinationMode(mode);
+            }
+            
+            // Update UI
+            if (mode === modeSong) {
+                songInput.style.display = 'block';
+                moodSelect.style.display = 'none';
+                selectedSong.style.display = 'block';
+                selectedMood.style.display = 'none';
+            } else {
+                songInput.style.display = 'none';
+                moodSelect.style.display = 'block';
+                selectedSong.style.display = 'none';
+                selectedMood.style.display = 'block';
+            }
+        });
+    });
+}
+
+// Initialize mode toggles
+document.addEventListener('DOMContentLoaded', function() {
+    setupModeToggle(locationSource);
+    setupModeToggle(locationDestination);
 });
 
 // Create source search

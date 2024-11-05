@@ -167,12 +167,14 @@ class BookendSeedsTrackFinder:
         return playlist_tracks
 
     @staticmethod
+    # if there are only duplicates available in the recommendation pool,
+    # return the first track
+    # track_names should be all lowercase
     def skip_duplicate_titles_and_artists(recs: Dict[str, Any], track_names: List[str], artist_ids: List[str]):
-        next_track = recs["tracks"][0]
         for recommended_track in recs["tracks"]:
             recommended_track_name = recommended_track["name"].lower()
             recommended_track_artist_id = recommended_track["artists"][0]["id"]
             if recommended_track_name in track_names or recommended_track_artist_id in artist_ids:
                 continue
             return recommended_track
-        return next_track
+        return recs["tracks"][0]

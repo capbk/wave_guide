@@ -1,5 +1,5 @@
 import state from "./state.js";
-import { createDebouncedSearch } from "./autocomplete.js";
+import { SearchInput } from "./search.js";
 // TODO move ot different file, maybe new-playlist.js?
 import { selectMode } from "./mode-tabs.js";
 import { selectMood } from "./mood-select.js";
@@ -41,35 +41,25 @@ destinationSongTab.addEventListener("click", function () {
     selectMode(locationDestination, mode, state);
 });
 
-// TODO: move event listener handling out into this file?
-// TODO: return seed and destination track ids rather than using hidden input
-// add listeners to autocomplete inputs
-// ==================================================
-// see `templates/macros/track_input_card.html`
-// to see where the inputs to this function come from
-const sourceSelectedResultPlaceholder = document.getElementById(
-    "source-selected-result-placeholder"
-);
-const destinationSelectedResultPlaceholder = document.getElementById(
-    "destination-selected-result-placeholder"
-);
+// Create source search
+new SearchInput({
+    inputId: "source-autocomplete-input",
+    resultsListId: "source-search-results-list",
+    selectedSongId: "source-selected-song",
+    placeholderId: "source-selected-result-placeholder",
+    location: locationSource,
+    state
+});
 
-createDebouncedSearch(
-    document.getElementById("source-autocomplete-input"),
-    document.getElementById("source-search-results-list"),
-    document.getElementById("source-selected-song"),
-    sourceSelectedResultPlaceholder,
-    locationSource,
+// Create destination search
+new SearchInput({
+    inputId: "destination-autocomplete-input",
+    resultsListId: "destination-search-results-list",
+    selectedSongId: "destination-selected-song",
+    placeholderId: "destination-selected-result-placeholder",
+    location: locationDestination,
     state
-);
-createDebouncedSearch(
-    document.getElementById("destination-autocomplete-input"),
-    document.getElementById("destination-search-results-list"),
-    document.getElementById("destination-selected-song"),
-    destinationSelectedResultPlaceholder,
-    locationDestination,
-    state
-);
+});
 
 function closeElementWhenClickElsewhere(event, elementToHide) {
     const clickedElement = event.target;
@@ -79,10 +69,10 @@ function closeElementWhenClickElsewhere(event, elementToHide) {
 }
 
 // close the search results if a user clicks away
-document.addEventListener("click", function (event) {
-    const elementToHide = document.querySelector(".search-results-list");
-    closeElementWhenClickElsewhere(event, elementToHide);
-});
+// document.addEventListener("click", function (event) {
+//     const elementToHide = document.querySelector(".search-results-list");
+//     closeElementWhenClickElsewhere(event, elementToHide);
+// });
 
 // add event listeners for mood selection
 // ==================================================

@@ -3,9 +3,13 @@ run:
 
 install:
 	pip3 install -r requirements.txt
+	npm init -y
 
-test:
+test-backend:
 	python3 -m pytest tests/ -v
 
-test-coverage:
+test-frontend:
+	npm test
+
+test-backendcoverage:
 	python3 -m pytest tests/ -v --cov=recommendation_engine --cov-report=term-missing

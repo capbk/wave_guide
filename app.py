@@ -11,6 +11,7 @@ import app_env  # not stored in git
 from recommendation_engine import playlist
 from recommendation_engine.mood_track_finder import MoodTrackFinder
 from search.autocomplete import search_tracks
+from utils.validators import validate_new_playlist_request
 
 # Top level entry point for wave-guide flask application
 
@@ -105,39 +106,14 @@ def autocomplete():
 def new_playlist():
     if not validate_token():
         return redirect("/")
-    _validate_new_playlist_request(request)
+    validate_new_playlist_request(request.json)
 
     resp = playlist.create_playlist(request, app.spotify)
     return jsonify(resp)
 
 
-def _validate_new_playlist_request(request):
-    if not request.json or "source_mode" not in request.json:
-        app.logger.error("request must include source_mode")
-        abort(400)
-    if "destination_mode" not in request.json:
-        app.logger.error("request must include destination_mode")
-        abort(400)
-
-    source_mode = request.json["source_mode"]
-    destination_mode = request.json["destination_mode"]
-
-    if source_mode == SONG_MODE and "seed_track_id" not in request.json:
-        app.logger.error("source mode is song but no seed_track_id requeted")
-        abort(400)
-    if source_mode == MOOD_MODE and "source_mood" not in request.json:
-        app.logger.error("source mode is song but no source_mood requeted")
-        abort(400)
-    if destination_mode == SONG_MODE and "seed_track_id" not in request.json:
-        app.logger.error("destination mode is song but no seed_track_id requeted")
-        abort(400)
-    if destination_mode == MOOD_MODE and "destination_mood" not in request.json:
-        app.logger.error("destination mode is song but no destination_mood requeted")
-        abort(400)
-
-
-# Test utility to experiment with feature paramaters
-# TODO: make it easier to pass token in
+# Test utility to experiment with feature paramaters =================================
+# ====================================================================================
 @app.route("/tracks", methods=["GET"])
 def get_tracks():
     if not validate_token():

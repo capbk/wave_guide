@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+from functools import wraps
 
 from flask import Flask, session, request, redirect, render_template, jsonify
 from flask_session import Session
@@ -60,6 +61,14 @@ def validate_token():
         return False
     return True
 
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not validate_token():
+            return redirect("/")
+        return f(*args, **kwargs)
+    return decorated_function
+
 
 @app.route("/")
 def index():
@@ -88,13 +97,11 @@ def log_out():
 
 # TODO: rename to /search or maybe /track_search, /tracks/search
 @app.route("/autocomplete", methods=["POST"])
+@login_required
 def autocomplete():
     if not request.json or "query" not in request.json:
         abort(400)
     query = request.json["query"]
-    if not validate_token():
-        return redirect("/")
-
     limit = 4
     suggestions = search_tracks(app.spotify, query, limit)
     if not suggestions:
@@ -103,11 +110,9 @@ def autocomplete():
 
 
 @app.route("/new_playlist/", methods=["POST"])
+@login_required
 def new_playlist():
-    if not validate_token():
-        return redirect("/")
     validate_new_playlist_request(request.json)
-
     resp = playlist.create_playlist(request, app.spotify)
     return jsonify(resp)
 
@@ -115,9 +120,8 @@ def new_playlist():
 # Test utility to experiment with feature paramaters =================================
 # ====================================================================================
 @app.route("/tracks", methods=["GET"])
+@login_required
 def get_tracks():
-    if not validate_token():
-        return redirect("/")
     mood = request.args.get('mood')
     if not mood:
         abort(400, "Include a mood query paramater. Example: /tracks?mood=calm")

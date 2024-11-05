@@ -4,9 +4,6 @@ run:
 install:
 	pip3 install -r requirements.txt
 
-run_non_wsgi:
-	source app_env; python app.py;
-
 test:
 	python3 -m pytest tests/ -v
 

@@ -1,7 +1,12 @@
-TODO: create a src folder
+clean up app.py file -- simplify into blueprints
+
+cache get user info per session
+
+migrate to petite vue app
+
 
 TODO:
-    change the Mood/Song select to a "tab" or "pill" pattern
+    change the Mood/Song select to a "tab" or "pill" pattern or radio buttons
         leaning towards tab since it will make the search <-> dropdown change more obious
 
 TODO:

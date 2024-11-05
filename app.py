@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+from functools import wraps
 
 from flask import Flask, session, request, redirect, render_template, jsonify
 from flask_session import Session
@@ -11,6 +12,7 @@ import app_env  # not stored in git
 from recommendation_engine import playlist
 from recommendation_engine.mood_track_finder import MoodTrackFinder
 from search.autocomplete import search_tracks
+from utils.validators import validate_new_playlist_request
 
 # Top level entry point for wave-guide flask application
 
@@ -59,6 +61,14 @@ def validate_token():
         return False
     return True
 
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not validate_token():
+            return redirect("/")
+        return f(*args, **kwargs)
+    return decorated_function
+
 
 @app.route("/")
 def index():
@@ -87,13 +97,11 @@ def log_out():
 
 # TODO: rename to /search or maybe /track_search, /tracks/search
 @app.route("/autocomplete", methods=["POST"])
+@login_required
 def autocomplete():
     if not request.json or "query" not in request.json:
         abort(400)
     query = request.json["query"]
-    if not validate_token():
-        return redirect("/")
-
     limit = 4
     suggestions = search_tracks(app.spotify, query, limit)
     if not suggestions:
@@ -102,75 +110,18 @@ def autocomplete():
 
 
 @app.route("/new_playlist/", methods=["POST"])
+@login_required
 def new_playlist():
-    if not validate_token():
-        return redirect("/")
-    _validate_new_playlist_request(request)
-
-    # track to start the playlist
-    source_mode = request.json["source_mode"]
-    source_track_id = ""
-    if source_mode == SONG_MODE:
-        source_track_id = request.json["seed_track_id"]
-    elif source_mode == MOOD_MODE:
-        track_finder = MoodTrackFinder(app.spotify, request.json["source_mood"], 1)
-        source_track_id = track_finder.find()[0]["id"]
-    else:
-        app.logger.error(f"Unkonwn source mode: {source_mode}. Must provide one of the modes 'song' or 'mood'")
-        abort(400)
-
-    # track to end the playlist
-    destination_mode = request.json["destination_mode"]
-    destination_track_id = ""
-    if destination_mode == SONG_MODE:
-        destination_track_id = request.json["destination_track_id"]
-    elif destination_mode == MOOD_MODE:
-        track_finder = MoodTrackFinder(app.spotify, request.json["destination_mood"], 2)
-        recs = track_finder.find()
-        for rec in recs:
-            if rec["id"] != source_track_id:
-                destination_track_id = rec["id"]
-                break
-    else:
-        app.logger.error(f"Unkonwn destination mode: {destination_mode}. Must provide one of the modes 'song' or 'mood'")
-        abort(400)
-
-    app.logger.info("creating song to song playlist")
-    resp = playlist.create_song_to_song_playlist(app.spotify, source_track_id, destination_track_id)
+    validate_new_playlist_request(request.json)
+    resp = playlist.create_playlist(request, app.spotify)
     return jsonify(resp)
 
 
-def _validate_new_playlist_request(request):
-    if not request.json or "source_mode" not in request.json:
-        app.logger.error("request must include source_mode")
-        abort(400)
-    if "destination_mode" not in request.json:
-        app.logger.error("request must include destination_mode")
-        abort(400)
-
-    source_mode = request.json["source_mode"]
-    destination_mode = request.json["destination_mode"]
-
-    if source_mode == SONG_MODE and "seed_track_id" not in request.json:
-        app.logger.error("source mode is song but no seed_track_id requeted")
-        abort(400)
-    if source_mode == MOOD_MODE and "source_mood" not in request.json:
-        app.logger.error("source mode is song but no source_mood requeted")
-        abort(400)
-    if destination_mode == SONG_MODE and "seed_track_id" not in request.json:
-        app.logger.error("destination mode is song but no seed_track_id requeted")
-        abort(400)
-    if destination_mode == MOOD_MODE and "destination_mood" not in request.json:
-        app.logger.error("destination mode is song but no destination_mood requeted")
-        abort(400)
-
-
-# Test utility to experiment with feature paramaters
-# TODO: make it easier to pass token in
+# Test utility to experiment with feature paramaters =================================
+# ====================================================================================
 @app.route("/tracks", methods=["GET"])
+@login_required
 def get_tracks():
-    if not validate_token():
-        return redirect("/")
     mood = request.args.get('mood')
     if not mood:
         abort(400, "Include a mood query paramater. Example: /tracks?mood=calm")
@@ -205,17 +156,3 @@ def get_tracks():
         }
 
     return jsonify(wg_resp)
-
-
-"""
-Following lines allow application to be run more conveniently with
-`python app.py` (Make sure you're using python3)
-(Also includes directive to leverage pythons threading capacity.)
-"""
-
-if __name__ == "__main__":
-    Session(app)
-    app.run(
-        threaded=True,
-        port=int(os.environ.get("PORT", os.environ.get("SPOTIPY_REDIRECT_URI", 8080).split(":")[-1].split("/")[0])),
-    )

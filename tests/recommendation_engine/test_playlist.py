@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import Mock, patch
-from recommendation_engine.playlist import create_song_to_song_playlist, _create_playlist
+from recommendation_engine.playlist import create_song_to_song_playlist, _create_spotify_playlist
 
 @pytest.fixture
 def mock_spotify():
@@ -40,7 +40,7 @@ def test_create_playlist(mock_spotify, mock_track_response):
     recommendation_uris = ["spotify:track:1", "spotify:track:2"]
     
     # Act
-    result = _create_playlist(mock_spotify, recommendation_uris, "Point A", "Point B")
+    result = _create_spotify_playlist(mock_spotify, recommendation_uris, "Point A", "Point B")
     
     # Assert
     mock_spotify.current_user.assert_called_once()
@@ -105,7 +105,7 @@ def test_create_playlist_error_handling(mock_spotify):
     
     # Act & Assert
     with pytest.raises(Exception) as exc_info:
-        _create_playlist(mock_spotify, ["uri1"], "Point A", "Point B")
+        _create_spotify_playlist(mock_spotify, ["uri1"], "Point A", "Point B")
     assert str(exc_info.value) == "API Error"
 
 @patch('recommendation_engine.playlist.BookendSeedsTrackFinder')

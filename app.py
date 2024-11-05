@@ -107,36 +107,7 @@ def new_playlist():
         return redirect("/")
     _validate_new_playlist_request(request)
 
-    # track to start the playlist
-    source_mode = request.json["source_mode"]
-    source_track_id = ""
-    if source_mode == SONG_MODE:
-        source_track_id = request.json["seed_track_id"]
-    elif source_mode == MOOD_MODE:
-        track_finder = MoodTrackFinder(app.spotify, request.json["source_mood"], 1)
-        source_track_id = track_finder.find()[0]["id"]
-    else:
-        app.logger.error(f"Unkonwn source mode: {source_mode}. Must provide one of the modes 'song' or 'mood'")
-        abort(400)
-
-    # track to end the playlist
-    destination_mode = request.json["destination_mode"]
-    destination_track_id = ""
-    if destination_mode == SONG_MODE:
-        destination_track_id = request.json["destination_track_id"]
-    elif destination_mode == MOOD_MODE:
-        track_finder = MoodTrackFinder(app.spotify, request.json["destination_mood"], 2)
-        recs = track_finder.find()
-        for rec in recs:
-            if rec["id"] != source_track_id:
-                destination_track_id = rec["id"]
-                break
-    else:
-        app.logger.error(f"Unkonwn destination mode: {destination_mode}. Must provide one of the modes 'song' or 'mood'")
-        abort(400)
-
-    app.logger.info("creating song to song playlist")
-    resp = playlist.create_song_to_song_playlist(app.spotify, source_track_id, destination_track_id)
+    resp = playlist.create_playlist(request, app.spotify)
     return jsonify(resp)
 
 

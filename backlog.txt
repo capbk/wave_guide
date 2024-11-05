@@ -1,4 +1,11 @@
+TODO: create a src folder
 
+TODO:
+    change the Mood/Song select to a "tab" or "pill" pattern
+        leaning towards tab since it will make the search <-> dropdown change more obious
+
+TODO:
+    experiment with mobile
 
 TODO: Transparency and Feedback, show users the origin-destination pattern that makes waveguide unique
     1. As playlist is building show steps

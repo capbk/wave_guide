@@ -143,7 +143,7 @@ def test_skip_duplicate_titles_and_artists_only_dupes_available():
             }
         ]
     }
-    track_names = ["duplicate track", "duplicate track 2"]
+    track_names = ["duplicate track", "DUPLICATE track 2"]
     artist_ids = ["duplicate_artist"]
     
     result = BookendSeedsTrackFinder.skip_duplicate_titles_and_artists(

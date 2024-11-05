@@ -1,4 +1,6 @@
 app_env*
 .flask_session
 .cache
+.venv
+.vscode
 __pycache__/

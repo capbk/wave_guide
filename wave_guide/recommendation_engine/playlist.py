@@ -1,8 +1,8 @@
 import spotipy
 from typing import List, Tuple
 
-from recommendation_engine.bookend_seeds_track_finder import BookendSeedsTrackFinder
-from recommendation_engine.mood_track_finder import MoodTrackFinder
+from wave_guide.recommendation_engine.bookend_seeds_track_finder import BookendSeedsTrackFinder
+from wave_guide.recommendation_engine.mood_track_finder import MoodTrackFinder
 
 
 SONG_MODE = "song"

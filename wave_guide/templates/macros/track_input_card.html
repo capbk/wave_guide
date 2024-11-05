@@ -1,39 +1,46 @@
 {% macro track_input_card(location, initialMode) %}
 <!-- location is one of: "source", "destination" -->
 <div class="track-input-card">
-  <div id="{{ location }}-mode-tab-container" class="mode-tab-container">
-    <button
-    id="{{ location }}-mode-tab-song"
-    class="{% if initialMode == 'song' %}mode-tab-selected{% else %}mode-tab{% endif %}"
-    >
-    SONG
-    </button>
-    <button
-    id="{{ location }}-mode-tab-mood"
-    class="{% if initialMode == 'mood' %}mode-tab-selected{% else %}mode-tab{% endif %}"
-    >
-    MOOD
-    </button>
+  <div id="{{ location }}-mode-selector" class="mode-selector">
+    <label class="radio-label">
+      <input type="radio" 
+             name="{{ location }}-mode" 
+             value="song" 
+             {% if initialMode == 'song' %}checked{% endif %}
+      >
+      Song
+    </label>
+    <label class="radio-label">
+      <input type="radio" 
+             name="{{ location }}-mode" 
+             value="mood"
+             {% if initialMode == 'mood' %}checked{% endif %}
+      >
+      Mood
+    </label>
   </div>
   <div id="{{ location }}-inputs-container" class="search-input-container" >
     <input
-    type="text"
-    id="{{ location }}-autocomplete-input"
-    name="query"
-    class="search-input"
-    placeholder="{% if location == "source" %}Search for a song to start your playlist{% else %}Search for a song to end your playlist{%  endif %}"
-    {% if location == "source" %} autofocus {% endif %}
-    {% if initialMode == "mood" %}style="display:none"{% endif %}
+      type="text"
+      id="{{ location }}-autocomplete-input"
+      name="query"
+      class="search-input"
+      placeholder="{% if location == 'source' %}Search for a song to start your playlist{% else %}Search for a song to end your playlist{% endif %}"
+      {% if location == "source" %}autofocus{% endif %}
+      {% if initialMode == "mood" %}style="display:none"{% endif %}
     />
     <ul
       id="{{ location }}-search-results-list"
       class="search-results-list"
       style="display: none"
     ></ul>
-    <select id="{{ location }}-mood-select" class="mood-input"
-      {% if initialMode == "song" %}style="display:none"{% endif %}>
+    <select 
+      id="{{ location }}-mood-select" 
+      class="mood-input"
+      {% if initialMode == "song" %}style="display:none"{% endif %}
+    >
       <option disabled selected value>
-        {% if location == "source" %}Select a mood to start your playlist{% else %}Select a mood to end your playlist{%  endif %}
+        {% if location == "source" %}Select a mood to start your playlist{% else %}Select a mood to end your playlist{% endif %}
       </option>
       <option value="Happy">Happy</option>
       <option value="Energized">Energized</option>
@@ -48,8 +55,8 @@
         <div class="placeholder-artist"></div>
       </div>
     </div>
-    <div id="{{ location }}-selected-song" style="display: none;"> </div>
-    <div id="{{ location }}-selected-mood" style="display: none;"> </div>
+    <div id="{{ location }}-selected-song" style="display: none;"></div>
+    <div id="{{ location }}-selected-mood" style="display: none;"></div>
   </div>
 </div>
 {% endmacro %}

@@ -134,9 +134,10 @@ html {
 
 .track-input-card {
   display: flex;
+  flex-direction: column;
+  gap: 1rem;
   background-color: var(--card-blue);
   color: var(--paper-cream);
-  height: 100%;
   box-shadow: var(--default-box-shadow);
   margin: 4px 8px 8px 8px;
   padding: 8px;
@@ -144,74 +145,12 @@ html {
   border-radius: var(--default-border-radius);
 }
 
-/*TODO: rename all mentions of "tab"*/
-.mode-tab-container {
+.mode-selector {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.mode-tab {
-  padding: 10px 20px;
-  box-shadow: var(--default-box-shadow);
-  transition: all 0.2s ease-in-out;
-  background-color: var(--paper-cream);
-  color: var(--accent-red);
-  transform: translateY(-1px);
-  border-radius: var(--default-border-radius);
-  border: 1px solid lightgray;
-  margin-top: 0px;
-  margin-right: 4px;
-  margin-bottom: 8px;
-  margin-left: 0px;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 10px;
-  line-height: 1;
-  text-transform: uppercase;
-  white-space: normal;
-}
-
-.mode-tab-selected {
-  box-shadow: var(--minimal-box-shadow);
-  transition: all 0.2s ease-in-out;
-  color: white;
-  padding: 10px 20px;
-  transform: translateY(0px);
-  border-radius: var(--default-border-radius);
-  background-color: var(--accent-red);
-  border: 1px solid transparent;
-  margin-top: 0px;
-  margin-right: 4px;
-  margin-bottom: 8px;
-  margin-left: 0px;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  font-weight: 700;
-  text-align: center;
-  font-size: 10px;
-  line-height: 1;
-  text-transform: uppercase;
-  white-space: normal;
-}
-
-.mode-tab:hover {
-  background-color: var(--transparent-red);
-  cursor: pointer;
-}
-
-/* do nothing */
-.mode-tab-selected:hover {
-  /*  background-color: #1db95421;*/
-  /*  color: #15843c;*/
-  cursor: default;
+  gap: 2rem;
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0;
 }
 
 .mood-input {
@@ -226,7 +165,7 @@ html {
 
 .search-input-container {
   display: block;
-  width: var(--search-input-width);
+ width: var(--search-input-width);
 }
 
 .search-input {
@@ -246,6 +185,7 @@ html {
 }
 
 .search-results-list {
+  position: absolute;
   background-color: var(--paper-cream);
   color: var(--bluish-grey);
   width: var(--search-input-width);
@@ -256,6 +196,7 @@ html {
   border: var(--outline-border);
   border-radius: var(--default-border-radius);
   z-index: 300;
+  box-shadow: var(--default-box-shadow);
 }
 
 .search-results-item {
@@ -299,7 +240,8 @@ html {
 .selected-track-container {
   display: flex;
   flex-direction: column;
-  margin-left: 4px;
+  align-items: center;
+  width: 100%;
 }
 
 .selected-thumbnail {
@@ -307,16 +249,12 @@ html {
   width: 140px;
 }
 
-.selected-title {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  font-weight: 600;
-  overflow: hidden;
+.selected-title,
+.selected-artist {
+  text-align: left;
+  margin-left: 0;
+  align-self: flex-start;
   width: 140px;
-  text-overflow: ellipsis;
-  margin-top: 4px;
-  margin-bottom: 4px;
 }
 
 .selected-artist {
@@ -325,6 +263,7 @@ html {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-align: center;
 }
 
 .placeholder-thumbnail {
@@ -334,11 +273,20 @@ html {
   border: var(--outline-border);
   border-radius: var(--default-border-radius);
   background-size: 400% 100%;
+  margin: 0 auto;
 }
 
 .placeholder-track-info {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  width: 140px;
+}
+
+.placeholder-title,
+.placeholder-artist {
+  margin-left: 0;
+  align-self: flex-start;
 }
 
 .placeholder-title {

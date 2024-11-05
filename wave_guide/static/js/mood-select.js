@@ -1,30 +1,26 @@
-export function selectMood(
-    mood,
-    selectedResultContainer,
-    selectedResultPlaceholder
-) {
+const MOOD_ICONS = {
+    happy: 'static/images/happy_icon.png',
+    energized: 'static/images/energized_icon.png',
+    calm: 'static/images/happy_icon.png', // TODO: add calm icon
+};
+
+export function selectMood(mood, container, placeholder) {
     const cleanedMood = mood.toLowerCase();
-    const moodIcons = {
-        happy: "static/images/happy_icon.png",
-        energized: "static/images/energized_icon.png",
-        calm: "",
-    };
-    if (!(cleanedMood in moodIcons)) {
-        notify("unknkown mood " + mood + " selected");
+    
+    if (!(cleanedMood in MOOD_ICONS)) {
+        notify(`Unknown mood "${mood}" selected`);
         return;
     }
 
-    selectedResultContainer.innerHTML = "";
-    let trackInfoContainer = document.createElement("div");
-    let clickedTitle = document.createElement("div");
-    clickedTitle.innerHTML = mood + " Mood";
-    clickedTitle.classList.add("selected-title");
-    let clickedImg = document.createElement("img");
-    clickedImg.src = moodIcons[cleanedMood];
-    clickedImg.classList.add("selected-thumbnail");
-    selectedResultContainer.appendChild(clickedImg);
-    trackInfoContainer.appendChild(clickedTitle);
-    selectedResultContainer.appendChild(trackInfoContainer);
-    selectedResultPlaceholder.style.display = "none";
-    selectedResultContainer.style.display = "block";
+    // Only show image if there's a valid icon path
+    const iconPath = MOOD_ICONS[cleanedMood];
+    container.innerHTML = `
+        ${iconPath ? `<img src="${iconPath}" class="selected-thumbnail" alt="${mood} mood">` : ''}
+        <div>
+            <div class="selected-title">${mood} Mood</div>
+        </div>
+    `;
+
+    placeholder.style.display = 'none';
+    container.style.display = 'block';
 }

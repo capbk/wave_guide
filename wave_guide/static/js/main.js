@@ -1,7 +1,5 @@
 import state from "./state.js";
-import { createDebouncedSearch } from "./autocomplete.js";
-// TODO move ot different file, maybe new-playlist.js?
-import { selectMode } from "./mode-tabs.js";
+import { SearchInput } from "./search.js";
 import { selectMood } from "./mood-select.js";
 import { createPlaylist, hideModal } from "./new-playlist.js";
 
@@ -10,66 +8,75 @@ const locationDestination = "destination";
 const modeSong = "song";
 const modeMood = "mood";
 
-// allow users to close the eplainer text
+// allow users to close the explainer text
 var explainerCloseButton = document.getElementById("close-explainer");
 explainerCloseButton.addEventListener("click", function () {
     const explainer = document.getElementById("explainer");
     explainer.style.display = "none";
 });
 
-// add listeners to song/mood tabs
+// Replace old tab system with radio button handlers
 // ==================================================
-const sourceMoodTab = document.getElementById("source-mode-tab-mood");
-const sourceSongTab = document.getElementById("source-mode-tab-song");
-sourceMoodTab.addEventListener("click", function () {
-    const mode = modeMood;
-    selectMode(locationSource, mode, state);
-});
-sourceSongTab.addEventListener("click", function () {
-    const mode = modeSong;
-    selectMode(locationSource, mode, state);
+function setupModeToggle(location) {
+    const radioButtons = document.querySelectorAll(`input[name="${location}-mode"]`);
+    const songInput = document.getElementById(`${location}-autocomplete-input`);
+    const moodSelect = document.getElementById(`${location}-mood-select`);
+    const selectedSong = document.getElementById(`${location}-selected-song`);
+    const selectedMood = document.getElementById(`${location}-selected-mood`);
+
+    radioButtons.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            const mode = e.target.value;
+            // Update state
+            if (location === locationSource) {
+                state.setSourceMode(mode);
+            } else {
+                state.setDestinationMode(mode);
+            }
+            
+            // Update UI
+            if (mode === modeSong) {
+                songInput.style.display = 'block';
+                moodSelect.style.display = 'none';
+                selectedSong.style.display = 'block';
+                selectedMood.style.display = 'none';
+            } else {
+                songInput.style.display = 'none';
+                moodSelect.style.display = 'block';
+                selectedSong.style.display = 'none';
+                selectedMood.style.display = 'block';
+            }
+        });
+    });
+}
+
+// Initialize mode toggles
+document.addEventListener('DOMContentLoaded', function() {
+    setupModeToggle(locationSource);
+    setupModeToggle(locationDestination);
+    setupMoodSelection(locationSource);
+    setupMoodSelection(locationDestination);
 });
 
-const destinationMoodTab = document.getElementById("destination-mode-tab-mood");
-const destinationSongTab = document.getElementById("destination-mode-tab-song");
-destinationMoodTab.addEventListener("click", function () {
-    const mode = modeMood;
-    selectMode(locationDestination, mode, state);
-});
-destinationSongTab.addEventListener("click", function () {
-    const mode = modeSong;
-    selectMode(locationDestination, mode, state);
-});
-
-// TODO: move event listener handling out into this file?
-// TODO: return seed and destination track ids rather than using hidden input
-// add listeners to autocomplete inputs
-// ==================================================
-// see `templates/macros/track_input_card.html`
-// to see where the inputs to this function come from
-const sourceSelectedResultPlaceholder = document.getElementById(
-    "source-selected-result-placeholder"
-);
-const destinationSelectedResultPlaceholder = document.getElementById(
-    "destination-selected-result-placeholder"
-);
-
-createDebouncedSearch(
-    document.getElementById("source-autocomplete-input"),
-    document.getElementById("source-search-results-list"),
-    document.getElementById("source-selected-song"),
-    sourceSelectedResultPlaceholder,
-    locationSource,
+// Create source search
+new SearchInput({
+    inputId: "source-autocomplete-input",
+    resultsListId: "source-search-results-list",
+    selectedSongId: "source-selected-song",
+    placeholderId: "source-selected-result-placeholder",
+    location: locationSource,
     state
-);
-createDebouncedSearch(
-    document.getElementById("destination-autocomplete-input"),
-    document.getElementById("destination-search-results-list"),
-    document.getElementById("destination-selected-song"),
-    destinationSelectedResultPlaceholder,
-    locationDestination,
+});
+
+// Create destination search
+new SearchInput({
+    inputId: "destination-autocomplete-input",
+    resultsListId: "destination-search-results-list",
+    selectedSongId: "destination-selected-song",
+    placeholderId: "destination-selected-result-placeholder",
+    location: locationDestination,
     state
-);
+});
 
 function closeElementWhenClickElsewhere(event, elementToHide) {
     const clickedElement = event.target;
@@ -78,43 +85,22 @@ function closeElementWhenClickElsewhere(event, elementToHide) {
     }
 }
 
-// close the search results if a user clicks away
-document.addEventListener("click", function (event) {
-    const elementToHide = document.querySelector(".search-results-list");
-    closeElementWhenClickElsewhere(event, elementToHide);
-});
-
-// add event listeners for mood selection
-// ==================================================
-const sourceSelectedMoodContainer = document.getElementById(
-    "source-selected-mood"
-);
-const sourceMoodSelect = document.getElementById("source-mood-select");
-sourceMoodSelect.addEventListener("change", function () {
-    const mood = sourceMoodSelect.value;
-    selectMood(
-        mood,
-        sourceSelectedMoodContainer,
-        sourceSelectedResultPlaceholder
-    );
-    state.setSourceMood(mood);
-});
-
-const destinationSelectedMoodContainer = document.getElementById(
-    "destination-selected-mood"
-);
-const destinationMoodSelect = document.getElementById(
-    "destination-mood-select"
-);
-destinationMoodSelect.addEventListener("change", function () {
-    const mood = destinationMoodSelect.value;
-    selectMood(
-        mood,
-        destinationSelectedMoodContainer,
-        destinationSelectedResultPlaceholder
-    );
-    state.setDestinationMood(mood);
-});
+// Simplified mood selection setup
+function setupMoodSelection(location) {
+    const selectedMoodContainer = document.getElementById(`${location}-selected-mood`);
+    const moodSelect = document.getElementById(`${location}-mood-select`);
+    
+    moodSelect.addEventListener("change", function () {
+        const mood = moodSelect.value;
+        selectMood(
+            mood,
+            selectedMoodContainer,
+            document.getElementById(`${location}-selected-result-placeholder`)
+        );
+        // Update state using the appropriate method
+        location === locationSource ? state.setSourceMood(mood) : state.setDestinationMood(mood);
+    });
+}
 
 // add listeners to generate playlist button
 // ==================================================

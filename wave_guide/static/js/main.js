@@ -46,13 +46,39 @@ function initializeSearchInputs() {
 
 function initializePlaylistGeneration() {
     const generatePlaylistButton = document.getElementById("generate-playlist-button");
-    generatePlaylistButton.addEventListener("click", () => {
+    generatePlaylistButton.addEventListener("click", async () => {
+        clearError(); // Clear any existing error message
         try {
-            createPlaylist(state);
+            await createPlaylist(state);
         } catch (error) {
-            alert(error.message || "There was an issue creating your playlist. Sorry.");
+            showError(error.message || "There was an issue creating your playlist. Sorry.");
         }
     });
+}
+
+// Error handling
+function createErrorContainer() {
+    const container = document.createElement("div");
+    container.id = "error-message";
+    container.className = "error-message";
+
+    // Insert before the generate playlist button
+    const generateButton = document.getElementById("generate-playlist-button");
+    generateButton.parentNode.insertBefore(container, generateButton);
+    return container;
+}
+
+function showError(message) {
+    const errorContainer = document.getElementById("error-message") || createErrorContainer();
+    errorContainer.textContent = message;
+    errorContainer.style.display = "block";
+}
+
+function clearError() {
+    const errorContainer = document.getElementById("error-message");
+    if (errorContainer) {
+        errorContainer.style.display = "none";
+    }
 }
 
 // Main Initialization

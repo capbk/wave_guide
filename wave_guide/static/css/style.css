@@ -349,6 +349,14 @@ html {
   min-width: 290px;
 }
 
+.error-message {
+  margin-bottom: 10px;
+  color: var(--accent-red);
+  padding: 15px 30px;
+  display: none;
+  text-align: center;
+}
+
 .generate-playllist-btn {
   z-index: 0;
   margin-bottom: 40px;

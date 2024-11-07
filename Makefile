@@ -3,8 +3,11 @@ run:
 
 install:
 	pip3 install -r requirements.txt
+
+install frontend-test-deps:
 	npm init -y
 	npm install --save-dev jest @testing-library/jest-dom
+	npm install --save-dev @testing-library/dom
 	npm install --save-dev jest jest-environment-jsdom @babel/preset-env babel-jest
 
 test-backend:

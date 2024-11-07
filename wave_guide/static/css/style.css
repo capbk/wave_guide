@@ -43,6 +43,8 @@ html {
   display: flex;
   flex-direction: row;
   margin-bottom: 16px;
+  position: relative;
+  min-height: 76px;
 }
 
 .logo-small {
@@ -525,6 +527,15 @@ html {
     display: block;
   }
 
+  .mobile-only.logo {
+    height: 60px;
+    width: auto;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 8px;
+  }
+
   .header-buttons button {
     padding: 8px;
     min-width: 36px;
@@ -540,5 +551,9 @@ html {
   .info-btn, .log-out-btn {
     background: var(--transparent-grey);
     border: none;
+  }
+
+  .header-bar {
+    margin-bottom: 8px;
   }
 }

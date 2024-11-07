@@ -3,7 +3,7 @@
   --bluish-grey: #151c25;
   --background-grey: #313332;
   --accent-blue: #51afca;
-  --card-blue: #51afca91;
+  --card-blue: #51afca54;
   --paper-cream: #efe4d5;
   --accent-red: #be4364;
   --transparent-red: #be436424;
@@ -95,7 +95,7 @@ html {
 
 .explainer-text {
   margin-top: 8px;
-  text-align: center;
+  text-align: left;
 }
 
 .explainer-list {
@@ -143,6 +143,7 @@ html {
   padding: 8px;
   border: var(--outline-border);
   border-radius: var(--default-border-radius);
+  height: 320px;
 }
 
 .mode-selector {
@@ -263,7 +264,7 @@ html {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  text-align: center;
+  text-align: left;
 }
 
 .placeholder-thumbnail {

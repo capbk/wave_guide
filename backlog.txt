@@ -1,8 +1,20 @@
-clean up app.py file -- simplify into blueprints
+i'm becoming annoyed by the large numbe of playlists clogging my library
+    ? does the API now support creating folders
+    ? give some fun names to the playlists
+    ? add to queue instead of creating playlist
+    ? can there be a TTl on a playlist
+    ? brainstorm more
+    
+
+simplify new-playlist.js add tests
+
+make js state management easier to understand
+
+revisit track input card design
 
 cache get user info per session
 
-migrate to petite vue app
+make info box opt in with a button rather than needs clearing every time?
 
 
 TODO:

@@ -1,112 +1,137 @@
-// TODO: accept inputs
-export function createPlaylist(state) {
-  // Validate inputs
-
-  const sourceMode = state.getSourceMode();
-  const sourceTrackId = state.getSourceTrackId();
-  const sourceMood = state.getSourceMood();
-  const destinationTrackId = state.getDestinationTrackId();
-  const destinationMood = state.getDestinationMood();
-  const destinationMode = state.getDestinationMode();
+function validateSourceInput(sourceMode, sourceTrackId, sourceMood) {
   if (sourceMode === "song" && !sourceTrackId) {
-    alert("Please choose a song or mood to start your playlist");
-    // TODO: change cursor focus to search bar
-    return;
+    throw new Error("Please choose a song or mood to start your playlist");
   }
   if (sourceMode === "mood" && !sourceMood) {
-    // TODO: change cursor focus to mood dropdown
-    alert("Please choose a song or mood to start your playlist");
-    return;
+    throw new Error("Please choose a song or mood to start your playlist");
   }
+}
+
+function validateDestinationInput(destinationMode, destinationTrackId, destinationMood) {
   if (destinationMode === "song" && !destinationTrackId) {
-    alert("Please choose a song or mood to end your playlist");
-    // TODO: change cursor focus to search bar
-    return;
+    throw new Error("Please choose a song or mood to end your playlist");
   }
   if (destinationMode === "mood" && !destinationMood) {
-    // TODO: change cursor focus to mood dropdown
-    alert("Please choose a song or mood to end your playlist");
-    return;
+    throw new Error("Please choose a song or mood to end your playlist");
   }
+}
 
-  // show loading state
-  const modalContainer = document.getElementById("modal-container");
-  const resultsContent = document.getElementById("playlist-modal-content");
-  const placeholderResultsContent = document.getElementById(
-    "placeholder-playlist-modal-content"
-  );
-  resultsContent.style.display = "none";
-  modalContainer.style.display = "block";
-  placeholderResultsContent.style.display = "block";
-
-  // Submit form data
-  fetch("/new_playlist", {
+// API interaction
+async function submitPlaylistRequest(playlistData) {
+  const response = await fetch("/new_playlist", {
     method: "POST",
-    body: JSON.stringify({
-      source_mode: sourceMode,
-      seed_track_id: sourceTrackId,
-      source_mood: sourceMood,
-      destination_track_id: destinationTrackId,
-      destination_mode: destinationMode,
-      destination_mood: destinationMood,
-    }),
+    body: JSON.stringify(playlistData),
     headers: {
       "Content-Type": "application/json",
     },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      const playlistImage = document.createElement("img");
-      playlistImage.classList.add("playlist-thumbnail");
-      playlistImage.src = data.image;
-
-      const playlistLink = document.createElement("a");
-      playlistLink.href = data.url;
-      playlistLink.classList.add("btn");
-
-      const spotifyLogo = document.createElement("img");
-      spotifyLogo.src = "static/images/spotify_icon.png";
-      spotifyLogo.classList.add("spotify-logo");
-      playlistLink.appendChild(spotifyLogo);
-
-      const linkText = document.createElement("span");
-      linkText.innerHTML = "Listen on Spotify";
-      playlistLink.appendChild(linkText);
-
-      const playlistResultTop = document.createElement("div");
-      playlistResultTop.classList.add("playlist-result-top");
-
-      const playlistResultTopRight = document.createElement("div");
-      playlistResultTopRight.classList.add("playlist-result-top-right");
-      playlistResultTop.appendChild(playlistImage);
-      playlistResultTopRight.appendChild(playlistLink);
-      playlistResultTop.appendChild(playlistResultTopRight);
-
-      const closeSpan = document.createElement("span");
-      closeSpan.classList.add("close-modal");
-      closeSpan.textContent = "×";
-      closeSpan.addEventListener("click", hideModal);
-      resultsContent.appendChild(closeSpan);
-      resultsContent.appendChild(playlistResultTop);
-
-      const playlistTitle = document.createElement("div");
-      playlistTitle.innerHTML = data.name;
-      playlistTitle.title = data.name;
-      playlistTitle.classList.add("playlist-title");
-      resultsContent.appendChild(playlistTitle);
-      placeholderResultsContent.style.display = "none";
-      resultsContent.style.display = "block";
-    })
-    .catch((error) => {
-      console.log(error);
-      alert("There was an issue creating your playlist. Sorry.");
-    });
+  });
+  return response.json();
 }
 
-export function hideModal() {
-  const modalContainer = document.getElementById("modal-container");
-  modalContainer.style.display = "none";
-  const resultsContent = document.getElementById("playlist-modal-content");
-  resultsContent.style.display = "none;";
-  resultsContent.innerHTML = "";
+// UI Components
+class PlaylistModal {
+  constructor() {
+    this.modalContainer = document.getElementById("modal-container");
+    this.resultsContent = document.getElementById("playlist-modal-content");
+    this.placeholderContent = document.getElementById("placeholder-playlist-modal-content");
+  }
+
+  showLoading() {
+    this.resultsContent.style.display = "none";
+    this.modalContainer.style.display = "block";
+    this.placeholderContent.style.display = "block";
+  }
+
+  hideModal() {
+    this.modalContainer.style.display = "none";
+    this.resultsContent.style.display = "none";
+    this.resultsContent.innerHTML = "";
+  }
+
+  renderPlaylistResult(data) {
+    // Create playlist image
+    const playlistImage = document.createElement("img");
+    playlistImage.classList.add("playlist-thumbnail");
+    playlistImage.src = data.image;
+
+    // Create Spotify link with logxo and text
+    const playlistLink = document.createElement("a");
+    playlistLink.href = data.url;
+    playlistLink.classList.add("btn");
+
+    const spotifyLogo = document.createElement("img");
+    spotifyLogo.src = "static/images/spotify_icon.png";
+    spotifyLogo.classList.add("spotify-logo");
+    playlistLink.appendChild(spotifyLogo);
+
+    const linkText = document.createElement("span");
+    linkText.innerHTML = "Listen on Spotify";
+    playlistLink.appendChild(linkText);
+
+    // Create container structure
+    const playlistResultTop = document.createElement("div");
+    playlistResultTop.classList.add("playlist-result-top");
+
+    const playlistResultTopRight = document.createElement("div");
+    playlistResultTopRight.classList.add("playlist-result-top-right");
+    
+    // Assemble top section
+    playlistResultTop.appendChild(playlistImage);
+    playlistResultTopRight.appendChild(playlistLink);
+    playlistResultTop.appendChild(playlistResultTopRight);
+
+    // Create and add close button
+    const closeSpan = document.createElement("span");
+    closeSpan.classList.add("close-modal");
+    closeSpan.textContent = "×";
+    closeSpan.addEventListener("click", this.hideModal.bind(this));
+
+    // Create playlist title
+    const playlistTitle = document.createElement("div");
+    playlistTitle.innerHTML = data.name;
+    playlistTitle.title = data.name;
+    playlistTitle.classList.add("playlist-title");
+
+    // Add everything to results content
+    this.resultsContent.appendChild(closeSpan);
+    this.resultsContent.appendChild(playlistResultTop);
+    this.resultsContent.appendChild(playlistTitle);
+
+    // Update visibility
+    this.placeholderContent.style.display = "none";
+    this.resultsContent.style.display = "block";
+  }
 }
+
+// Main function
+export async function createPlaylist(state) {
+  const modal = new PlaylistModal();
+    // Validate inputs
+    validateSourceInput(
+      state.getSourceMode(),
+      state.getSourceTrackId(),
+      state.getSourceMood()
+    );
+    validateDestinationInput(
+      state.getDestinationMode(),
+      state.getDestinationTrackId(),
+      state.getDestinationMood()
+    );
+
+    modal.showLoading();
+
+    // Submit request
+    const playlistData = {
+      source_mode: state.getSourceMode(),
+      seed_track_id: state.getSourceTrackId(),
+      source_mood: state.getSourceMood(),
+      destination_track_id: state.getDestinationTrackId(),
+      destination_mode: state.getDestinationMode(),
+      destination_mood: state.getDestinationMood(),
+    };
+
+    const response = await submitPlaylistRequest(playlistData);
+    modal.renderPlaylistResult(response);
+}
+
+export const hideModal = () => new PlaylistModal().hideModal();

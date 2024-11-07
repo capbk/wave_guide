@@ -1,7 +1,7 @@
 const MOOD_ICONS = {
-    happy: 'static/images/happy_icon.png',
-    energized: 'static/images/energized_icon.png',
-    calm: 'static/images/happy_icon.png', // TODO: add calm icon
+    happy: 'static/images/happy.png',
+    energized: 'static/images/energized.png',
+    calm: 'static/images/calm.png',
 };
 
 export function selectMood(mood, container, placeholder) {

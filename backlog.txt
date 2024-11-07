@@ -4,11 +4,8 @@ i'm becoming annoyed by the large numbe of playlists clogging my library
     ? add to queue instead of creating playlist
     ? can there be a TTl on a playlist
     ? brainstorm more
-    
 
-simplify new-playlist.js add tests
-
-make js state management easier to understand
+add e2e tests
 
 revisit track input card design
 

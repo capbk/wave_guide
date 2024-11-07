@@ -109,7 +109,11 @@ const generatePlaylistButton = document.getElementById(
 );
 // TODO: pass inputs to event listener so that we can use variables instead of hidden inputs
 generatePlaylistButton.addEventListener("click", function () {
-    createPlaylist(state);
+    try {
+        createPlaylist(state);
+      } catch (error) {
+        alert(error.message || "There was an issue creating your playlist. Sorry.");
+      }
 });
 
 var modalCloseButtons = document.querySelectorAll(".close-modal");

@@ -56,6 +56,31 @@ html {
   align-self: center;
 }
 
+.header-buttons {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 10px;
+}
+
+.info-btn {
+  padding: 10px 20px;
+  border-radius: var(--default-border-radius);
+  border: 1px solid transparent;
+  background-color: var(--transparent-grey);
+  color: var(--paper-cream);
+  cursor: pointer;
+  font-size: 0.8em;
+  box-shadow: var(--default-box-shadow);
+}
+
+.info-btn:hover {
+  background-color: var(--transparent-grey);
+  opacity: 0.8;
+}
 .log-out-btn {
   background-color: var(--transparent-grey);
   color: var(--paper-cream);
@@ -65,11 +90,11 @@ html {
   cursor: pointer;
   font-size: 0.8em;
   padding: 10px 20px;
+}
 
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 10px;
+.log-out-btn:hover {
+  background-color: var(--transparent-grey);
+  opacity: 0.8;
 }
 
 .main-container {
@@ -354,12 +379,16 @@ html {
   color: var(--accent-red);
   padding: 15px 30px;
   display: none;
-  text-align: center;
 }
 
 .generate-playllist-btn {
   z-index: 0;
   margin-bottom: 40px;
+}
+
+.btn:hover {
+  opacity: 0.8;
+  background-color: var(--accent-red);
 }
 
 /* generated playlist modal */

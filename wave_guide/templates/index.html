@@ -12,12 +12,17 @@
     <div class="header-bar">
       <img src="static/images/wave_guide_logo.png" class="logo-small" />
       <img src="static/images/wave_guide_text.png" class="product-name" />
-      <form action="/log_out" method="GET">
-        <button type="submit" class="log-out-btn">Log out {{user_name}}</button>
-      </form>
+      <div class="header-buttons">
+        <button type="button" class="info-btn" id="info-btn">Info</button>
+        <form action="/log_out" method="GET">
+          <button type="submit" class="log-out-btn">Log out {{user_name}}</button>
+        </form>
+      </div>
     </div>
     <div class="main-container">
-      {{ explainer }}
+      <div id="explainer-container" style="display: none;">
+        {{ explainer }}
+      </div>
       <div class="both-cards-container">
         <div class="card-container">
           <div class="card-label">Playlist Beginning</div>

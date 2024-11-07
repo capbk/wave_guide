@@ -17,8 +17,15 @@ const CONSTANTS = {
 // DOM Setup Functions
 function initializeExplainer() {
     const explainerCloseButton = document.getElementById("close-explainer");
+    const explainerContainer = document.getElementById("explainer-container");
+
     explainerCloseButton.addEventListener("click", () => {
-        document.getElementById("explainer").style.display = "none";
+        explainerContainer.style.display = "none";
+    });
+
+    // Add info button toggle functionality
+    document.getElementById('info-btn').addEventListener('click', function() {
+        explainerContainer.style.display = explainerContainer.style.display === 'none' ? 'block' : 'none';
     });
 }
 

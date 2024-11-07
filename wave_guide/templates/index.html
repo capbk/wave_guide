@@ -7,15 +7,25 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
     />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
     <div class="header-bar">
-      <img src="static/images/wave_guide_logo.png" class="logo-small" />
-      <img src="static/images/wave_guide_text.png" class="product-name" />
+      <div class="header-logo">
+        <img src="static/images/wave_guide_logo.png" class="logo-small desktop-only" />
+        <img src="static/images/wave_guide_text.png" class="product-name desktop-only" />
+        <img src="static/images/wave_guide_logo_with_text.png" class="logo mobile-only" />
+      </div>
       <div class="header-buttons">
-        <button type="button" class="info-btn" id="info-btn">Info</button>
+        <button type="button" class="info-btn" id="info-btn">
+          <span class="desktop-only">Info</span>
+          <span class="mobile-only">ⓘ</span>
+        </button>
         <form action="/log_out" method="GET">
-          <button type="submit" class="log-out-btn">Log out {{user_name}}</button>
+          <button type="submit" class="log-out-btn">
+            <span class="desktop-only">Log out {{user_name}}</span>
+            <span class="mobile-only">↪</span>
+          </button>
         </form>
       </div>
     </div>

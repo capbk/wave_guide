@@ -383,7 +383,8 @@ html {
 
 .generate-playllist-btn {
   z-index: 0;
-  margin-bottom: 40px;
+  margin: 4px 8px 40px 8px;
+  width: 270px;
 }
 
 .btn:hover {
@@ -487,4 +488,57 @@ html {
   overflow: hidden;
   max-width: 500px;
   text-overflow: ellipsis;
+}
+
+/* Hide desktop elements by default (mobile-first) */
+.desktop-only {
+  display: none;
+}
+
+.mobile-only {
+  display: block;
+}
+
+/* Mobile logo sizing */
+.mobile-only.logo {
+  height: 40px;
+  width: auto;
+}
+
+/* Desktop styles */
+@media (min-width: 768px) {
+  .desktop-only {
+    display: block;
+  }
+  
+  .mobile-only {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .desktop-only {
+    display: none;
+  }
+
+  .mobile-only {
+    display: block;
+  }
+
+  .header-buttons button {
+    padding: 8px;
+    min-width: 36px;
+    height: 36px;
+    border-radius: 50%;
+  }
+
+  .header-buttons {
+    gap: 8px;  /* Reduces space between buttons */
+  }
+
+  /* If you want to make the buttons even more minimal, you could remove their background */
+  .info-btn, .log-out-btn {
+    background: var(--transparent-grey);
+    border: none;
+  }
 }

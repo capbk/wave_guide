@@ -49,15 +49,39 @@ class PlaylistModal {
   }
 
   renderPlaylistResult(data) {
+    // Clear previous content
+    this.resultsContent.innerHTML = "";
+    this.resultsContent.classList.add("card");
+
+    // Create close button
+    const closeSpan = document.createElement("span");
+    closeSpan.classList.add("close-modal");
+    closeSpan.textContent = "×";
+    closeSpan.addEventListener("click", this.hideModal.bind(this));
+    this.resultsContent.appendChild(closeSpan);
+
+    // Create wrapper for vertical layout
+    const contentWrapper = document.createElement("div");
+    contentWrapper.classList.add("modal-content-wrapper");
+    
     // Create playlist image
     const playlistImage = document.createElement("img");
     playlistImage.classList.add("playlist-thumbnail");
     playlistImage.src = data.image;
+    contentWrapper.appendChild(playlistImage);
 
-    // Create Spotify link with logxo and text
+    // Create playlist title
+    const playlistTitle = document.createElement("div");
+    playlistTitle.innerHTML = data.name;
+    playlistTitle.title = data.name;
+    playlistTitle.classList.add("playlist-title");
+    contentWrapper.appendChild(playlistTitle);
+
+    // Create Spotify link
     const playlistLink = document.createElement("a");
     playlistLink.href = data.url;
     playlistLink.classList.add("btn");
+    playlistLink.target = "_blank";  // Open in new tab
 
     const spotifyLogo = document.createElement("img");
     spotifyLogo.src = "static/images/spotify_icon.png";
@@ -67,35 +91,10 @@ class PlaylistModal {
     const linkText = document.createElement("span");
     linkText.innerHTML = "Listen on Spotify";
     playlistLink.appendChild(linkText);
+    contentWrapper.appendChild(playlistLink);
 
-    // Create container structure
-    const playlistResultTop = document.createElement("div");
-    playlistResultTop.classList.add("playlist-result-top");
-
-    const playlistResultTopRight = document.createElement("div");
-    playlistResultTopRight.classList.add("playlist-result-top-right");
-    
-    // Assemble top section
-    playlistResultTop.appendChild(playlistImage);
-    playlistResultTopRight.appendChild(playlistLink);
-    playlistResultTop.appendChild(playlistResultTopRight);
-
-    // Create and add close button
-    const closeSpan = document.createElement("span");
-    closeSpan.classList.add("close-modal");
-    closeSpan.textContent = "×";
-    closeSpan.addEventListener("click", this.hideModal.bind(this));
-
-    // Create playlist title
-    const playlistTitle = document.createElement("div");
-    playlistTitle.innerHTML = data.name;
-    playlistTitle.title = data.name;
-    playlistTitle.classList.add("playlist-title");
-
-    // Add everything to results content
-    this.resultsContent.appendChild(closeSpan);
-    this.resultsContent.appendChild(playlistResultTop);
-    this.resultsContent.appendChild(playlistTitle);
+    // Add the content wrapper to the modal
+    this.resultsContent.appendChild(contentWrapper);
 
     // Update visibility
     this.placeholderContent.style.display = "none";

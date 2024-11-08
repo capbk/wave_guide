@@ -417,6 +417,12 @@ html {
   z-index: 100; /* Set high value of z-index to ensure the modal is on top */
 }
 
+.modal-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .modal {
   display: block;
   /*  min-width: 480px;
@@ -475,7 +481,7 @@ html {
 
 .placeholder-playlist-title {
   height: 23px;
-  width: 420px;
+  width: 200px;
   padding: 10px;
   margin-top: 4px;
   margin-bottom: 4px;

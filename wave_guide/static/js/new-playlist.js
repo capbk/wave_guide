@@ -41,11 +41,16 @@ class PlaylistModal {
   showLoading() {
     // Show modal with loading state
     this.modalContainer.style.display = "block";
+    this.title.textContent = '';
+    const placeholderThumbnail = document.createElement('div');
+    placeholderThumbnail.id = 'playlist-thumbnail';
+    placeholderThumbnail.classList.add('shimmer', 'placeholder-playlist-thumbnail');
+    this.thumbnail.replaceWith(placeholderThumbnail);
+    this.thumbnail = placeholderThumbnail;
     
-    // Reset to loading state
-    this.thumbnail.classList.add("shimmer", "placeholder-playlist-thumbnail");
-    this.title.classList.add("shimmer", "placeholder-playlist-title");
-    this.button.classList.add("shimmer");
+    // Reset title and button to loading state
+    this.title.classList.add('shimmer', 'placeholder-playlist-title');
+    this.button.classList.add('shimmer');
     this.button.textContent = "CREATING PLAYLIST";
   }
 
@@ -56,6 +61,7 @@ class PlaylistModal {
   renderPlaylistResult(data) {
     // Remove loading states
     this.title.classList.remove("shimmer", "placeholder-playlist-title");
+    this.title.classList.add("selected-playlist-title");
     this.button.classList.remove("shimmer");
 
     // Create new img element

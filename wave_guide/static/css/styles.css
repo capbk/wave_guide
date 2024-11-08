@@ -284,20 +284,40 @@ html {
   width: 140px;
 }
 
-.selected-title,
-.selected-artist {
+.selected-title{
+  max-width: 140px;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
   text-align: left;
-  margin-left: 0;
-  align-self: flex-start;
-  width: 140px;
 }
+
+.selected-playlist-title{
+    max-width: 240px;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    text-align: left;
+  }
 
 .selected-artist {
   font-size: 0.8em;
   max-width: 140px;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: normal;
   text-align: left;
 }
 
@@ -401,6 +421,13 @@ html {
   background-color: var(--accent-red);
 }
 
+/* Disable hover effects when button is in loading state */
+.btn.shimmer:hover {
+  opacity: 1;
+  background-color: transparent;
+  cursor: default;
+}
+
 /* generated playlist modal */
 .modal-container {
   position: fixed; /* Set position to fixed to make the modal stay in place */
@@ -425,38 +452,14 @@ html {
 
 .modal {
   display: block;
-  /*  min-width: 480px;
-  min-height: 240px;*/
   position: absolute; /* Set position to absolute so it can be centered */
   top: 50%;
   left: 50%;
-  padding: 0px 5px 20px 20px;
+  padding: 0px 20px 20px 20px;
   transform: translate(-50%, -50%);
   background-color: var(--paper-cream);
   box-shadow: var(--modal-box-shadow);
   border-radius: var(--default-border-radius);
-}
-
-.playlist-result-top {
-  display: flex;
-  flex-direction: row;
-}
-
-.playlist-result-top-right {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-}
-
-.placeholder-playlist-result-top-right {
-  display: flex;
-  justify-content: center;
-}
-
-.placeholder-playlist-thumbnail {
-  height: 140px;
-  width: 140px;
-  padding: 10px;
 }
 
 .shimmer {
@@ -481,14 +484,23 @@ html {
 
 .placeholder-playlist-title {
   height: 23px;
-  width: 200px;
-  padding: 10px;
+  min-width: 20px;
   margin-top: 4px;
   margin-bottom: 4px;
   margin-right: 15px; /* facilitate x in top right of modal */
+}
 
-  position: relative;
-  overflow: hidden;
+.playlist-title {
+    font-size: 1.2em;
+    font-weight: 700;
+    overflow: hidden;
+    max-width: 500px;
+    text-overflow: ellipsis;
+  }
+
+.placeholder-playlist-thumbnail {
+  height: 140px;
+  width: 140px;
 }
 
 .playlist-thumbnail {
@@ -497,13 +509,7 @@ html {
   padding: 10px;
 }
 
-.playlist-title {
-  font-size: 1.2em;
-  font-weight: 700;
-  overflow: hidden;
-  max-width: 500px;
-  text-overflow: ellipsis;
-}
+
 
 /* Hide desktop elements by default (mobile-first) */
 .desktop-only {

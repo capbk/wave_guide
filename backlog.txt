@@ -1,3 +1,7 @@
+experiment with mobile
+    fix mood dropdown in mobile mode
+    fix login page
+
 i'm becoming annoyed by the large numbe of playlists clogging my library
     ? does the API now support creating folders
     ? give some fun names to the playlists
@@ -17,9 +21,7 @@ make info box opt in with a button rather than needs clearing every time?
 TODO:
     change the Mood/Song select to a "tab" or "pill" pattern or radio buttons
         leaning towards tab since it will make the search <-> dropdown change more obious
-
-TODO:
-    experiment with mobile
+    
 
 TODO: Transparency and Feedback, show users the origin-destination pattern that makes waveguide unique
     1. As playlist is building show steps

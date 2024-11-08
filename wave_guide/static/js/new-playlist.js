@@ -32,73 +32,70 @@ async function submitPlaylistRequest(playlistData) {
 class PlaylistModal {
   constructor() {
     this.modalContainer = document.getElementById("modal-container");
-    this.resultsContent = document.getElementById("playlist-modal-content");
-    this.placeholderContent = document.getElementById("placeholder-playlist-modal-content");
+    this.content = document.getElementById("playlist-modal-content");
+    this.thumbnail = document.getElementById("playlist-thumbnail");
+    this.title = document.getElementById("playlist-title");
+    this.button = document.getElementById("playlist-button");
   }
 
   showLoading() {
-    this.resultsContent.style.display = "none";
+    // Show modal with loading state
     this.modalContainer.style.display = "block";
-    this.placeholderContent.style.display = "block";
+    
+    // Reset to loading state
+    this.thumbnail.classList.add("shimmer", "placeholder-playlist-thumbnail");
+    this.title.classList.add("shimmer", "placeholder-playlist-title");
+    this.button.classList.add("shimmer");
+    this.button.textContent = "CREATING PLAYLIST";
   }
 
   hideModal() {
     this.modalContainer.style.display = "none";
-    this.resultsContent.style.display = "none";
-    this.resultsContent.innerHTML = "";
   }
 
   renderPlaylistResult(data) {
-    // Clear previous content
-    this.resultsContent.innerHTML = "";
-    this.resultsContent.classList.add("card");
+    // Remove loading states
+    this.title.classList.remove("shimmer", "placeholder-playlist-title");
+    this.button.classList.remove("shimmer");
 
-    // Create close button
-    const closeSpan = document.createElement("span");
-    closeSpan.classList.add("close-modal");
-    closeSpan.textContent = "×";
-    closeSpan.addEventListener("click", this.hideModal.bind(this));
-    this.resultsContent.appendChild(closeSpan);
+    // Create new img element
+    const thumbnailImg = document.createElement('img');
+    thumbnailImg.id = 'playlist-thumbnail';
+    thumbnailImg.src = data.image;
+    thumbnailImg.alt = 'Playlist Cover';
+    thumbnailImg.className = 'selected-thumbnail';
 
-    // Create wrapper for vertical layout
-    const contentWrapper = document.createElement("div");
-    contentWrapper.classList.add("modal-content-wrapper");
+    // Replace the old element
+    this.thumbnail.replaceWith(thumbnailImg);
+    // Update reference
+    this.thumbnail = thumbnailImg;
     
-    // Create playlist image
-    const playlistImage = document.createElement("img");
-    playlistImage.classList.add("playlist-thumbnail");
-    playlistImage.src = data.image;
-    contentWrapper.appendChild(playlistImage);
+    this.title.textContent = data.name;
+    
+    // Create new anchor element
+    const link = document.createElement('a');
+    link.id = 'playlist-button';
+    link.href = data.url;
+    link.target = '_blank';
+    link.className = 'btn';
 
-    // Create playlist title
-    const playlistTitle = document.createElement("div");
-    playlistTitle.innerHTML = data.name;
-    playlistTitle.title = data.name;
-    playlistTitle.classList.add("playlist-title");
-    contentWrapper.appendChild(playlistTitle);
+    // Create Spotify icon
+    const icon = document.createElement('img');
+    icon.src = 'static/images/spotify_icon.png';
+    icon.className = 'spotify-logo';
 
-    // Create Spotify link
-    const playlistLink = document.createElement("a");
-    playlistLink.href = data.url;
-    playlistLink.classList.add("btn");
-    playlistLink.target = "_blank";  // Open in new tab
+    // Create text span
+    const text = document.createElement('span');
+    text.textContent = 'Listen on Spotify';
 
-    const spotifyLogo = document.createElement("img");
-    spotifyLogo.src = "static/images/spotify_icon.png";
-    spotifyLogo.classList.add("spotify-logo");
-    playlistLink.appendChild(spotifyLogo);
+    // Assemble the elements
+    link.appendChild(icon);
+    link.appendChild(text);
 
-    const linkText = document.createElement("span");
-    linkText.innerHTML = "Listen on Spotify";
-    playlistLink.appendChild(linkText);
-    contentWrapper.appendChild(playlistLink);
-
-    // Add the content wrapper to the modal
-    this.resultsContent.appendChild(contentWrapper);
-
-    // Update visibility
-    this.placeholderContent.style.display = "none";
-    this.resultsContent.style.display = "block";
+    // Replace the old button
+    this.button.replaceWith(link);
+    // Update reference
+    this.button = link;
   }
 }
 

@@ -1,6 +1,13 @@
 experiment with mobile
     fix mood dropdown in mobile mode
     fix login page
+    fix alignment of playlist thumbnail and title
+
+add up and down arrow key navigation between search results
+
+create fun playlist titles with small language model
+
+update the logo, flip the map vertically so it looks like a W
 
 i'm becoming annoyed by the large numbe of playlists clogging my library
     ? does the API now support creating folders

@@ -1,23 +1,38 @@
 {% import "macros/track_input_card.html" as track_input %} {% import
-"macros/explainer.html" as explainer %}
+"macros/explainer.html" as explainer %} {% import "macros/playlist_modal.html" as playlist_modal %}
 <!DOCTYPE html>
 <html>
   <head>
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='css/style.css') }}"
+      href="{{ url_for('static', filename='css/styles.css') }}"
     />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
     <div class="header-bar">
-      <img src="static/images/wave_guide_logo.png" class="logo-small" />
-      <img src="static/images/wave_guide_text.png" class="product-name" />
-      <form action="/log_out" method="GET">
-        <button type="submit" class="log-out-btn">Log out {{user_name}}</button>
-      </form>
+      <div class="header-logo">
+        <img src="static/images/wave_guide_logo.png" class="logo-small desktop-only" />
+        <img src="static/images/wave_guide_text.png" class="product-name desktop-only" />
+        <img src="static/images/wave_guide_logo.png" class="logo mobile-only" />
+      </div>
+      <div class="header-buttons">
+        <button type="button" class="info-btn" id="info-btn">
+          <span class="desktop-only">Info</span>
+          <span class="mobile-only">ⓘ</span>
+        </button>
+        <form action="/log_out" method="GET">
+          <button type="submit" class="log-out-btn">
+            <span class="desktop-only">Log out {{user_name}}</span>
+            <span class="mobile-only">↪</span>
+          </button>
+        </form>
+      </div>
     </div>
     <div class="main-container">
-      {{ explainer }}
+      <div id="explainer-container" style="display: none;">
+        {{ explainer }}
+      </div>
       <div class="both-cards-container">
         <div class="card-container">
           <div class="card-label">Playlist Beginning</div>
@@ -40,23 +55,7 @@
         <span>Create Playlist</span>
       </button>
     </div>
-    <div id="modal-container" class="modal-container" style="display: none">
-      <div id="placeholder-playlist-modal-content" class="modal">
-        <span class="close-modal">&times;</span>
-        <div class="playlist-result-top">
-          <div class="placeholder-playlist-thumbnail shimmer"></div>
-          <div class="placeholder-playlist-result-top-right">
-            <div class="btn shimmer">CREATING PLAYLIST</div>
-          </div>
-        </div>
-        <div class="placeholder-playlist-title shimmer"></div>
-      </div>
-      <div
-        id="playlist-modal-content"
-        class="modal"
-        style="display: none"
-      ></div>
-    </div>
+    {{ playlist_modal.playlist_modal() }}
   </body>
   <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.20/lodash.min.js"></script>
   <script src="static/js/main.js" type="module"></script>

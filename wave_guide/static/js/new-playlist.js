@@ -32,74 +32,76 @@ async function submitPlaylistRequest(playlistData) {
 class PlaylistModal {
   constructor() {
     this.modalContainer = document.getElementById("modal-container");
-    this.resultsContent = document.getElementById("playlist-modal-content");
-    this.placeholderContent = document.getElementById("placeholder-playlist-modal-content");
+    this.content = document.getElementById("playlist-modal-content");
+    this.thumbnail = document.getElementById("playlist-thumbnail");
+    this.title = document.getElementById("playlist-title");
+    this.button = document.getElementById("playlist-button");
   }
 
   showLoading() {
-    this.resultsContent.style.display = "none";
+    // Show modal with loading state
     this.modalContainer.style.display = "block";
-    this.placeholderContent.style.display = "block";
+    this.title.textContent = '';
+    const placeholderThumbnail = document.createElement('div');
+    placeholderThumbnail.id = 'playlist-thumbnail';
+    placeholderThumbnail.classList.add('shimmer', 'placeholder-playlist-thumbnail');
+    this.thumbnail.replaceWith(placeholderThumbnail);
+    this.thumbnail = placeholderThumbnail;
+    
+    // Reset title and button to loading state
+    this.title.classList.add('shimmer', 'placeholder-playlist-title');
+    this.button.classList.add('shimmer');
+    this.button.textContent = "CREATING PLAYLIST";
   }
 
   hideModal() {
     this.modalContainer.style.display = "none";
-    this.resultsContent.style.display = "none";
-    this.resultsContent.innerHTML = "";
   }
 
   renderPlaylistResult(data) {
-    // Create playlist image
-    const playlistImage = document.createElement("img");
-    playlistImage.classList.add("playlist-thumbnail");
-    playlistImage.src = data.image;
+    // Remove loading states
+    this.title.classList.remove("shimmer", "placeholder-playlist-title");
+    this.title.classList.add("selected-playlist-title");
+    this.button.classList.remove("shimmer");
 
-    // Create Spotify link with logxo and text
-    const playlistLink = document.createElement("a");
-    playlistLink.href = data.url;
-    playlistLink.classList.add("btn");
+    // Create new img element
+    const thumbnailImg = document.createElement('img');
+    thumbnailImg.id = 'playlist-thumbnail';
+    thumbnailImg.src = data.image;
+    thumbnailImg.alt = 'Playlist Cover';
+    thumbnailImg.className = 'selected-thumbnail';
 
-    const spotifyLogo = document.createElement("img");
-    spotifyLogo.src = "static/images/spotify_icon.png";
-    spotifyLogo.classList.add("spotify-logo");
-    playlistLink.appendChild(spotifyLogo);
-
-    const linkText = document.createElement("span");
-    linkText.innerHTML = "Listen on Spotify";
-    playlistLink.appendChild(linkText);
-
-    // Create container structure
-    const playlistResultTop = document.createElement("div");
-    playlistResultTop.classList.add("playlist-result-top");
-
-    const playlistResultTopRight = document.createElement("div");
-    playlistResultTopRight.classList.add("playlist-result-top-right");
+    // Replace the old element
+    this.thumbnail.replaceWith(thumbnailImg);
+    // Update reference
+    this.thumbnail = thumbnailImg;
     
-    // Assemble top section
-    playlistResultTop.appendChild(playlistImage);
-    playlistResultTopRight.appendChild(playlistLink);
-    playlistResultTop.appendChild(playlistResultTopRight);
+    this.title.textContent = data.name;
+    
+    // Create new anchor element
+    const link = document.createElement('a');
+    link.id = 'playlist-button';
+    link.href = data.url;
+    link.target = '_blank';
+    link.className = 'btn';
 
-    // Create and add close button
-    const closeSpan = document.createElement("span");
-    closeSpan.classList.add("close-modal");
-    closeSpan.textContent = "×";
-    closeSpan.addEventListener("click", this.hideModal.bind(this));
+    // Create Spotify icon
+    const icon = document.createElement('img');
+    icon.src = 'static/images/spotify_icon.png';
+    icon.className = 'spotify-logo';
 
-    // Create playlist title
-    const playlistTitle = document.createElement("div");
-    playlistTitle.innerHTML = data.name;
-    playlistTitle.title = data.name;
-    playlistTitle.classList.add("playlist-title");
+    // Create text span
+    const text = document.createElement('span');
+    text.textContent = 'Listen on Spotify';
 
-    // Add everything to results content
-    this.resultsContent.appendChild(closeSpan);
-    this.resultsContent.appendChild(playlistResultTop);
-    this.resultsContent.appendChild(playlistTitle);
+    // Assemble the elements
+    link.appendChild(icon);
+    link.appendChild(text);
 
-    // Update visibility
-    this.placeholderContent.style.display = "none";
-    this.resultsContent.style.display = "block";
+    // Replace the old button
+    this.button.replaceWith(link);
+    // Update reference
+    this.button = link;
   }
 }
 

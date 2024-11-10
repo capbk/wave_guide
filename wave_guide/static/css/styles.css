@@ -43,6 +43,15 @@ html {
   display: flex;
   flex-direction: row;
   margin-bottom: 16px;
+  position: relative;
+  min-height: 76px;
+}
+
+.header-logo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
 }
 
 .logo-small {
@@ -56,6 +65,31 @@ html {
   align-self: center;
 }
 
+.header-buttons {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 10px;
+}
+
+.info-btn {
+  padding: 10px 20px;
+  border-radius: var(--default-border-radius);
+  border: 1px solid transparent;
+  background-color: var(--transparent-grey);
+  color: var(--paper-cream);
+  cursor: pointer;
+  font-size: 0.8em;
+  box-shadow: var(--default-box-shadow);
+}
+
+.info-btn:hover {
+  background-color: var(--transparent-grey);
+  opacity: 0.8;
+}
 .log-out-btn {
   background-color: var(--transparent-grey);
   color: var(--paper-cream);
@@ -65,11 +99,11 @@ html {
   cursor: pointer;
   font-size: 0.8em;
   padding: 10px 20px;
+}
 
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 10px;
+.log-out-btn:hover {
+  background-color: var(--transparent-grey);
+  opacity: 0.8;
 }
 
 .main-container {
@@ -81,7 +115,7 @@ html {
 }
 
 .explainer {
-  font-size: 1.2em;
+  font-size: 0.8em;
   border-radius: var(--default-border-radius);
   padding: 0px 8px 8px 8px;
   margin: 0px 8px 16px 8px;
@@ -99,7 +133,42 @@ html {
 }
 
 .explainer-list {
-  text-align: start;
+  margin: 0;
+  padding: 0;
+}
+
+.explainer-list li {
+  margin-bottom: 12px;  /* Adds space between list items */
+  line-height: 1.4;     /* Improves readability */
+  list-style: none;     /* Removes default bullets */
+  padding-left: 24px;   /* Makes room for custom bullet */
+  position: relative;   /* For custom bullet positioning */
+}
+
+.explainer-list li:before {
+  content: "•"; /* Custom bullet point */
+  color: var(--accent-blue);
+  position: absolute;
+  left: 8px;
+}
+
+.explainer-text {
+  padding: 20px;
+  max-width: 600px;   /* Prevents lines from getting too long */
+}
+
+.explainer-text strong {
+  display: block;     /* Title on its own line */
+  margin-bottom: 16px;
+  font-size: 1.2em;   /* Slightly larger title */
+  color: var(--paper-cream);        /* Darker text for better contrast */
+  text-align: center;
+}
+
+.spotify-logo {
+  vertical-align: middle;  /* Aligns Spotify icon with text */
+  margin-left: 6px;       /* Space between text and icon */
+  height: 20px;           /* Consistent icon size */
 }
 
 .close-modal {
@@ -250,20 +319,40 @@ html {
   width: 140px;
 }
 
-.selected-title,
-.selected-artist {
+.selected-title{
+  max-width: 140px;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
   text-align: left;
-  margin-left: 0;
-  align-self: flex-start;
-  width: 140px;
 }
+
+.selected-playlist-title{
+    max-width: 240px;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    text-align: left;
+  }
 
 .selected-artist {
   font-size: 0.8em;
   max-width: 140px;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: normal;
   text-align: left;
 }
 
@@ -354,12 +443,24 @@ html {
   color: var(--accent-red);
   padding: 15px 30px;
   display: none;
-  text-align: center;
 }
 
 .generate-playllist-btn {
   z-index: 0;
-  margin-bottom: 40px;
+  margin: 4px 8px 40px 8px;
+  width: 270px;
+}
+
+.btn:hover {
+  opacity: 0.8;
+  background-color: var(--accent-red);
+}
+
+/* Disable hover effects when button is in loading state */
+.btn.shimmer:hover {
+  opacity: 1;
+  background-color: transparent;
+  cursor: default;
 }
 
 /* generated playlist modal */
@@ -378,40 +479,22 @@ html {
   z-index: 100; /* Set high value of z-index to ensure the modal is on top */
 }
 
+.modal-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .modal {
   display: block;
-  /*  min-width: 480px;
-  min-height: 240px;*/
   position: absolute; /* Set position to absolute so it can be centered */
   top: 50%;
   left: 50%;
-  padding: 0px 5px 20px 20px;
+  padding: 0px 20px 20px 20px;
   transform: translate(-50%, -50%);
   background-color: var(--paper-cream);
   box-shadow: var(--modal-box-shadow);
   border-radius: var(--default-border-radius);
-}
-
-.playlist-result-top {
-  display: flex;
-  flex-direction: row;
-}
-
-.playlist-result-top-right {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-}
-
-.placeholder-playlist-result-top-right {
-  display: flex;
-  justify-content: center;
-}
-
-.placeholder-playlist-thumbnail {
-  height: 140px;
-  width: 140px;
-  padding: 10px;
 }
 
 .shimmer {
@@ -436,14 +519,23 @@ html {
 
 .placeholder-playlist-title {
   height: 23px;
-  width: 420px;
-  padding: 10px;
+  min-width: 20px;
   margin-top: 4px;
   margin-bottom: 4px;
   margin-right: 15px; /* facilitate x in top right of modal */
+}
 
-  position: relative;
-  overflow: hidden;
+.playlist-title {
+    font-size: 1.2em;
+    font-weight: 700;
+    overflow: hidden;
+    max-width: 500px;
+    text-overflow: ellipsis;
+  }
+
+.placeholder-playlist-thumbnail {
+  height: 140px;
+  width: 140px;
 }
 
 .playlist-thumbnail {
@@ -452,10 +544,70 @@ html {
   padding: 10px;
 }
 
-.playlist-title {
-  font-size: 1.2em;
-  font-weight: 700;
-  overflow: hidden;
-  max-width: 500px;
-  text-overflow: ellipsis;
+
+
+/* Hide desktop elements by default (mobile-first) */
+.desktop-only {
+  display: none;
+}
+
+.mobile-only {
+  display: block;
+}
+
+/* Mobile logo sizing */
+.mobile-only.logo {
+  height: 40px;
+  width: auto;
+}
+
+/* Desktop styles */
+@media (min-width: 768px) {
+  .desktop-only {
+    display: block;
+  }
+  
+  .mobile-only {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .desktop-only {
+    display: none;
+  }
+
+  .mobile-only {
+    display: block;
+  }
+
+  .mobile-only.logo {
+    height: 60px;
+    width: auto;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 8px;
+  }
+
+  .header-buttons button {
+    padding: 8px;
+    min-width: 36px;
+    height: 36px;
+    border-radius: 50%;
+  }
+
+  .header-buttons {
+    gap: 8px;  /* Reduces space between buttons */
+  }
+
+  /* If you want to make the buttons even more minimal, you could remove their background */
+  .info-btn, .log-out-btn {
+    background: var(--transparent-grey);
+    border: none;
+  }
+
+  .header-bar {
+    margin-bottom: 8px;
+  }
 }

@@ -1,3 +1,16 @@
+setup ci
+    run tests
+    deploy to pythonanywhere
+
+experiment with mobile
+    fix mood dropdown in mobile mode -- test on actual mobile device.  Is this a problem?
+
+add up and down arrow key navigation between search results
+
+create fun playlist titles with small language model
+
+update the logo, flip the map vertically so it looks like a W
+
 i'm becoming annoyed by the large numbe of playlists clogging my library
     ? does the API now support creating folders
     ? give some fun names to the playlists
@@ -7,19 +20,7 @@ i'm becoming annoyed by the large numbe of playlists clogging my library
 
 add e2e tests
 
-revisit track input card design
-
 cache get user info per session
-
-make info box opt in with a button rather than needs clearing every time?
-
-
-TODO:
-    change the Mood/Song select to a "tab" or "pill" pattern or radio buttons
-        leaning towards tab since it will make the search <-> dropdown change more obious
-
-TODO:
-    experiment with mobile
 
 TODO: Transparency and Feedback, show users the origin-destination pattern that makes waveguide unique
     1. As playlist is building show steps
@@ -41,8 +42,6 @@ TODO: experiment with seed tracks for bookend recommender
 TODO:
     review all TODOs in code
 
-TODO:
-    tests
 
 TODO:
     QA

@@ -115,7 +115,7 @@ html {
 }
 
 .explainer {
-  font-size: 1.2em;
+  font-size: 0.8em;
   border-radius: var(--default-border-radius);
   padding: 0px 8px 8px 8px;
   margin: 0px 8px 16px 8px;
@@ -133,7 +133,42 @@ html {
 }
 
 .explainer-list {
-  text-align: start;
+  margin: 0;
+  padding: 0;
+}
+
+.explainer-list li {
+  margin-bottom: 12px;  /* Adds space between list items */
+  line-height: 1.4;     /* Improves readability */
+  list-style: none;     /* Removes default bullets */
+  padding-left: 24px;   /* Makes room for custom bullet */
+  position: relative;   /* For custom bullet positioning */
+}
+
+.explainer-list li:before {
+  content: "•"; /* Custom bullet point */
+  color: var(--accent-blue);
+  position: absolute;
+  left: 8px;
+}
+
+.explainer-text {
+  padding: 20px;
+  max-width: 600px;   /* Prevents lines from getting too long */
+}
+
+.explainer-text strong {
+  display: block;     /* Title on its own line */
+  margin-bottom: 16px;
+  font-size: 1.2em;   /* Slightly larger title */
+  color: var(--paper-cream);        /* Darker text for better contrast */
+  text-align: center;
+}
+
+.spotify-logo {
+  vertical-align: middle;  /* Aligns Spotify icon with text */
+  margin-left: 6px;       /* Space between text and icon */
+  height: 20px;           /* Consistent icon size */
 }
 
 .close-modal {

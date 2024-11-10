@@ -1,6 +1,6 @@
 experiment with mobile
-    fix mood dropdown in mobile mode
-    fix login page
+    fix mood dropdown in mobile mode -- test on actual mobile device.  Is this a problem?
+    
     fix alignment of playlist thumbnail and title
 
 add up and down arrow key navigation between search results

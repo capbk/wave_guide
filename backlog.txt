@@ -1,6 +1,6 @@
 setup ci
-    run tests
-    deploy to pythonanywhere
+    only allow merging PR to main if tests pass
+    deploy to pythonanywhere after merging to main
 
 experiment with mobile
     fix mood dropdown in mobile mode -- test on actual mobile device.  Is this a problem?

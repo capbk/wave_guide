@@ -1,0 +1,25 @@
+name: Deploy
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true  # Only run if the PR was merged (not just closed)
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Deploy to PythonAnywhere
+      env:
+        PYTHONANYWHERE_TOKEN: ${{ secrets.PYTHONANYWHERE_TOKEN }}
+        USERNAME: ${{ secrets.PYTHONANYWHERE_USERNAME }}
+      run: |
+        curl -X POST \
+          -H "Authorization: Token ${PYTHONANYWHERE_TOKEN}" \
+          https://www.pythonanywhere.com/api/v0/user/${USERNAME}/webapps/${USERNAME}.pythonanywhere.com/reload/ 

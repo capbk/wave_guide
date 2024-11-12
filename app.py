@@ -1,6 +1,6 @@
 import logging
 import os
-import sys
+from dotenv import load_dotenv, find_dotenv
 from functools import wraps
 
 from flask import Flask, session, request, redirect, render_template, jsonify
@@ -8,7 +8,6 @@ from flask_session import Session
 import spotipy
 from werkzeug.exceptions import abort
 
-import app_env  # not stored in git
 from recommendation_engine import playlist
 from recommendation_engine.mood_track_finder import MoodTrackFinder
 from search.autocomplete import search_tracks
@@ -25,13 +24,14 @@ MOOD_MODE = "mood"
 
 def create_app():
     app = Flask(__name__)
+    load_dotenv(find_dotenv())
     # note lowercase means flask.session, not flask_session.Session. Should we pick one?
     cache_handler = spotipy.cache_handler.FlaskSessionCacheHandler(session)
     auth_manager = spotipy.oauth2.SpotifyOAuth(
         cache_handler=cache_handler,
-        client_id=app_env.SPOTIPY_CLIENT_ID,
-        client_secret=app_env.SPOTIPY_CLIENT_SECRET,
-        redirect_uri=app_env.SPOTIPY_REDIRECT_URI,
+        client_id=os.getenv('SPOTIPY_CLIENT_ID'),
+        client_secret=os.getenv('SPOTIPY_CLIENT_SECRET'),
+        redirect_uri=os.getenv('SPOTIPY_REDIRECT_URI'),
         scope="user-library-read user-top-read playlist-modify-private",
         open_browser=False,
     )

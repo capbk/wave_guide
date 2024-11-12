@@ -1,10 +1,8 @@
 import logging
 import os
-from dotenv import load_dotenv, find_dotenv
 from functools import wraps
 
 from flask import Flask, session, request, redirect, render_template, jsonify
-from flask_session import Session
 import spotipy
 from werkzeug.exceptions import abort
 
@@ -18,15 +16,12 @@ from utils.validators import validate_new_playlist_request
 # App setup =================================
 # ===========================================
 
-SONG_MODE = "song"
-MOOD_MODE = "mood"
-
 
 def create_app():
     app = Flask(__name__)
-    load_dotenv(find_dotenv())
     # note lowercase means flask.session, not flask_session.Session. Should we pick one?
     cache_handler = spotipy.cache_handler.FlaskSessionCacheHandler(session)
+    # .env file loaded in wsgi.py
     auth_manager = spotipy.oauth2.SpotifyOAuth(
         cache_handler=cache_handler,
         client_id=os.getenv('SPOTIPY_CLIENT_ID'),
@@ -94,6 +89,9 @@ def log_out():
     session.pop("token_info", None)
     return redirect("/")
 
+
+# Pure API endpoints that do not return HTML
+# ===========================================
 
 # TODO: rename to /search or maybe /track_search, /tracks/search
 @app.route("/autocomplete", methods=["POST"])

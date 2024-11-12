@@ -31,16 +31,28 @@ async function submitPlaylistRequest(playlistData) {
 // UI Components
 class PlaylistModal {
   constructor() {
-    this.modalContainer = document.getElementById("modal-container");
-    this.content = document.getElementById("playlist-modal-content");
-    this.thumbnail = document.getElementById("playlist-thumbnail");
-    this.title = document.getElementById("playlist-title");
-    this.button = document.getElementById("playlist-button");
+    const requiredElements = {
+      modalContainer: "modal-container",
+      content: "playlist-modal-content",
+      placeholderContent: "placeholder-playlist-modal-content",
+      thumbnail: "playlist-thumbnail",
+      title: "playlist-title",
+      button: "playlist-button"
+    };
+
+    // Assign all elements and check existence in one go
+    Object.entries(requiredElements).forEach(([key, id]) => {
+      this[key] = document.getElementById(id);
+      if (!this[key]) {
+        throw new Error(`Required DOM element "${id}" not found for PlaylistModal`);
+      }
+    });
   }
 
   showLoading() {
-    // Show modal with loading state
     this.modalContainer.style.display = "block";
+    this.placeholderContent.style.display = "block";
+    this.content.style.display = "none";
     this.title.textContent = '';
     const placeholderThumbnail = document.createElement('div');
     placeholderThumbnail.id = 'playlist-thumbnail';
@@ -59,6 +71,10 @@ class PlaylistModal {
   }
 
   renderPlaylistResult(data) {
+    // Show main content and hide placeholder
+    this.content.style.display = "block";
+    this.placeholderContent.style.display = "none";
+
     // Remove loading states
     this.title.classList.remove("shimmer", "placeholder-playlist-title");
     this.title.classList.add("selected-playlist-title");
@@ -108,32 +124,34 @@ class PlaylistModal {
 // Main function
 export async function createPlaylist(state) {
   const modal = new PlaylistModal();
-    // Validate inputs
-    validateSourceInput(
-      state.getSourceMode(),
-      state.getSourceTrackId(),
-      state.getSourceMood()
-    );
-    validateDestinationInput(
-      state.getDestinationMode(),
-      state.getDestinationTrackId(),
-      state.getDestinationMood()
-    );
 
-    modal.showLoading();
+  // Validate inputs
+  validateSourceInput(
+    state.getSourceMode(),
+    state.getSourceTrackId(),
+    state.getSourceMood()
+  );
+  validateDestinationInput(
+    state.getDestinationMode(),
+    state.getDestinationTrackId(),
+    state.getDestinationMood()
+  );
 
-    // Submit request
-    const playlistData = {
-      source_mode: state.getSourceMode(),
-      seed_track_id: state.getSourceTrackId(),
-      source_mood: state.getSourceMood(),
-      destination_track_id: state.getDestinationTrackId(),
-      destination_mode: state.getDestinationMode(),
-      destination_mood: state.getDestinationMood(),
-    };
+  // Show loading state
+  modal.showLoading();  // Let the modal class handle all display states
 
-    const response = await submitPlaylistRequest(playlistData);
-    modal.renderPlaylistResult(response);
+  // Submit request
+  const playlistData = {
+    source_mode: state.getSourceMode(),
+    seed_track_id: state.getSourceTrackId(),
+    source_mood: state.getSourceMood(),
+    destination_track_id: state.getDestinationTrackId(),
+    destination_mode: state.getDestinationMode(),
+    destination_mood: state.getDestinationMood(),
+  };
+
+  const response = await submitPlaylistRequest(playlistData);
+  modal.renderPlaylistResult(response);
 }
 
 export const hideModal = () => new PlaylistModal().hideModal();

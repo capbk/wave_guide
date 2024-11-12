@@ -34,7 +34,6 @@ class PlaylistModal {
     const requiredElements = {
       modalContainer: "modal-container",
       content: "playlist-modal-content",
-      placeholderContent: "placeholder-playlist-modal-content",
       thumbnail: "playlist-thumbnail",
       title: "playlist-title",
       button: "playlist-button"
@@ -51,19 +50,20 @@ class PlaylistModal {
 
   showLoading() {
     this.modalContainer.style.display = "block";
-    this.placeholderContent.style.display = "block";
-    this.content.style.display = "none";
+    this.content.style.display = "block";
+
     this.title.textContent = '';
+    this.title.classList.add('shimmer', 'placeholder-playlist-title');
+
     const placeholderThumbnail = document.createElement('div');
     placeholderThumbnail.id = 'playlist-thumbnail';
     placeholderThumbnail.classList.add('shimmer', 'placeholder-playlist-thumbnail');
     this.thumbnail.replaceWith(placeholderThumbnail);
     this.thumbnail = placeholderThumbnail;
     
-    // Reset title and button to loading state
-    this.title.classList.add('shimmer', 'placeholder-playlist-title');
     this.button.classList.add('shimmer');
     this.button.textContent = "CREATING PLAYLIST";
+
   }
 
   hideModal() {
@@ -73,8 +73,6 @@ class PlaylistModal {
   renderPlaylistResult(data) {
     // Show main content and hide placeholder
     this.content.style.display = "block";
-    this.placeholderContent.style.display = "none";
-
     // Remove loading states
     this.title.classList.remove("shimmer", "placeholder-playlist-title");
     this.title.classList.add("selected-playlist-title");
@@ -85,7 +83,7 @@ class PlaylistModal {
     thumbnailImg.id = 'playlist-thumbnail';
     thumbnailImg.src = data.image;
     thumbnailImg.alt = 'Playlist Cover';
-    thumbnailImg.className = 'selected-thumbnail';
+    thumbnailImg.className = 'playlist-thumbnail';
 
     // Replace the old element
     this.thumbnail.replaceWith(thumbnailImg);

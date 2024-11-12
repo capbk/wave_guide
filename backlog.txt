@@ -2,6 +2,8 @@ setup ci
     only allow merging PR to main if tests pass
     deploy to pythonanywhere after merging to main
 
+make sure everything in styles.css is still in use
+
 review styles for consistency
     padding
     font size

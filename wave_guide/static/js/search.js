@@ -18,11 +18,8 @@ const createElement = (tag, attributes = {}, classes = []) => {
   return element;
 };
 
-// Create the track result HTML structure
-const createTrackResultHTML = (item) => {
+const createTrackResult = (item) => {
   const { track_name, artist_name, small_image } = item;
-  
-  const container = createElement('div', {}, ['search-result-container']);
   
   const img = createElement('img', {
     src: small_image,
@@ -38,10 +35,8 @@ const createTrackResultHTML = (item) => {
   
   infoDiv.appendChild(titleDiv);
   infoDiv.appendChild(artistDiv);
-  container.appendChild(img);
-  container.appendChild(infoDiv);
   
-  return container;
+  return [img, infoDiv];
 };
 
 // Create the selected track HTML structure
@@ -117,24 +112,24 @@ export function createDebouncedSearch(
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query })
       });
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const data = await response.json();
-      
-      // Clear previous results
+
       searchResultsList.innerHTML = '';
-      
-      // Create and append results
+
       data.forEach(item => {
         const li = createElement('li', {
           'data-id': item.id,
           'title': `${item.track_name} by ${item.artist_name}`
         }, ['search-results-item']);
         
-        li.innerHTML = createTrackResultHTML(item);
+        const elements = createTrackResult(item);
+        elements.forEach(element => li.appendChild(element));
+ 
         li.addEventListener('click', () => handleTrackSelection(item, {
           searchResultsList,
           selectedResultContainer,
@@ -142,10 +137,10 @@ export function createDebouncedSearch(
           location,
           state
         }));
-        
+
         searchResultsList.appendChild(li);
       });
-      
+ 
       searchResultsList.style.display = "block";
     } catch (error) {
       console.error('Error fetching search results:', error);

@@ -99,8 +99,12 @@ describe('PlaylistModal', () => {
 
     // Check loading state
     expect(document.getElementById('modal-container').style.display).toBe('block');
-    expect(document.getElementById('placeholder-playlist-modal-content').style.display).toBe('block');
-    expect(document.getElementById('playlist-modal-content').style.display).toBe('none');
+
+    // Check for shimmer loading states
+    expect(document.getElementById('playlist-title')).toHaveClass('shimmer', 'placeholder-playlist-title');
+    expect(document.getElementById('playlist-thumbnail')).toHaveClass('shimmer', 'placeholder-playlist-thumbnail');
+    expect(document.getElementById('playlist-button')).toHaveClass('shimmer');
+    expect(document.getElementById('playlist-button').textContent).toBe('CREATING PLAYLIST');
 
     // Resolve the API call
     resolveApiCall();
@@ -109,8 +113,8 @@ describe('PlaylistModal', () => {
 
     // Check final state
     expect(document.getElementById('modal-container').style.display).toBe('block');
-    expect(document.getElementById('placeholder-playlist-modal-content').style.display).toBe('none');
-    expect(document.getElementById('playlist-modal-content').style.display).toBe('block');
+    // Verify shimmer classes are removed (if that's part of your implementation)
+    expect(document.getElementById('playlist-title')).not.toHaveClass('shimmer', 'placeholder-playlist-title');
   });
 
   test('renders playlist result correctly', async () => {

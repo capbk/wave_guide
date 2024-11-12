@@ -314,9 +314,14 @@ html {
   width: 100%;
 }
 
+.selected-track-info {
+    width: 100%;
+}
+
 .selected-thumbnail {
   height: 140px;
   width: 140px;
+  padding: 8px;
 }
 
 .selected-title{
@@ -333,6 +338,7 @@ html {
 
 .selected-playlist-title{
     max-width: 240px;
+    padding: 2px;
     line-clamp: 2;
     -webkit-line-clamp: 2;
     display: -webkit-box;
@@ -519,10 +525,9 @@ html {
 
 .placeholder-playlist-title {
   height: 23px;
-  min-width: 20px;
+  min-width: 140px;
   margin-top: 4px;
   margin-bottom: 4px;
-  margin-right: 15px; /* facilitate x in top right of modal */
 }
 
 .playlist-title {
@@ -542,7 +547,7 @@ html {
 .playlist-thumbnail {
   height: 140px;
   width: 140px;
-  padding: 20px;
+  padding: 8px;
 }
 
 

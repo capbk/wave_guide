@@ -12,14 +12,26 @@ export function selectMood(mood, container, placeholder) {
         return;
     }
 
-    // Only show image if there's a valid icon path
+    // Clear existing content
+    container.textContent = '';
+
+    // Create and append image if icon exists
     const iconPath = MOOD_ICONS[cleanedMood];
-    container.innerHTML = `
-        ${iconPath ? `<img src="${iconPath}" class="selected-thumbnail" alt="${mood} mood">` : ''}
-        <div>
-            <div class="selected-title">${mood} Mood</div>
-        </div>
-    `;
+    if (iconPath) {
+        const img = document.createElement('img');
+        img.src = iconPath;
+        img.className = 'selected-thumbnail';
+        img.alt = `${mood} mood`;
+        container.appendChild(img);
+    }
+
+    // Create and append title div
+    const titleWrapper = document.createElement('div');
+    const titleDiv = document.createElement('div');
+    titleDiv.className = 'selected-title';
+    titleDiv.textContent = `${cleanedMood.charAt(0).toUpperCase() + cleanedMood.slice(1)} Mood`;
+    titleWrapper.appendChild(titleDiv);
+    container.appendChild(titleWrapper);
 
     placeholder.style.display = 'none';
     container.style.display = 'block';

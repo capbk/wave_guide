@@ -20,26 +20,52 @@ const createElement = (tag, attributes = {}, classes = []) => {
 
 // Create the track result HTML structure
 const createTrackResultHTML = (item) => {
-  const { id, track_name, artist_name, small_image } = item;
+  const { track_name, artist_name, small_image } = item;
   
-  return `
-    <img src="${small_image}" class="search-result-thumbnail" />
-    <div class="search-result-track-info">
-      <div class="search-result-title">${track_name}</div>
-      <div class="search-result-artist">${artist_name}</div>
-    </div>
-  `;
+  const container = createElement('div', {}, ['search-result-container']);
+  
+  const img = createElement('img', {
+    src: small_image,
+    alt: `Album art for ${track_name}`
+  }, ['search-result-thumbnail']);
+  
+  const infoDiv = createElement('div', {}, ['search-result-track-info']);
+  const titleDiv = createElement('div', {}, ['search-result-title']);
+  titleDiv.textContent = track_name;
+  
+  const artistDiv = createElement('div', {}, ['search-result-artist']);
+  artistDiv.textContent = artist_name;
+  
+  infoDiv.appendChild(titleDiv);
+  infoDiv.appendChild(artistDiv);
+  container.appendChild(img);
+  container.appendChild(infoDiv);
+  
+  return container;
 };
 
 // Create the selected track HTML structure
 const createSelectedTrackHTML = (trackName, artistName, imageUrl) => {
-  return `
-    <img src="${imageUrl}" class="selected-thumbnail" />
-    <div>
-      <div class="selected-title">${trackName}</div>
-      <div class="selected-artist">${artistName}</div>
-    </div>
-  `;
+  const container = createElement('div', {}, ['selected-track-container']);
+  
+  const img = createElement('img', {
+    src: imageUrl,
+    alt: `Album art for ${trackName}`
+  }, ['selected-thumbnail']);
+  
+  const infoDiv = createElement('div', {}, ['selected-track-info']);
+  const titleDiv = createElement('div', {}, ['selected-title']);
+  titleDiv.textContent = trackName;
+  
+  const artistDiv = createElement('div', {}, ['selected-artist']);
+  artistDiv.textContent = artistName;
+  
+  infoDiv.appendChild(titleDiv);
+  infoDiv.appendChild(artistDiv);
+  container.appendChild(img);
+  container.appendChild(infoDiv);
+  
+  return container;
 };
 
 // Handle track selection
@@ -61,7 +87,10 @@ const handleTrackSelection = (item, {
   
   // Update UI
   searchResultsList.style.display = "none";
-  selectedResultContainer.innerHTML = createSelectedTrackHTML(track_name, artist_name, large_image);
+  selectedResultContainer.innerHTML = ''; // Clear existing content
+  selectedResultContainer.appendChild(
+    createSelectedTrackHTML(track_name, artist_name, large_image)
+  );
   selectedResultContainer.title = `${track_name} by ${artist_name}`;
   selectedResultPlaceholderContainer.style.display = "none";
   selectedResultContainer.style.display = "block";

@@ -20,8 +20,8 @@ describe('Mood Selection', () => {
     test('should display happy mood with icon correctly', () => {
         selectMood('happy', container, placeholder);
         
-        expect(container.innerHTML).toContain('static/images/happy_icon.png');
-        expect(container.innerHTML).toContain('happy Mood');
+        expect(container.innerHTML).toContain('static/images/happy.png');
+        expect(container.innerHTML).toContain('Happy Mood');
         expect(container.style.display).toBe('block');
         expect(placeholder.style.display).toBe('none');
     });
@@ -29,8 +29,8 @@ describe('Mood Selection', () => {
     test('should display energized mood with icon correctly', () => {
         selectMood('energized', container, placeholder);
         
-        expect(container.innerHTML).toContain('static/images/energized_icon.png');
-        expect(container.innerHTML).toContain('energized Mood');
+        expect(container.innerHTML).toContain('static/images/energized.png');
+        expect(container.innerHTML).toContain('Energized Mood');
         expect(container.style.display).toBe('block');
         expect(placeholder.style.display).toBe('none');
     });
@@ -38,8 +38,8 @@ describe('Mood Selection', () => {
     test('should handle case-insensitive mood selection', () => {
         selectMood('HAPPY', container, placeholder);
         
-        expect(container.innerHTML).toContain('static/images/happy_icon.png');
-        expect(container.innerHTML).toContain('HAPPY Mood');
+        expect(container.innerHTML).toContain('static/images/happy.png');
+        expect(container.innerHTML).toContain('Happy Mood');
     });
 
     test('should notify and return early for unknown mood', () => {

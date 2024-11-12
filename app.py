@@ -9,10 +9,10 @@ import spotipy
 from werkzeug.exceptions import abort
 
 import app_env  # not stored in git
-from wave_guide.recommendation_engine import playlist
-from wave_guide.recommendation_engine.mood_track_finder import MoodTrackFinder
-from wave_guide.search.autocomplete import search_tracks
-from wave_guide.utils.validators import validate_new_playlist_request
+from recommendation_engine import playlist
+from recommendation_engine.mood_track_finder import MoodTrackFinder
+from search.autocomplete import search_tracks
+from utils.validators import validate_new_playlist_request
 
 # Top level entry point for wave-guide flask application
 

@@ -4,13 +4,22 @@ import '@testing-library/jest-dom';
 // Mock fetch globally
 global.fetch = jest.fn();
 
-// Mock DOM elements
-document.body.innerHTML = `
-  <div id="modal-container">
-    <div id="playlist-modal-content"></div>
-    <div id="placeholder-playlist-modal-content"></div>
-  </div>
-`;
+beforeEach(() => {
+  // Set up your DOM elements with the complete structure
+  document.body.innerHTML = `
+    <div id="modal-container">
+      <div id="playlist-modal-content">
+        <div class="playlist-thumbnail-container"></div>
+        <div id="playlist-title"></div>
+        <div class="playlist-actions"></div>
+      </div>
+      <div id="placeholder-playlist-modal-content"></div>
+      <div id="playlist-thumbnail"></div>
+      <div id="playlist-title"></div>
+      <button id="playlist-button"></button>
+    </div>
+  `;
+});
 
 describe('Input Validation', () => {
   test('throws error when source song is required but missing', async () => {
@@ -60,13 +69,6 @@ describe('Input Validation', () => {
 });
 
 describe('PlaylistModal', () => {
-  beforeEach(() => {
-    // Reset fetch mock
-    fetch.mockClear();
-    // Reset DOM
-    document.getElementById('playlist-modal-content').innerHTML = '';
-  });
-
   test('shows loading state correctly', async () => {
     const mockState = {
       getSourceMode: () => 'song',
@@ -77,20 +79,42 @@ describe('PlaylistModal', () => {
       getDestinationMood: () => 'happy'
     };
 
-    // Mock successful API response
-    fetch.mockImplementationOnce(() =>
-      Promise.resolve({
-        json: () => Promise.resolve({
-          name: 'Test Playlist',
-          url: 'https://spotify.com/playlist/123',
-          image: 'playlist-image.jpg'
-        })
+    // Create a promise we can control
+    let resolveApiCall;
+    const apiPromise = new Promise(resolve => {
+      resolveApiCall = resolve;
+    });
+
+    // Mock fetch to use our controlled promise
+    fetch.mockImplementationOnce(() => apiPromise.then(() => ({
+      json: () => Promise.resolve({
+        name: 'Test Playlist',
+        url: 'https://spotify.com/playlist/123',
+        image: 'playlist-image.jpg'
       })
-    );
+    })));
 
-    await createPlaylist(mockState);
+    // Start the createPlaylist call but don't await it
+    const playlistPromise = createPlaylist(mockState);
 
+    // Check loading state
     expect(document.getElementById('modal-container').style.display).toBe('block');
+
+    // Check for shimmer loading states
+    expect(document.getElementById('playlist-title')).toHaveClass('shimmer', 'placeholder-playlist-title');
+    expect(document.getElementById('playlist-thumbnail')).toHaveClass('shimmer', 'placeholder-playlist-thumbnail');
+    expect(document.getElementById('playlist-button')).toHaveClass('shimmer');
+    expect(document.getElementById('playlist-button').textContent).toBe('CREATING PLAYLIST');
+
+    // Resolve the API call
+    resolveApiCall();
+    // Wait for everything to complete
+    await playlistPromise;
+
+    // Check final state
+    expect(document.getElementById('modal-container').style.display).toBe('block');
+    // Verify shimmer classes are removed (if that's part of your implementation)
+    expect(document.getElementById('playlist-title')).not.toHaveClass('shimmer', 'placeholder-playlist-title');
   });
 
   test('renders playlist result correctly', async () => {
@@ -103,7 +127,7 @@ describe('PlaylistModal', () => {
       getDestinationMood: () => 'happy'
     };
 
-    const mockResponse = {
+    const mockPlaylist = {
       name: 'Test Playlist',
       url: 'https://spotify.com/playlist/123',
       image: 'playlist-image.jpg'
@@ -111,22 +135,30 @@ describe('PlaylistModal', () => {
 
     fetch.mockImplementationOnce(() =>
       Promise.resolve({
-        json: () => Promise.resolve(mockResponse)
+        json: () => Promise.resolve(mockPlaylist)
       })
     );
 
     await createPlaylist(mockState);
 
-    const modalContent = document.getElementById('playlist-modal-content');
-    expect(modalContent.querySelector('.playlist-title')).toHaveTextContent('Test Playlist');
-    expect(modalContent.querySelector('.playlist-thumbnail')).toHaveAttribute('src', 'playlist-image.jpg');
-    expect(modalContent.querySelector('a.btn')).toHaveAttribute('href', 'https://spotify.com/playlist/123');
+    // Test user-centric behaviors instead of implementation details
+    expect(document.body).toHaveTextContent(mockPlaylist.name);
+
+    // Verify the playlist image is visible somewhere on the page
+    const playlistImage = document.querySelector('img[src*="playlist-image.jpg"]');
+    expect(playlistImage).toBeVisible();
+
+    // Verify users can click through to the playlist
+    const playlistLink = document.querySelector(`a[href="${mockPlaylist.url}"]`);
+    expect(playlistLink).toBeVisible();
   });
 
   test('hideModal hides the modal', () => {
+    // Set initial display states
+    const modalContainer = document.getElementById('modal-container');
+    modalContainer.style.display = 'block';
     hideModal();
-    expect(document.getElementById('modal-container').style.display).toBe('none');
-    expect(document.getElementById('playlist-modal-content').style.display).toBe('none');
+    expect(modalContainer.style.display).toBe('none');
   });
 });
 

@@ -1,4 +1,3 @@
-from numpy import percentile
 import pprint
 from random import sample
 import spotipy

@@ -7,20 +7,27 @@ experiment with mobile
 
 add up and down arrow key navigation between search results
 
-create fun playlist titles with small language model
+i'm becoming annoyed by the large numbe of playlists clogging my library
+    X does the API now support creating folders -- NO as of 2024-11-10
+    ? give some fun names to the playlists
+        create fun playlist titles with small language model
+    ? play in app and then add a second step to create playlist?
+        in app listening would also make it easier to build user feedback into UX
+    X add to queue instead of creating playlist
+        don't love this because then Spotify doesn't automatically keep the vibe going
+    X can there be a TTl on a playlist
+        could be very frustrating for playlists to disappear if you like them
 
 update the logo, flip the map vertically so it looks like a W
 
-i'm becoming annoyed by the large numbe of playlists clogging my library
-    ? does the API now support creating folders
-    ? give some fun names to the playlists
-    ? add to queue instead of creating playlist
-    ? can there be a TTl on a playlist
-    ? brainstorm more
+cache get user info per session
+
+analytics
+    log inputs, intermediate steps, and outputs of playlist creation
+    allow users to like/dislike songs in created playlists
+        store it
 
 add e2e tests
-
-cache get user info per session
 
 TODO: Transparency and Feedback, show users the origin-destination pattern that makes waveguide unique
     1. As playlist is building show steps

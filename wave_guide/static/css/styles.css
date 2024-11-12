@@ -115,7 +115,7 @@ html {
 }
 
 .explainer {
-  font-size: 0.8em;
+  font-size: 1em;
   border-radius: var(--default-border-radius);
   padding: 0px 8px 8px 8px;
   margin: 0px 8px 16px 8px;
@@ -138,8 +138,8 @@ html {
 }
 
 .explainer-list li {
-  margin-bottom: 12px;  /* Adds space between list items */
-  line-height: 1.4;     /* Improves readability */
+  margin-bottom: 12px;
+  line-height: 1.4;
   list-style: none;     /* Removes default bullets */
   padding-left: 24px;   /* Makes room for custom bullet */
   position: relative;   /* For custom bullet positioning */
@@ -154,21 +154,21 @@ html {
 
 .explainer-text {
   padding: 20px;
-  max-width: 600px;   /* Prevents lines from getting too long */
+  max-width: 600px;
 }
 
 .explainer-text strong {
   display: block;     /* Title on its own line */
   margin-bottom: 16px;
   font-size: 1.2em;   /* Slightly larger title */
-  color: var(--paper-cream);        /* Darker text for better contrast */
+  color: var(--paper-cream);
   text-align: center;
 }
 
 .spotify-logo {
   vertical-align: middle;  /* Aligns Spotify icon with text */
   margin-left: 6px;       /* Space between text and icon */
-  height: 20px;           /* Consistent icon size */
+  height: 20px;
 }
 
 .close-modal {
@@ -475,8 +475,8 @@ html {
     0,
     0,
     0.7
-  ); /* Add semi-transparent background color */
-  z-index: 100; /* Set high value of z-index to ensure the modal is on top */
+  );
+  z-index: 100;
 }
 
 .modal-content-wrapper {
@@ -531,6 +531,7 @@ html {
     overflow: hidden;
     max-width: 500px;
     text-overflow: ellipsis;
+    margin: 10px 0;
   }
 
 .placeholder-playlist-thumbnail {
@@ -541,7 +542,7 @@ html {
 .playlist-thumbnail {
   height: 140px;
   width: 140px;
-  padding: 10px;
+  padding: 20px;
 }
 
 
@@ -601,7 +602,6 @@ html {
     gap: 8px;  /* Reduces space between buttons */
   }
 
-  /* If you want to make the buttons even more minimal, you could remove their background */
   .info-btn, .log-out-btn {
     background: var(--transparent-grey);
     border: none;

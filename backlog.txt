@@ -1,6 +1,3 @@
-setup ci
-    deploy to pythonanywhere after merging to main
-    
 let the user know if their session expired
 
 make sure everything in styles.css is still in use

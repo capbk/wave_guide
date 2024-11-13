@@ -33,6 +33,19 @@ This project uses a Makefile to run locally.
 
 If you encounter the error `make: gunicorn: No such file or directory` make sure that the python binaries are availalabe in your `$PATH` environment variable.  For example `export PATH=/Library/Frameworks/Python.framework/Versions/3.7/bin:$PATH`
 
+## Deploying to PythonAnywhere
+
+waveguide.pythonanywhere.com
+
+This project uses a github webhook to deploy to PythonAnywhere using this approach.
+https://medium.com/@aadibajpai/deploying-to-pythonanywhere-via-github-6f967956e664
+
+The API has an endpoint to update itself.
+The git repo has a webhook with a secret that hits said endpoint.
+The secret is stored on the pythonanywhere server .env file.
+The pythonanywhere server also has a git hook that refreshes the app after code has been pulled down.
+
+
 ## Supporting Documentation
 
 The `Notes` folder contains information gained through experiments with the spotify API

@@ -165,10 +165,10 @@ def webhook():
                 payload=payload))
             abort(abort_code)
 
-        if payload['ref'] != 'refs/heads/pythonanywhere_deployment':  # Changed to match your branch
-            return json.dumps({'msg': 'Not pythonanywhere_deployment branch; ignoring'})
+        if payload['ref'] != 'refs/heads/main':
+            return json.dumps({'msg': 'Not main branch; ignoring'})
 
-        repo = git.Repo('/home/waveguide/wave_guide')  # Using your repo path
+        repo = git.Repo('/home/waveguide/wave_guide')
         origin = repo.remotes.origin
 
         pull_info = origin.pull(refspec='main', progress=None)

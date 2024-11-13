@@ -173,7 +173,7 @@ def webhook():
         repo = git.Repo('/home/waveguide/wave_guide')  # Using your repo path
         origin = repo.remotes.origin
 
-        pull_info = origin.pull(refspec='pythonanywhere_deployment', progress=None)
+        pull_info = origin.pull(refspec='main', progress=None)
 
         if len(pull_info) == 0:
             return json.dumps({'msg': "Didn't pull any information from remote!"})

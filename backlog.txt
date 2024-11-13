@@ -1,5 +1,4 @@
 setup ci
-    write a script to quickly deploy to pythonanywhere in the event we lose username again or switch accounts
     deploy to pythonanywhere after merging to main
     
 let the user know if their session expired

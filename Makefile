@@ -1,5 +1,5 @@
 run:
-	gunicorn --bind 0.0.0.0:8080 --timeout 120 wsgi:app
+	gunicorn --bind 0.0.0.0:8080 --timeout 120 wsgi_local:app
 
 install-python:
 	pip3 install -r requirements.txt

@@ -8,6 +8,7 @@ from werkzeug.exceptions import abort
 import git
 import hmac
 import hashlib
+import json
 
 from recommendation_engine import playlist
 from recommendation_engine.mood_track_finder import MoodTrackFinder
@@ -155,6 +156,7 @@ def webhook():
             return json.dumps({'msg': "Wrong event type"})
 
         x_hub_signature = request.headers.get('X-Hub-Signature')
+        w_secret = os.getenv('PYTHONANYWHERE_DEPLOYMENT_SECRET')
         if not is_valid_signature(x_hub_signature, request.data, w_secret):
             print('Deploy signature failed: {sig}'.format(sig=x_hub_signature))
             abort(abort_code)

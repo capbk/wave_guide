@@ -124,8 +124,7 @@ def webhook():
         repo = git.Repo('/home/waveguide/wave_guide')
         origin = repo.remotes.origin
         origin.fetch()
-        # TODO: change this to main
-        origin.pull(refspec='pythonanywhere_deployment', progress=None)
+        origin.pull(refspec='main', progress=None)
         return 'Updated PythonAnywhere successfully', 200
     else:
         return 'Wrong event type', 400

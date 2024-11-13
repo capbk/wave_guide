@@ -1,14 +1,12 @@
 import logging
 import os
-import sys
 from functools import wraps
 
 from flask import Flask, session, request, redirect, render_template, jsonify
-from flask_session import Session
 import spotipy
 from werkzeug.exceptions import abort
+import git
 
-import app_env  # not stored in git
 from recommendation_engine import playlist
 from recommendation_engine.mood_track_finder import MoodTrackFinder
 from search.autocomplete import search_tracks
@@ -19,19 +17,17 @@ from utils.validators import validate_new_playlist_request
 # App setup =================================
 # ===========================================
 
-SONG_MODE = "song"
-MOOD_MODE = "mood"
-
 
 def create_app():
     app = Flask(__name__)
     # note lowercase means flask.session, not flask_session.Session. Should we pick one?
     cache_handler = spotipy.cache_handler.FlaskSessionCacheHandler(session)
+    # .env file loaded in wsgi.py
     auth_manager = spotipy.oauth2.SpotifyOAuth(
         cache_handler=cache_handler,
-        client_id=app_env.SPOTIPY_CLIENT_ID,
-        client_secret=app_env.SPOTIPY_CLIENT_SECRET,
-        redirect_uri=app_env.SPOTIPY_REDIRECT_URI,
+        client_id=os.getenv('SPOTIPY_CLIENT_ID'),
+        client_secret=os.getenv('SPOTIPY_CLIENT_SECRET'),
+        redirect_uri=os.getenv('SPOTIPY_REDIRECT_URI'),
         scope="user-library-read user-top-read playlist-modify-private",
         open_browser=False,
     )
@@ -95,6 +91,9 @@ def log_out():
     return redirect("/")
 
 
+# Pure API endpoints that do not return HTML
+# ===========================================
+
 # TODO: rename to /search or maybe /track_search, /tracks/search
 @app.route("/autocomplete", methods=["POST"])
 @login_required
@@ -116,6 +115,19 @@ def new_playlist():
     resp = playlist.create_playlist(request, app.spotify)
     return jsonify(resp)
 
+# utility to update pythonanywhere code with latest main branch ===
+# =================================================================
+# https://medium.com/@aadibajpai/deploying-to-pythonanywhere-via-github-6f967956e664
+@app.route('/update_server', methods=['POST'])
+def webhook():
+    if request.method == 'POST':
+        repo = git.Repo('/home/waveguide/wave_guide')
+        origin = repo.remotes.origin
+        origin.fetch()
+        origin.pull(refspec='main', progress=None)
+        return 'Updated PythonAnywhere successfully', 200
+    else:
+        return 'Wrong event type', 400
 
 # Test utility to experiment with feature paramaters =================================
 # ====================================================================================

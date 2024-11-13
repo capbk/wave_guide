@@ -5,6 +5,7 @@ from functools import wraps
 from flask import Flask, session, request, redirect, render_template, jsonify
 import spotipy
 from werkzeug.exceptions import abort
+import git
 
 from recommendation_engine import playlist
 from recommendation_engine.mood_track_finder import MoodTrackFinder
@@ -114,6 +115,21 @@ def new_playlist():
     resp = playlist.create_playlist(request, app.spotify)
     return jsonify(resp)
 
+# utility to update pythonanywhere code with latest main branch ===
+# =================================================================
+# https://medium.com/@aadibajpai/deploying-to-pythonanywhere-via-github-6f967956e664
+@app.route('/update_server', methods=['POST'])
+def webhook():
+    if request.method == 'POST':
+        repo = git.Repo('/home/waveguide/wave_guide')
+        origin = repo.remotes.origin
+        origin.fetch()
+        # TODO: change this to main
+        origin.pull('origin', 'pythonanywhere_deployment')
+
+        return 'Updated PythonAnywhere successfully', 200
+    else:
+        return 'Wrong event type', 400
 
 # Test utility to experiment with feature paramaters =================================
 # ====================================================================================

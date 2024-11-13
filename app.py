@@ -167,6 +167,7 @@ def webhook():
 
         if payload['action'] != "closed":
             return json.dumps({'msg': "Wrong event type"})
+            abort(abort_code)
 
         repo = git.Repo('/home/waveguide/wave_guide')
         origin = repo.remotes.origin

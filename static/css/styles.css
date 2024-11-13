@@ -321,7 +321,7 @@ html {
 .selected-thumbnail {
   height: 140px;
   width: 140px;
-  padding: 8px;
+  padding: 0px 0px 8px 0px;
 }
 
 .selected-title{

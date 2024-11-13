@@ -50,11 +50,6 @@ def create_app():
 
 app = create_app()
 
-
-# App logic =================================
-# ===========================================
-
-
 def validate_token():
     if not app.auth_manager.validate_token(app.cache_handler.get_cached_token()):
         return False
@@ -67,6 +62,8 @@ def login_required(f):
             return redirect("/")
         return f(*args, **kwargs)
     return decorated_function
+
+
 
 
 @app.route("/")

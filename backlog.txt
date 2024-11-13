@@ -1,4 +1,6 @@
-let the user know if their session expired
+let the user know if their session expired -- this may not be possible if there are no API requests made
+
+add a ZSR display to search
 
 make sure everything in styles.css is still in use
 

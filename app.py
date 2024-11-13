@@ -152,8 +152,6 @@ def webhook():
         event = request.headers.get('X-GitHub-Event')
         if event == "ping":
             return json.dumps({'msg': 'Hi!'})
-        if event != "push":
-            return json.dumps({'msg': "Wrong event type"})
 
         x_hub_signature = request.headers.get('X-Hub-Signature')
         w_secret = os.getenv('PYTHONANYWHERE_DEPLOYMENT_SECRET')

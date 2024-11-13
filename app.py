@@ -165,8 +165,8 @@ def webhook():
                 payload=payload))
             abort(abort_code)
 
-        if payload['ref'] != 'refs/heads/main':
-            return json.dumps({'msg': 'Not main branch; ignoring'})
+        if payload['action'] != "closed":
+            return json.dumps({'msg': "Wrong event type"})
 
         repo = git.Repo('/home/waveguide/wave_guide')
         origin = repo.remotes.origin

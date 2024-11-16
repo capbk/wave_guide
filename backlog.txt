@@ -1,11 +1,7 @@
-setup ci
-    deploy to pythonanywhere after merging to main
-    
-let the user know if their session expired
-
-make sure everything in styles.css is still in use
-
 we lose the track input card placeholders when switching between modes
+
+add up and down arrow key navigation between search results
+if search returns a 404 retry 2x and then show an error if it still fails
 
 review styles for consistency
     padding

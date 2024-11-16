@@ -113,6 +113,7 @@ function setupModeToggle(location) {
     const moodSelect = document.getElementById(`${location}-mood-select`);
     const selectedSong = document.getElementById(`${location}-selected-song`);
     const selectedMood = document.getElementById(`${location}-selected-mood`);
+    const placeholder = document.getElementById(`${location}-selected-result-placeholder`);
 
     radioButtons.forEach(radio => {
         radio.addEventListener('change', (e) => {
@@ -127,13 +128,23 @@ function setupModeToggle(location) {
             if (mode === CONSTANTS.MODES.SONG) {
                 songInput.style.display = 'block';
                 moodSelect.style.display = 'none';
-                selectedSong.style.display = 'block';
+                // Only show selected song if one exists in state
+                const hasSong = location === CONSTANTS.LOCATIONS.SOURCE ? 
+                    state.getSourceTrackId() : 
+                    state.getDestinationTrackId();
+                selectedSong.style.display = hasSong ? 'block' : 'none';
                 selectedMood.style.display = 'none';
+                placeholder.style.display = hasSong ? 'none' : 'block';
             } else {
                 songInput.style.display = 'none';
                 moodSelect.style.display = 'block';
+                // Only show selected mood if one exists in state
+                const hasMood = location === CONSTANTS.LOCATIONS.SOURCE ? 
+                    state.getSourceMood() : 
+                    state.getDestinationMood();
+                selectedMood.style.display = hasMood ? 'block' : 'none';
                 selectedSong.style.display = 'none';
-                selectedMood.style.display = 'block';
+                placeholder.style.display = hasMood ? 'none' : 'block';
             }
         });
     });

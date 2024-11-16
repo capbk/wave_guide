@@ -307,6 +307,14 @@ html {
   white-space: nowrap;
 }
 
+.search-error {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 12px 16px;
+  cursor: default;  /* Remove pointer cursor since it's not clickable */
+  opacity: 0.9;
+}
+
 .selected-track-container {
   display: flex;
   flex-direction: column;

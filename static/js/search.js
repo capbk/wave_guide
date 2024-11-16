@@ -91,6 +91,23 @@ const handleTrackSelection = (item, {
   selectedResultContainer.style.display = "block";
 };
 
+// Add this retry utility near the top with other helper functions
+const retry = (fn, retriesLeft = 2, interval = 1000) => {
+  return new Promise((resolve, reject) => {
+    fn()
+      .then(resolve)
+      .catch((error) => {
+        if (retriesLeft === 0) {
+          reject(error);
+          return;
+        }
+        setTimeout(() => {
+          retry(fn, retriesLeft - 1, interval).then(resolve, reject);
+        }, interval);
+      });
+  });
+};
+
 // Main autocomplete function
 export function createDebouncedSearch(
   input,
@@ -107,18 +124,19 @@ export function createDebouncedSearch(
     }
 
     try {
-      const response = await fetch("/autocomplete", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query })
-      });
+      const fetchSearch = () =>
+        fetch("/autocomplete", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query })
+        }).then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
+      const data = await retry(fetchSearch);
       searchResultsList.innerHTML = '';
 
       data.forEach(item => {
@@ -129,7 +147,7 @@ export function createDebouncedSearch(
         
         const elements = createTrackResult(item);
         elements.forEach(element => li.appendChild(element));
- 
+
         li.addEventListener('click', () => handleTrackSelection(item, {
           searchResultsList,
           selectedResultContainer,
@@ -145,7 +163,11 @@ export function createDebouncedSearch(
     } catch (error) {
       console.error('Error fetching search results:', error);
       searchResultsList.innerHTML = '';
-      searchResultsList.style.display = "none";
+
+      const errorLi = createElement('li', {}, ['search-results-item', 'search-error']);
+      errorLi.textContent = 'Please refresh the page and try again.';
+      searchResultsList.appendChild(errorLi);
+      searchResultsList.style.display = "block";
     }
   };
 

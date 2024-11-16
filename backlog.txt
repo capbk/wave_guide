@@ -1,7 +1,4 @@
-we lose the track input card placeholders when switching between modes
-
 add up and down arrow key navigation between search results
-if search returns a 404 retry 2x and then show an error if it still fails
 
 review styles for consistency
     padding
@@ -12,7 +9,7 @@ review styles for consistency
     alignment
 
 experiment with mobile
-    fix odd border colors and icons on actual mobbile chrome browser  
+    fix odd border colors and icons on actual mobile chrome browser
     test safari mobile
     test firefox mobile
 
@@ -20,7 +17,6 @@ test other browsers on desktop
     safari
     firefox
 
-add up and down arrow key navigation between search results
 
 convert to typescript
 

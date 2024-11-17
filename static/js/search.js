@@ -91,6 +91,23 @@ const handleTrackSelection = (item, {
   selectedResultContainer.style.display = "block";
 };
 
+// Add this retry utility near the top with other helper functions
+const retry = (fn, retriesLeft = 2, interval = 1000) => {
+  return new Promise((resolve, reject) => {
+    fn()
+      .then(resolve)
+      .catch((error) => {
+        if (retriesLeft === 0) {
+          reject(error);
+          return;
+        }
+        setTimeout(() => {
+          retry(fn, retriesLeft - 1, interval).then(resolve, reject);
+        }, interval);
+      });
+  });
+};
+
 // Main autocomplete function
 export function createDebouncedSearch(
   input,
@@ -100,6 +117,30 @@ export function createDebouncedSearch(
   location,
   state
 ) {
+  let currentSelection = -1;
+
+  const updateSelection = (newIndex) => {
+    const items = searchResultsList.querySelectorAll('li');
+    // Remove hover class from all items first
+    items.forEach(item => item.classList.remove('search-results-item-hover'));
+    // Update current selection
+    currentSelection = newIndex;
+    // Add hover class to new selection
+    items[currentSelection]?.classList.add('search-results-item-hover');
+    // Ensure selected item is visible
+    items[currentSelection]?.scrollIntoView({ block: 'nearest' });
+  };
+
+  // Add mouse event listeners to each search result item
+  const addMouseListeners = () => {
+    const items = searchResultsList.querySelectorAll('li');
+    items.forEach((item, index) => {
+      item.addEventListener('mouseenter', () => {
+        updateSelection(index);
+      });
+    });
+  };
+
   const searchTracks = async (query) => {
     if (!query) {
       searchResultsList.style.display = "none";
@@ -107,18 +148,19 @@ export function createDebouncedSearch(
     }
 
     try {
-      const response = await fetch("/autocomplete", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query })
-      });
+      const fetchSearch = () =>
+        fetch("/autocomplete", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query })
+        }).then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
+      const data = await retry(fetchSearch);
       searchResultsList.innerHTML = '';
 
       data.forEach(item => {
@@ -129,7 +171,7 @@ export function createDebouncedSearch(
         
         const elements = createTrackResult(item);
         elements.forEach(element => li.appendChild(element));
- 
+
         li.addEventListener('click', () => handleTrackSelection(item, {
           searchResultsList,
           selectedResultContainer,
@@ -142,20 +184,54 @@ export function createDebouncedSearch(
       });
  
       searchResultsList.style.display = "block";
+
+      // Add this after you populate the search results
+      addMouseListeners();
     } catch (error) {
       console.error('Error fetching search results:', error);
       searchResultsList.innerHTML = '';
-      searchResultsList.style.display = "none";
+
+      const errorLi = createElement('li', {}, ['search-results-item', 'search-error']);
+      errorLi.textContent = 'Please refresh the page and try again.';
+      searchResultsList.appendChild(errorLi);
+      searchResultsList.style.display = "block";
     }
   };
 
   const debouncedSearch = debounce(searchTracks, 350);
 
-  // Event listeners
-  input.addEventListener("input", (e) => debouncedSearch(e.target.value));
+  // Updated event listeners
+  input.addEventListener("input", (e) => {
+    currentSelection = -1;
+    debouncedSearch(e.target.value);
+  });
+
   input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      searchResultsList.firstChild?.click();
+    const items = searchResultsList.querySelectorAll('li');
+    const isVisible = searchResultsList.style.display === "block";
+
+    if (!isVisible || items.length === 0) return;
+
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        updateSelection(Math.min(currentSelection + 1, items.length - 1));
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        updateSelection(Math.max(currentSelection - 1, 0));
+        break;
+      case "Enter":
+        e.preventDefault();
+        if (currentSelection >= 0) {
+          items[currentSelection].click();
+        } else {
+          items[0]?.click();
+        }
+        break;
+      case "Escape":
+        searchResultsList.style.display = "none";
+        break;
     }
   });
 }

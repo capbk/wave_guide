@@ -1,22 +1,5 @@
-setup ci
-    deploy to pythonanywhere after merging to main
-    
-let the user know if their session expired
-
-make sure everything in styles.css is still in use
-
-we lose the track input card placeholders when switching between modes
-
-review styles for consistency
-    padding
-    font size
-    corner radius
-    drop shadow
-    color palette
-    alignment
-
 experiment with mobile
-    fix odd border colors and icons on actual mobbile chrome browser  
+    fix odd border colors and icons on actual mobile chrome browser
     test safari mobile
     test firefox mobile
 
@@ -24,7 +7,10 @@ test other browsers on desktop
     safari
     firefox
 
-add up and down arrow key navigation between search results
+look into out of the box search input libraries
+
+look into out of the box library for playlist modal
+    revisit all of the spacing between elements
 
 convert to typescript
 

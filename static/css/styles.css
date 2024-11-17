@@ -12,6 +12,7 @@
   --default-box-shadow: 3.3px 6.6px 6.6px hsl(0deg 0% 0% / 0.42);
   --modal-box-shadow: 5px 10px 10px hsl(0deg 0% 0% / 0.32);
   --placeholder-border: 1px inset var(--bluish-grey);
+  --placeholder-border-mobile: 1px solid var(--bluish-grey);
   --stencil-gradient: linear-gradient(
     to right,
     hsla(0, 0%, 0%, 0.1),
@@ -616,5 +617,13 @@ html {
 
   .header-bar {
     margin-bottom: 8px;
+  }
+
+  .placeholder-thumbnail,
+  .placeholder-title,
+  .placeholder-artist,
+  .placeholder-playlist-title,
+  .placeholder-playlist-thumbnail {
+    border: var(--placeholder-border-mobile);
   }
 }

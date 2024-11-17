@@ -208,7 +208,7 @@ html {
   background-color: var(--card-blue);
   color: var(--paper-cream);
   box-shadow: var(--default-box-shadow);
-  margin: 4px 8px 8px 8px;
+  margin: 4px 8px 16px 8px;
   padding: 16px;
   border-radius: var(--default-border-radius);
   height: 320px;

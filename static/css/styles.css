@@ -76,13 +76,13 @@ html {
 }
 
 .info-btn {
-  padding: 10px 20px;
+  padding: 8px 16px;
   border-radius: var(--default-border-radius);
   border: 1px solid transparent;
   background-color: var(--transparent-grey);
   color: var(--paper-cream);
   cursor: pointer;
-  font-size: 0.8em;
+  font-size: 0.8rem;
   box-shadow: var(--default-box-shadow);
 }
 
@@ -97,8 +97,8 @@ html {
   box-shadow: var(--default-box-shadow);
   border: 1px solid transparent;
   cursor: pointer;
-  font-size: 0.8em;
-  padding: 10px 20px;
+  font-size: 0.8rem;
+  padding: 8px 16px;
 }
 
 .log-out-btn:hover {
@@ -115,7 +115,7 @@ html {
 }
 
 .explainer {
-  font-size: 1em;
+  font-size: 1rem;
   border-radius: var(--default-border-radius);
   padding: 0px 8px 8px 8px;
   margin: 0px 8px 16px 8px;
@@ -160,7 +160,7 @@ html {
 .explainer-text strong {
   display: block;     /* Title on its own line */
   margin-bottom: 16px;
-  font-size: 1.2em;   /* Slightly larger title */
+  font-size: 1.2rem;   /* Slightly larger title */
   color: var(--paper-cream);
   text-align: center;
 }
@@ -193,12 +193,13 @@ html {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  padding: 8px;
 }
 
 .card-label {
   color: #51afca;
   margin: 8px 0px 0px 8px;
-  font-size: 1.2em;
+  font-size: 1.2rem;
 }
 
 .track-input-card {
@@ -209,7 +210,7 @@ html {
   color: var(--paper-cream);
   box-shadow: var(--default-box-shadow);
   margin: 4px 8px 8px 8px;
-  padding: 8px;
+  padding: 16px;
   border: var(--outline-border);
   border-radius: var(--default-border-radius);
   height: 320px;
@@ -301,7 +302,7 @@ html {
 }
 
 .search-result-artist {
-  font-size: 0.8em;
+  font-size: 0.8rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -358,7 +359,7 @@ html {
   }
 
 .selected-artist {
-  font-size: 0.8em;
+  font-size: 0.8rem;
   max-width: 140px;
   line-clamp: 2;
   -webkit-line-clamp: 2;
@@ -535,7 +536,7 @@ html {
 }
 
 .playlist-title {
-    font-size: 1.2em;
+    font-size: 1.2rem;
     font-weight: 700;
     overflow: hidden;
     max-width: 500px;

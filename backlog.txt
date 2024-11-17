@@ -15,6 +15,7 @@ test other browsers on desktop
     safari
     firefox
 
+look into out of the box search input libraries
 
 convert to typescript
 

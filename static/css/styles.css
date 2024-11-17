@@ -76,7 +76,7 @@ html {
   margin: 10px;
 }
 
-.info-btn {
+.info-btn, .log-out-btn {
   padding: 8px 16px;
   border-radius: var(--default-border-radius);
   border: 1px solid transparent;
@@ -87,24 +87,16 @@ html {
   box-shadow: var(--default-box-shadow);
 }
 
-.info-btn:hover {
+.info-btn:hover, .log-out-btn:hover {
   background-color: var(--transparent-grey);
   opacity: 0.8;
-}
-.log-out-btn {
-  background-color: var(--transparent-grey);
-  color: var(--paper-cream);
-  border-radius: var(--default-border-radius);
-  box-shadow: var(--default-box-shadow);
-  border: 1px solid transparent;
-  cursor: pointer;
-  font-size: 0.8rem;
-  padding: 8px 16px;
 }
 
-.log-out-btn:hover {
-  background-color: var(--transparent-grey);
-  opacity: 0.8;
+.info-icon, .logout-icon {
+  width: 20px;
+  height: 20px;
+  display: block;
+  stroke: var(--paper-cream);
 }
 
 .main-container {
@@ -601,9 +593,12 @@ html {
 
   .header-buttons button {
     padding: 8px;
-    min-width: 36px;
+    width: 36px;
     height: 36px;
     border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .header-buttons {
@@ -611,8 +606,14 @@ html {
   }
 
   .info-btn, .log-out-btn {
+    padding: 0;
     background: var(--transparent-grey);
     border: none;
+  }
+
+  .info-icon, .logout-icon {
+    width: 18px;
+    height: 18px;
   }
 
   .header-bar {

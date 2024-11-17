@@ -117,6 +117,20 @@ export function createDebouncedSearch(
   location,
   state
 ) {
+  let currentSelection = -1;
+
+  const updateSelection = (newIndex) => {
+    const items = searchResultsList.querySelectorAll('li');
+    // Remove previous selection
+    items[currentSelection]?.classList.remove('search-results-item-hover');
+    // Update current selection
+    currentSelection = newIndex;
+    // Add hover class to new selection
+    items[currentSelection]?.classList.add('search-results-item-hover');
+    // Ensure selected item is visible
+    items[currentSelection]?.scrollIntoView({ block: 'nearest' });
+  };
+
   const searchTracks = async (query) => {
     if (!query) {
       searchResultsList.style.display = "none";
@@ -173,11 +187,38 @@ export function createDebouncedSearch(
 
   const debouncedSearch = debounce(searchTracks, 350);
 
-  // Event listeners
-  input.addEventListener("input", (e) => debouncedSearch(e.target.value));
+  // Updated event listeners
+  input.addEventListener("input", (e) => {
+    currentSelection = -1;
+    debouncedSearch(e.target.value);
+  });
+
   input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      searchResultsList.firstChild?.click();
+    const items = searchResultsList.querySelectorAll('li');
+    const isVisible = searchResultsList.style.display === "block";
+
+    if (!isVisible || items.length === 0) return;
+
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        updateSelection(Math.min(currentSelection + 1, items.length - 1));
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        updateSelection(Math.max(currentSelection - 1, 0));
+        break;
+      case "Enter":
+        e.preventDefault();
+        if (currentSelection >= 0) {
+          items[currentSelection].click();
+        } else {
+          items[0]?.click();
+        }
+        break;
+      case "Escape":
+        searchResultsList.style.display = "none";
+        break;
     }
   });
 }

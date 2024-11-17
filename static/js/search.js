@@ -121,14 +121,24 @@ export function createDebouncedSearch(
 
   const updateSelection = (newIndex) => {
     const items = searchResultsList.querySelectorAll('li');
-    // Remove previous selection
-    items[currentSelection]?.classList.remove('search-results-item-hover');
+    // Remove hover class from all items first
+    items.forEach(item => item.classList.remove('search-results-item-hover'));
     // Update current selection
     currentSelection = newIndex;
     // Add hover class to new selection
     items[currentSelection]?.classList.add('search-results-item-hover');
     // Ensure selected item is visible
     items[currentSelection]?.scrollIntoView({ block: 'nearest' });
+  };
+
+  // Add mouse event listeners to each search result item
+  const addMouseListeners = () => {
+    const items = searchResultsList.querySelectorAll('li');
+    items.forEach((item, index) => {
+      item.addEventListener('mouseenter', () => {
+        updateSelection(index);
+      });
+    });
   };
 
   const searchTracks = async (query) => {
@@ -174,6 +184,9 @@ export function createDebouncedSearch(
       });
  
       searchResultsList.style.display = "block";
+
+      // Add this after you populate the search results
+      addMouseListeners();
     } catch (error) {
       console.error('Error fetching search results:', error);
       searchResultsList.innerHTML = '';

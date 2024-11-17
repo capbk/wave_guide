@@ -1,5 +1,3 @@
-add up and down arrow key navigation between search results
-
 review styles for consistency
     padding
     font size

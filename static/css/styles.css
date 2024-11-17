@@ -273,12 +273,6 @@ html {
   display: flex;
 }
 
-.search-results-item:hover {
-  background-color: #f5f5f5;
-  cursor: pointer;
-}
-
-/* duplicate of hover class to make keyboard navigation easier */
 .search-results-item-hover {
   background-color: #f5f5f5;
   cursor: pointer;

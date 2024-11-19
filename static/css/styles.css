@@ -8,11 +8,8 @@
   --accent-red: #be4364;
   --transparent-red: #be436424;
   --transparent-grey: hsla(0, 0%, 100%, 0.15);
-  --minimal-box-shadow: 1px 2px 2px hsl(0deg 0% 0% / 0.45);
-  --default-box-shadow: 3.3px 6.6px 6.6px hsl(0deg 0% 0% / 0.42);
-  --modal-box-shadow: 5px 10px 10px hsl(0deg 0% 0% / 0.32);
-  --placeholder-border: 1px inset var(--bluish-grey);
-  --placeholder-border-mobile: 1px solid var(--bluish-grey);
+  --default-box-shadow: 2px 4px 4px hsl(0deg 0% 0% / 0.33);
+  --modal-box-shadow: 5px 10px 10px hsl(0deg 0% 0% / 0.33);
   --stencil-gradient: linear-gradient(
     to right,
     hsla(0, 0%, 0%, 0.1),
@@ -384,7 +381,6 @@ html {
   height: 8.75rem;
   width: 8.75rem;
   background-image: var(--stencil-gradient);
-  border: var(--placeholder-border);
   border-radius: var(--default-border-radius);
   background-size: 400% 100%;
   margin: 0 auto;
@@ -406,7 +402,6 @@ html {
 .placeholder-title {
   height: 1.4375rem;
   width: 8.75rem;
-  border: var(--placeholder-border);
   border-radius: var(--default-border-radius);
   background-image: var(--stencil-gradient);
   background-size: 400% 100%;
@@ -417,7 +412,6 @@ html {
 .placeholder-artist {
   height: 0.9375rem;
   width: 6.25rem;
-  border: var(--placeholder-border);
   border-radius: var(--default-border-radius);
   background-image: var(--stencil-gradient);
   background-size: 400% 100%;
@@ -643,14 +637,6 @@ html {
 
   .track-input-card {
     width: clamp(18rem, 86vw, 30rem);
-  }
-
-  .placeholder-thumbnail,
-  .placeholder-title,
-  .placeholder-artist,
-  .placeholder-playlist-title,
-  .placeholder-playlist-thumbnail {
-    border: var(--placeholder-border-mobile);
   }
 }
 

@@ -1,5 +1,6 @@
 improve CSS consistency
     move away from fixed dimensions for elements such as logo, search-input, selected-thumbnail, etc
+        not so sure about this, it can make for unpredictable combos.  Maybe just have a pair of dimensions for each element mobile vs desktop?.  Could consider adding nore breakpoints for better control.
     slim down number of font sizes and create a clear heirarchy using variables
     standardize color definitions ot hex or hsla, probably the latter
     make sure everything is using the same border radius
@@ -9,13 +10,12 @@ improve CSS consistency
 make mobile site easier to read
     cards should take up entire width of screen
         everything inside of them should scale up
-            move to rem from px?
-                fix jumping when going from song to mood mode
         header should fit horizontally
             move logo to top left?  Use text logo?
     Larger fonts all around
     white edges should not show up around page when on actual mobile browser
-
+        this appears related to browser zoom level
+        
 test other browsers
     safari 
         mobile

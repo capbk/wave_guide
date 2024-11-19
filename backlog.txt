@@ -1,5 +1,6 @@
 experiment with mobile
-    fix odd border colors and icons on actual mobile chrome browser
+    fix odd border colors on actual mobile chrome browser
+    fix log out icon on actual mobile chrome browser
     test safari mobile
     test firefox mobile
 

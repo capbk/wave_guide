@@ -12,6 +12,7 @@
   --default-box-shadow: 3.3px 6.6px 6.6px hsl(0deg 0% 0% / 0.42);
   --modal-box-shadow: 5px 10px 10px hsl(0deg 0% 0% / 0.32);
   --placeholder-border: 1px inset var(--bluish-grey);
+  --placeholder-border-mobile: 1px solid var(--bluish-grey);
   --stencil-gradient: linear-gradient(
     to right,
     hsla(0, 0%, 0%, 0.1),
@@ -75,7 +76,7 @@ html {
   margin: 10px;
 }
 
-.info-btn {
+.info-btn, .log-out-btn {
   padding: 8px 16px;
   border-radius: var(--default-border-radius);
   border: 1px solid transparent;
@@ -86,24 +87,18 @@ html {
   box-shadow: var(--default-box-shadow);
 }
 
-.info-btn:hover {
+.info-btn:hover, .log-out-btn:hover {
   background-color: var(--transparent-grey);
   opacity: 0.8;
-}
-.log-out-btn {
-  background-color: var(--transparent-grey);
-  color: var(--paper-cream);
-  border-radius: var(--default-border-radius);
-  box-shadow: var(--default-box-shadow);
-  border: 1px solid transparent;
-  cursor: pointer;
-  font-size: 0.8rem;
-  padding: 8px 16px;
 }
 
-.log-out-btn:hover {
-  background-color: var(--transparent-grey);
-  opacity: 0.8;
+.info-icon, .logout-icon {
+  stroke: var(--paper-cream);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  display: block;
 }
 
 .main-container {
@@ -198,7 +193,7 @@ html {
 .card-label {
   color: #51afca;
   margin: 8px 0px 0px 8px;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 }
 
 .track-input-card {
@@ -600,9 +595,12 @@ html {
 
   .header-buttons button {
     padding: 8px;
-    min-width: 36px;
+    width: 36px;
     height: 36px;
     border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .header-buttons {
@@ -610,11 +608,25 @@ html {
   }
 
   .info-btn, .log-out-btn {
+    padding: 0;
     background: var(--transparent-grey);
     border: none;
   }
 
+  .info-icon, .logout-icon {
+    width: 18px;
+    height: 18px;
+  }
+
   .header-bar {
     margin-bottom: 8px;
+  }
+
+  .placeholder-thumbnail,
+  .placeholder-title,
+  .placeholder-artist,
+  .placeholder-playlist-title,
+  .placeholder-playlist-thumbnail {
+    border: var(--placeholder-border-mobile);
   }
 }

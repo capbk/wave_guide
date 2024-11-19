@@ -238,6 +238,12 @@ html {
   border-radius: var(--default-border-radius);
   padding: var(--space-sm) var(--space-md);
   margin: 0rem;
+  outline: none;
+}
+
+.search-input:focus,
+.mood-input:focus {
+  box-shadow: 0 0 0 2px var(--accent-blue);
 }
 
 .mood-input {

@@ -19,7 +19,7 @@
     hsla(0, 0%, 0%, 0.22),
     hsla(0, 0%, 0%, 0.1)
   );
-  --search-input-width: 15.625rem;
+  --search-input-width: clamp(15.625rem, 90vw, 25rem);
   --space-xs: 0.25rem;    /* 4px */
   --space-sm: 0.5rem;     /* 8px */
   --space-md: 1rem;       /* 16px */
@@ -40,15 +40,15 @@ html {
 }
 
 .logo {
-  height: 15rem;
-  width: 15rem;
-  margin-bottom: 1rem;
+  height: clamp(10rem, 30vw, 15rem);
+  width: clamp(10rem, 30vw, 15rem);
+  margin-bottom: var(--space-md);
 }
 
 .header-bar {
   display: flex;
   flex-direction: row;
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-md);
   position: relative;
   min-height: 4.75rem;
 }
@@ -57,13 +57,13 @@ html {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 0.75rem;
+  gap: var(--space-sm);
 }
 
 .logo-small {
   height: 7.5rem;
   width: 7.5rem;
-  margin: 0rem 0.5rem;
+  margin: 0 var(--space-sm);
 }
 
 .product-name {
@@ -76,13 +76,13 @@ html {
   top: 0;
   right: 0;
   display: flex;
-  gap: 0.625rem;
+  gap: var(--space-sm);
   align-items: center;
-  margin: 0.625rem;
+  margin: var(--space-sm);
 }
 
 .info-btn, .log-out-btn {
-  padding: 0.5rem 1rem;
+  padding: var(--space-sm) var(--space-md);
   border-radius: var(--default-border-radius);
   border: 1px solid transparent;
   background-color: var(--transparent-grey);
@@ -117,8 +117,8 @@ html {
 .explainer {
   font-size: 1rem;
   border-radius: var(--default-border-radius);
-  padding: 0rem 0.5rem 0.5rem 0.5rem;
-  margin: 0rem 0.5rem 1rem 0.5rem;
+  padding: 0 var(--space-sm) var(--space-sm) var(--space-sm);
+  margin: 0 var(--space-sm) var(--space-md) var(--space-sm);
   background-color: var(--transparent-grey);
   color: var(--paper-cream);
   box-shadow: var(--minimal-box-shadow);
@@ -138,10 +138,10 @@ html {
 }
 
 .explainer-list li {
-  margin-bottom: 0.75rem;
+  margin-bottom: var(--space-sm);
   line-height: 1.4;
   list-style: none;     /* Removes default bullets */
-  padding-left: 1.5rem;   /* Makes room for custom bullet */
+  padding-left: var(--space-lg);   /* Makes room for custom bullet */
   position: relative;   /* For custom bullet positioning */
 }
 
@@ -153,7 +153,7 @@ html {
 }
 
 .explainer-text {
-  padding: 1.25rem;
+  padding: var(--space-lg);
   max-width: 37.5rem;
 }
 
@@ -178,7 +178,7 @@ html {
   font-size: 1.5rem;
   font-weight: bold;
   cursor: pointer;
-  margin: 0rem 0rem 0rem 0.5rem;
+  margin: 0 0 0 var(--space-sm);
 }
 
 .both-cards-container {
@@ -197,28 +197,26 @@ html {
 
 .card-label {
   color: #51afca;
-  margin: 0.5rem 0rem 0rem 0.5rem;
+  margin: var(--space-sm) 0 0 var(--space-sm);
   font-size: 1.4rem;
 }
 
 .track-input-card {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  width: clamp(18rem, 30vw, 30rem);
+  height: clamp(16rem, 40vh, 24rem);
+  padding: var(--space-md);
   background-color: var(--card-blue);
   color: var(--paper-cream);
   box-shadow: var(--default-box-shadow);
-  margin: 0.25rem 0.5rem 1rem 0.5rem;
-  padding: 1rem;
+  margin: var(--space-xs) var(--space-sm) var(--space-md) var(--space-sm);
   border-radius: var(--default-border-radius);
-  height: 20rem;
 }
 
 .mode-selector {
   display: flex;
-  gap: 2rem;
+  gap: var(--space-xl);
   width: 100%;
-  padding: 0.5rem;
+  padding: var(--space-sm);
   margin-bottom: 0;
 }
 
@@ -232,8 +230,7 @@ html {
 }
 
 .search-input-container {
-  display: block;
- width: var(--search-input-width);
+  width: 100%;
 }
 
 .search-input {
@@ -256,7 +253,7 @@ html {
   position: absolute;
   background-color: var(--paper-cream);
   color: var(--bluish-grey);
-  width: var(--search-input-width);
+  width: 100%;
   background-color: white;
   list-style-type: none;
   margin: 0;
@@ -278,7 +275,7 @@ html {
 .search-result-thumbnail {
   width: 3.5rem;
   height: 3.5rem;
-  margin-right: 0.25rem;
+  margin-right: var(--space-xs);
 }
 
 .search-result-track-info {
@@ -293,8 +290,7 @@ html {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  margin-top: 0.25rem;
-  margin-bottom: 0.25rem;
+  margin: var(--space-xs) 0;
 }
 
 .search-result-artist {
@@ -324,9 +320,9 @@ html {
 }
 
 .selected-thumbnail {
-  height: 8.75rem;
-  width: 8.75rem;
-  padding: 0.5rem;
+  height: clamp(6rem, 20vw, 8.75rem);
+  width: clamp(6rem, 20vw, 8.75rem);
+  padding: var(--space-sm);
 }
 
 .selected-title{
@@ -343,7 +339,7 @@ html {
 
 .selected-playlist-title{
     max-width: 15rem;
-    padding: 0.125rem;
+    padding: var(--space-xs);
     line-clamp: 2;
     -webkit-line-clamp: 2;
     display: -webkit-box;
@@ -418,13 +414,13 @@ html {
 }
 
 .btn {
-  padding: 1rem 1.5rem 1rem;
+  padding: var(--space-md) var(--space-lg) var(--space-md);
   align-self: center;
   box-sizing: border-box;
   text-decoration: none;
   word-wrap: break-word;
   display: inline-block;
-  margin: 0.25rem;
+  margin: var(--space-xs);
   font-weight: 700;
   text-align: center;
   cursor: pointer;
@@ -446,15 +442,15 @@ html {
 }
 
 .error-message {
-  margin-bottom: 0.625rem;
+  margin-bottom: var(--space-sm);
   color: var(--accent-red);
-  padding: 0.9375rem 1.875rem;
+  padding: var(--space-md) var(--space-xl);
   display: none;
 }
 
 .generate-playllist-btn {
   z-index: 0;
-  margin: 0.25rem 0.5rem 2.5rem 0.5rem;
+  margin: var(--space-xs) var(--space-sm) var(--space-xl) var(--space-sm);
   width: 16.875rem;
 }
 
@@ -490,7 +486,7 @@ html {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0.5rem;
+  padding: var(--space-sm);
 }
 
 .modal {
@@ -498,7 +494,7 @@ html {
   position: absolute; /* Set position to absolute so it can be centered */
   top: 50%;
   left: 50%;
-  padding: 1rem;
+  padding: var(--space-md);
   transform: translate(-50%, -50%);
   background-color: var(--paper-cream);
   box-shadow: var(--modal-box-shadow);
@@ -538,7 +534,7 @@ html {
     overflow: hidden;
     max-width: 31.25rem;
     text-overflow: ellipsis;
-    margin: 0.625rem 0;
+    margin: var(--space-sm) 0;
   }
 
 .placeholder-playlist-thumbnail {
@@ -549,7 +545,7 @@ html {
 .playlist-thumbnail {
   height: 8.75rem;
   width: 8.75rem;
-  padding: 0.5rem;
+  padding: var(--space-sm);
 }
 
 
@@ -580,6 +576,7 @@ html {
   }
 }
 
+/* Mobile styles */
 @media screen and (max-width: 768px) {
   .desktop-only {
     display: none;
@@ -595,7 +592,7 @@ html {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    top: 0.5rem;
+    top: var(--space-sm);
   }
 
   .header-buttons button {
@@ -609,7 +606,7 @@ html {
   }
 
   .header-buttons {
-    gap: 0.5rem;  /* Reduces space between buttons */
+    gap: var(--space-sm);
   }
 
   .info-btn, .log-out-btn {
@@ -624,7 +621,11 @@ html {
   }
 
   .header-bar {
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--space-sm);
+  }
+
+  .track-input-card {
+    width: clamp(18rem, 86vw, 30rem);
   }
 
   .placeholder-thumbnail,

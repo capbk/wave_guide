@@ -93,10 +93,12 @@ html {
 }
 
 .info-icon, .logout-icon {
-  width: 20px;
-  height: 20px;
-  display: block;
   stroke: var(--paper-cream);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  display: block;
 }
 
 .main-container {

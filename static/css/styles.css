@@ -195,6 +195,7 @@ html {
   color: #51afca;
   margin: var(--space-sm) 0 0 var(--space-sm);
   font-size: 1.4rem;
+  text-shadow: var(--default-box-shadow);
 }
 
 .track-input-card {

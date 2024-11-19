@@ -25,7 +25,7 @@
       id="{{ location }}-autocomplete-input"
       name="query"
       class="search-input"
-      placeholder="{% if location == 'source' %}Search for a song to start your playlist{% else %}Search for a song to end your playlist{% endif %}"
+      placeholder="Search for a song"
       {% if location == "source" %}autofocus{% endif %}
       {% if initialMode == "mood" %}style="display:none"{% endif %}
     />
@@ -40,7 +40,7 @@
       {% if initialMode == "song" %}style="display:none"{% endif %}
     >
       <option disabled selected value>
-        {% if location == "source" %}Select a mood to start your playlist{% else %}Select a mood to end your playlist{% endif %}
+        Select a mood
       </option>
       <option value="Happy">Happy</option>
       <option value="Energized">Energized</option>

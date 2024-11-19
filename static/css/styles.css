@@ -19,7 +19,6 @@
     hsla(0, 0%, 0%, 0.22),
     hsla(0, 0%, 0%, 0.1)
   );
-  --search-input-width: clamp(15.625rem, 90vw, 25rem);
   --space-xs: 0.25rem;    /* 4px */
   --space-sm: 0.5rem;     /* 8px */
   --space-md: 1rem;       /* 16px */
@@ -202,8 +201,8 @@ html {
 }
 
 .track-input-card {
-  width: clamp(18rem, 30vw, 30rem);
-  height: clamp(16rem, 40vh, 24rem);
+  width: clamp(18rem, 25vw, 30rem);
+  height: clamp(14rem, 18rem, 22rem);
   padding: var(--space-md);
   background-color: var(--card-blue);
   color: var(--paper-cream);
@@ -214,39 +213,57 @@ html {
 
 .mode-selector {
   display: flex;
-  gap: var(--space-xl);
+  gap: var(--space-lg);
   width: 100%;
-  padding: var(--space-sm);
   margin-bottom: 0;
-}
-
-.mood-input {
-  background-color: var(--paper-cream);
-  color: var(--bluish-grey);
-  height: 2.5rem;
-  width: 100%;
-  border-radius: var(--default-border-radius);
-  padding: 0rem 0rem 0rem 0.5rem;
 }
 
 .search-input-container {
   width: 100%;
+  height: 2.5rem;
+  position: relative;
+  margin: var(--space-md) 0;
 }
 
-.search-input {
+.search-input,
+.mood-input {
+  width: 100%;
+  height: 2.5rem;
+  margin: 0;
+  line-height: 1.5;
+  box-sizing: border-box;
+  font-size: 1rem;
+  font-family: inherit;
   background-color: var(--paper-cream);
   color: var(--bluish-grey);
-  height: 2.375rem;
-  width: 96%; /* for some reason this overflows otherwise */
   border: 0px;
   border-radius: var(--default-border-radius);
-  padding: 0rem 0rem 0rem 0.5rem;
+  padding: var(--space-sm) var(--space-md);
   margin: 0rem;
 }
 
-::placeholder {
-  color: black;
+.mood-input {
+  padding: var(--space-sm) var(--space-md);
+}
+
+.search-input::placeholder,
+.mood-input,
+.mood-input option {
+  line-height: 1.5;
+  font-size: 1rem;
+  color: var(--bluish-grey);
   opacity: 1;
+}
+
+.search-input-container {
+  width: 100%;
+  height: 2.5rem;
+  position: relative;
+  margin: var(--space-md) 0;
+}
+
+::placeholder {
+  color: var(--bluish-grey);
 }
 
 .search-results-list {
@@ -636,3 +653,4 @@ html {
     border: var(--placeholder-border-mobile);
   }
 }
+

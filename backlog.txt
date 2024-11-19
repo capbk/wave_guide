@@ -1,12 +1,37 @@
-experiment with mobile
-    fix odd border colors on actual mobile chrome browser
-    fix log out icon on actual mobile chrome browser
-    test safari mobile
-    test firefox mobile
+improve CSS consistency
+    standardize common spacing values for margins and padding
+        /* Standardize common spacing values */
+        :root {
+        --spacing-xs: 0.25rem;    /* 4px */
+        --spacing-sm: 0.5rem;     /* 8px */
+        --spacing-md: 1rem;       /* 16px */
+        --spacing-lg: 1.5rem;     /* 24px */
+        --spacing-xl: 2rem;       /* 32px */
+        }
+    move away from fixed dimensions for elements such as logo, search-input, selected-thumbnail, etc
+    slim down number of font sizes and create a clear heirarchy using variables
+    standardize color definitions ot hex or hsla, probably the latter
+    make sure everything is using the same border radius
+    standardize shadows - values are arbitrary consider standardizing (review claude prompt)
+    consider adding multilpe breakpoints instead of the single breakpoint today
 
-test other browsers on desktop
-    safari
+make mobile site easier to read
+    cards should take up entire width of screen
+        everything inside of them should scale up
+            move to rem from px?
+                fix jumping when going from song to mood mode
+        header should fit horizontally
+            move logo to top left?  Use text logo?
+    Larger fonts all around
+    white edges should not show up around page when on actual mobile browser
+
+test other browsers
+    safari 
+        mobile
+        desktop
     firefox
+        mobile
+        desktop
 
 look into out of the box search input libraries
 

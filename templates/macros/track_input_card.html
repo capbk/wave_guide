@@ -3,7 +3,8 @@
 <div class="track-input-card">
   <div id="{{ location }}-mode-selector" class="mode-selector">
     <label class="radio-label">
-      <input type="radio" 
+      <input type="radio"
+             class="mode-selector-input"
              name="{{ location }}-mode" 
              value="song" 
              {% if initialMode == 'song' %}checked{% endif %}
@@ -12,6 +13,7 @@
     </label>
     <label class="radio-label">
       <input type="radio" 
+             class="mode-selector-input"
              name="{{ location }}-mode" 
              value="mood"
              {% if initialMode == 'mood' %}checked{% endif %}

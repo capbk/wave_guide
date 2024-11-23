@@ -1,12 +1,13 @@
 :root {
   --default-border-radius: 8px;
-  --bluish-grey: #151c25;
-  --background-grey: #313332;
-  --accent-blue: #51afca;
-  --card-blue: #51afca54;
-  --paper-cream: #efe4d5;
-  --accent-red: #be4364;
-  --transparent-red: #be436424;
+  --bluish-grey:hsl(214, 28%, 11%);
+  --background-grey: hsl(150, 2%, 20%);
+  --accent-blue:hsl(193, 53%, 55%);
+  --card-blue:hsla(193, 53%, 55%, 0.33);
+  --paper-cream:hsl(35, 45%, 89%);
+  --accent-red:	hsl(344, 49%, 50%);
+  --radio-button-red: hsl(344, 42%, 36%);
+  --transparent-red:hsla(344, 49%, 50%, 0.14);
   --transparent-grey: hsla(0, 0%, 100%, 0.15);
   --default-box-shadow: 2px 4px 4px hsl(0deg 0% 0% / 0.33);
   --modal-box-shadow: 5px 10px 10px hsl(0deg 0% 0% / 0.33);
@@ -117,7 +118,7 @@ html {
   margin: 0 var(--space-sm) var(--space-md) var(--space-sm);
   background-color: var(--transparent-grey);
   color: var(--paper-cream);
-  box-shadow: var(--minimal-box-shadow);
+  box-shadow: var(--default-box-shadow);
 
   display: flex;
   flex-direction: row;
@@ -167,16 +168,6 @@ html {
   height: 1.25rem;
 }
 
-.close-modal {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  font-size: 1.5rem;
-  font-weight: bold;
-  cursor: pointer;
-  margin: 0 0 0 var(--space-sm);
-}
-
 .both-cards-container {
   width: 90%;
   display: flex;
@@ -192,7 +183,7 @@ html {
 }
 
 .card-label {
-  color: #51afca; /* TODO: make this a variable */
+  color: var(--paper-cream);
   margin: var(--space-sm) 0 0 var(--space-sm);
   font-size: 1.4rem;
   text-shadow: var(--default-box-shadow);
@@ -201,7 +192,7 @@ html {
 .track-input-card {
   width: 16rem;
   height: clamp(14rem, 18rem, 22rem);
-  padding: var(--space-md);
+  padding: var(--space-lg);
   background-color: var(--card-blue);
   color: var(--paper-cream);
   box-shadow: var(--default-box-shadow);
@@ -239,6 +230,10 @@ html {
   padding: var(--space-sm) var(--space-md);
   margin: 0rem;
   outline: none;
+}
+
+.mode-selector-input {
+  accent-color: var(--radio-button-red);
 }
 
 .search-input:focus,
@@ -512,11 +507,21 @@ html {
   position: absolute; /* Set position to absolute so it can be centered */
   top: 50%;
   left: 50%;
-  padding: var(--space-md);
+  padding: var(--space-lg);
   transform: translate(-50%, -50%);
   background-color: var(--paper-cream);
   box-shadow: var(--modal-box-shadow);
   border-radius: var(--default-border-radius);
+}
+
+.close-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 0 0 0 var(--space-sm);
 }
 
 .shimmer {
@@ -640,10 +645,6 @@ html {
 
   .header-bar {
     margin-bottom: var(--space-sm);
-  }
-
-  .track-input-card {
-    width: clamp(18rem, 86vw, 30rem);
   }
 }
 

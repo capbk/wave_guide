@@ -618,20 +618,6 @@ html {
     top: var(--space-sm);
   }
 
-  .header-buttons button {
-    padding: 0.5rem;
-    width: 2.25rem;
-    height: 2.25rem;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .header-buttons {
-    gap: var(--space-sm);
-  }
-
   .info-btn, .log-out-btn {
     padding: 0;
     background: var(--transparent-grey);

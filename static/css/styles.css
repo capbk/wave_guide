@@ -192,14 +192,14 @@ html {
 }
 
 .card-label {
-  color: #51afca;
+  color: #51afca; /* TODO: make this a variable */
   margin: var(--space-sm) 0 0 var(--space-sm);
   font-size: 1.4rem;
   text-shadow: var(--default-box-shadow);
 }
 
 .track-input-card {
-  width: clamp(18rem, 25vw, 30rem);
+  width: 16rem;
   height: clamp(14rem, 18rem, 22rem);
   padding: var(--space-md);
   background-color: var(--card-blue);

@@ -240,9 +240,10 @@ html {
   outline: none;
 }
 
-.input-with-results {
+.search-input-with-results {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+  border-bottom: solid 1px var(--background-grey);
 }
 
 .mode-selector-input {

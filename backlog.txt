@@ -1,7 +1,3 @@
-look into out of the box library for playlist modal
-    revisit all of the spacing between elements
-
-
 make mobile site easier to read
     cards should take up entire width of screen?
         consider adding multilpe breakpoints instead of the single breakpoint today

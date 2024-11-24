@@ -306,7 +306,7 @@ html {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  max-width: 11.875rem;
+  max-width: 75%;
 }
 
 .search-result-title {

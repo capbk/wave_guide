@@ -22,6 +22,14 @@
   --space-md: 1rem;       /* 16px */
   --space-lg: 1.5rem;     /* 24px */
   --space-xl: 2rem;       /* 32px */
+
+  --fs-xs: 0.75rem;    /* 12px */
+  --fs-sm: 0.875rem;   /* 14px */
+  --fs-base: 1rem;     /* 16px */
+  --fs-md: 1.125rem;   /* 18px */
+  --fs-lg: 1.25rem;    /* 20px */
+  --fs-xl: 1.5rem;     /* 24px */
+  --fs-2xl: 2rem;      /* 32px */
 }
 
 html {
@@ -85,7 +93,7 @@ html {
   background-color: var(--transparent-grey);
   color: var(--paper-cream);
   cursor: pointer;
-  font-size: 0.8rem;
+  font-size: var(--fs-sm);
   box-shadow: var(--default-box-shadow);
 }
 
@@ -112,7 +120,7 @@ html {
 }
 
 .explainer {
-  font-size: 1rem;
+  font-size: var(--fs-base);
   border-radius: var(--default-border-radius);
   padding: 0 var(--space-sm) var(--space-sm) var(--space-sm);
   margin: 0 var(--space-sm) var(--space-md) var(--space-sm);
@@ -157,7 +165,7 @@ html {
 .explainer-text strong {
   display: block;     /* Title on its own line */
   margin-bottom: 1rem;
-  font-size: 1.2rem;   /* Slightly larger title */
+  font-size: var(--fs-lg);
   color: var(--paper-cream);
   text-align: center;
 }
@@ -185,7 +193,7 @@ html {
 .card-label {
   color: var(--paper-cream);
   margin: var(--space-sm) 0 0 var(--space-sm);
-  font-size: 1.4rem;
+  font-size: var(--fs-lg);
   text-shadow: var(--default-box-shadow);
 }
 
@@ -221,7 +229,7 @@ html {
   margin: 0;
   line-height: 1.5;
   box-sizing: border-box;
-  font-size: 1rem;
+  font-size: var(--fs-base);
   font-family: inherit;
   background-color: var(--paper-cream);
   color: var(--bluish-grey);
@@ -249,7 +257,7 @@ html {
 .mood-input,
 .mood-input option {
   line-height: 1.5;
-  font-size: 1rem;
+  font-size: var(--fs-base);
   color: var(--bluish-grey);
   opacity: 1;
 }
@@ -310,14 +318,14 @@ html {
 }
 
 .search-result-artist {
-  font-size: 0.8rem;
+  font-size: var(--fs-xs);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .search-error {
-  font-size: 0.875rem;
+  font-size: var(--fs-sm);
   font-weight: 500;
   padding: 0.75rem 1rem;
   cursor: default;  /* Remove pointer cursor since it's not clickable */
@@ -367,7 +375,7 @@ html {
   }
 
 .selected-artist {
-  font-size: 0.8rem;
+  font-size: var(--fs-xs);
   max-width: 8.75rem;
   line-clamp: 2;
   -webkit-line-clamp: 2;
@@ -439,7 +447,7 @@ html {
   cursor: pointer;
   border: 1px solid transparent;
   border-radius: var(--default-border-radius);
-  font-size: 0.875rem;
+  font-size: var(--fs-sm);
   line-height: 1;
   letter-spacing: 2px;
   min-width: 10rem;
@@ -518,7 +526,7 @@ html {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  font-size: 1.5rem;
+  font-size: var(--fs-xl);
   font-weight: bold;
   cursor: pointer;
   margin: 0 0 0 var(--space-sm);
@@ -552,7 +560,7 @@ html {
 }
 
 .playlist-title {
-    font-size: 1.2rem;
+    font-size: var(--fs-lg);
     font-weight: 700;
     overflow: hidden;
     max-width: 31.25rem;

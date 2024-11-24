@@ -1,3 +1,5 @@
+thumb nail and metadata are not aligned. they should align on the left
+
 improve CSS consistency
     slim down number of font sizes and create a clear heirarchy using variables
     standardize color definitions ot hex or hsla, probably the latter

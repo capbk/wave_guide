@@ -346,7 +346,7 @@ html {
 .selected-thumbnail {
   height: clamp(6rem, 20vw, 8.75rem);
   width: clamp(6rem, 20vw, 8.75rem);
-  padding: var(--space-sm);
+  padding: 0, var(--space-sm);
 }
 
 .selected-title{

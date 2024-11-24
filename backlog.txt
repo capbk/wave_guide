@@ -1,14 +1,8 @@
-thumb nail and metadata are not aligned. they should align on the left
 
-improve CSS consistency
-    slim down number of font sizes and create a clear heirarchy using variables
-    standardize color definitions ot hex or hsla, probably the latter
-    make sure everything is using the same border radius
-    standardize shadows - values are arbitrary consider standardizing (review claude prompt)
-    consider adding multilpe breakpoints instead of the single breakpoint today
 
 make mobile site easier to read
-    cards should take up entire width of screen
+    cards should take up entire width of screen?
+        consider adding multilpe breakpoints instead of the single breakpoint today
         everything inside of them should scale up
         header should fit horizontally
             move logo to top left?  Use text logo?

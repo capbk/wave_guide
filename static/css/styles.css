@@ -635,7 +635,7 @@ html {
   }
 
   .info-btn, .log-out-btn {
-    padding: 0;
+    padding: var(--space-xs);
     background: var(--transparent-grey);
     border: none;
   }

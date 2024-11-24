@@ -240,6 +240,11 @@ html {
   outline: none;
 }
 
+.input-with-results {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
 .mode-selector-input {
   accent-color: var(--radio-button-red);
 }
@@ -278,11 +283,11 @@ html {
   background-color: var(--paper-cream);
   color: var(--bluish-grey);
   width: 100%;
-  background-color: white;
+  background-color: var(--paper-cream);
   list-style-type: none;
   margin: 0;
   padding: 0;
-  border-radius: var(--default-border-radius);
+  border-radius: 0 0 var(--default-border-radius) var(--default-border-radius);
   z-index: 300;
   box-shadow: var(--default-box-shadow);
 }
@@ -456,7 +461,7 @@ html {
   text-transform: uppercase;
   white-space: normal;
   background-color: var(--accent-red);
-  color: white;
+  color: var(--paper-cream);
   box-shadow: var(--default-box-shadow);
 }
 

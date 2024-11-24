@@ -1,12 +1,22 @@
-experiment with mobile
-    fix odd border colors on actual mobile chrome browser
-    fix log out icon on actual mobile chrome browser
-    test safari mobile
-    test firefox mobile
 
-test other browsers on desktop
-    safari
+
+make mobile site easier to read
+    cards should take up entire width of screen?
+        consider adding multilpe breakpoints instead of the single breakpoint today
+        everything inside of them should scale up
+        header should fit horizontally
+            move logo to top left?  Use text logo?
+    Larger fonts all around
+    white edges should not show up around page when on actual mobile browser
+        this appears related to browser zoom level
+        
+test other browsers
+    safari 
+        mobile
+        desktop
     firefox
+        mobile
+        desktop
 
 look into out of the box search input libraries
 

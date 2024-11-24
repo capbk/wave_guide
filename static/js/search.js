@@ -144,6 +144,7 @@ export function createDebouncedSearch(
   const searchTracks = async (query) => {
     if (!query) {
       searchResultsList.style.display = "none";
+      input.classList.remove('search-input-with-results');
       return;
     }
 
@@ -162,6 +163,7 @@ export function createDebouncedSearch(
 
       const data = await retry(fetchSearch);
       searchResultsList.innerHTML = '';
+      input.classList.add('search-input-with-results');
 
       data.forEach(item => {
         const li = createElement('li', {
@@ -231,6 +233,7 @@ export function createDebouncedSearch(
         break;
       case "Escape":
         searchResultsList.style.display = "none";
+        input.classList.remove('search-input-with-results');
         break;
     }
   });
@@ -278,6 +281,7 @@ export class SearchInput {
             if (!this.resultsList.contains(event.target) && 
                 !this.input.contains(event.target)) {
                 this.resultsList.style.display = "none";
+                this.input.classList.remove('search-input-with-results');
             }
         });
     }

@@ -351,6 +351,7 @@ html {
 
 .selected-title{
   max-width: 8.75rem;
+  color: var(--paper-cream);
   line-clamp: 2;
   -webkit-line-clamp: 2;
   display: -webkit-box;
@@ -376,6 +377,7 @@ html {
 
 .selected-artist {
   font-size: var(--fs-xs);
+  color: var(--paper-cream);
   max-width: 8.75rem;
   line-clamp: 2;
   -webkit-line-clamp: 2;

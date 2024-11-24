@@ -63,12 +63,12 @@ const createSelectedTrackHTML = (trackName, artistName, imageUrl) => {
   return container;
 };
 
-// Handle track selection
 const handleTrackSelection = (item, {
   searchResultsList,
   selectedResultContainer,
   selectedResultPlaceholderContainer,
   location,
+  input,
   state
 }) => {
   const { id, track_name, artist_name, large_image } = item;
@@ -81,6 +81,7 @@ const handleTrackSelection = (item, {
   }
   
   // Update UI
+  input.classList.remove('search-input-with-results');
   searchResultsList.style.display = "none";
   selectedResultContainer.innerHTML = ''; // Clear existing content
   selectedResultContainer.appendChild(
@@ -179,6 +180,7 @@ export function createDebouncedSearch(
           selectedResultContainer,
           selectedResultPlaceholderContainer,
           location,
+          input,
           state
         }));
 

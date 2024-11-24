@@ -648,5 +648,11 @@ html {
   .header-bar {
     margin-bottom: var(--space-sm);
   }
+
+  .selected-thumbnail {
+    height: 8.75rem;
+    width: 8.75rem;
+    padding: 0, var(--space-sm);
+  }
 }
 

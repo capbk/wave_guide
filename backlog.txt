@@ -1,3 +1,5 @@
+look into out of the box library for playlist modal
+    revisit all of the spacing between elements
 
 
 make mobile site easier to read
@@ -6,7 +8,7 @@ make mobile site easier to read
         everything inside of them should scale up
         header should fit horizontally
             move logo to top left?  Use text logo?
-    Larger fonts all around
+    Larger fonts all around??
     white edges should not show up around page when on actual mobile browser
         this appears related to browser zoom level
         
@@ -19,9 +21,6 @@ test other browsers
         desktop
 
 look into out of the box search input libraries
-
-look into out of the box library for playlist modal
-    revisit all of the spacing between elements
 
 convert to typescript
 

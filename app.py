@@ -27,6 +27,8 @@ def create_app():
     cache_handler = spotipy.cache_handler.FlaskSessionCacheHandler(session)
     scopes = ["user-library-read", "user-top-read", "playlist-modify-private"]
     # .env file loaded in wsgi.py
+    # NOTE: THIS IS CASE SENSITIVE
+    # THE USER MUST INPUT THEIR EMAIL THE SAME AS IT LOOKS ON SPOTIFY DEVELOPER DASHBOARD
     auth_manager = spotipy.oauth2.SpotifyOAuth(
         cache_handler=cache_handler,
         client_id=os.getenv('SPOTIPY_CLIENT_ID'),

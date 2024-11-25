@@ -23,7 +23,6 @@ from utils.validators import validate_new_playlist_request
 
 def create_app():
     app = Flask(__name__)
-    # note lowercase means flask.session, not flask_session.Session. Should we pick one?
     cache_handler = spotipy.cache_handler.FlaskSessionCacheHandler(session)
     scopes = ["user-library-read", "user-top-read", "playlist-modify-private"]
     # .env file loaded in wsgi.py

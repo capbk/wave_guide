@@ -11,8 +11,9 @@
   <body>
     <div class="main-container">
       <img src="static/images/wave_guide_logo_with_text.png" class="logo" />
-      <!-- TODO: add argument to not show close x, to avoid js loading -->
-      {{ explainer }}
+      <div id="explainer-container">
+        {{ explainer.explainer(show_close_button=false) }}
+      </div>
       <a href="{{auth_url}}" class="btn">
         <img src="static/images/spotify_icon.png" class="spotify-logo" />
         Log In With Spotify

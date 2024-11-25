@@ -1,3 +1,4 @@
+{% macro explainer(show_close_button=true) %}
 <div id="explainer" class="explainer">
   <div class="explainer-text">
     <strong>
@@ -8,8 +9,11 @@
     <ul class="explainer-list">
       <li>Choose from songs and moods to begin and end your playlist</li>
       <li>Click "Create Playlist" and let waveguide find a path</li>
-      <!-- <li>Wave Guide will find a path from the beginning to destination, helping you discover new songs that match your tastes</li> -->
       <li>Listen on Spotify</li>
+    </ul>
   </div>
-  <div id="close-explainer" class="close-modal">&times;</div>
+  {% if show_close_button %}
+  <div id="close-explainer" class="close-explainer">&times;</div>
+  {% endif %}
 </div>
+{% endmacro %}

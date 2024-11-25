@@ -9,11 +9,6 @@ test other browsers
         mobile
         desktop
 
-Improve search mobile experience
-    it would be great if you were able to see more of the results with mobile keyboard in use
-    some kind of auto scrolling?
-    consider out of the box search input libraries
-
 Mood track selection improvements
     experiment: get a subset of seed artists most likely to suit a mood?
         how?

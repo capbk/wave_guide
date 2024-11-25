@@ -1,15 +1,3 @@
-make sure that non-template endpoints give user feedback if their session expires
-
-make mobile site easier to read
-    cards should take up entire width of screen?
-        consider adding multilpe breakpoints instead of the single breakpoint today
-        everything inside of them should scale up
-        header should fit horizontally
-            move logo to top left?  Use text logo?
-    Larger fonts all around??
-    white edges should not show up around page when on actual mobile browser
-        this appears related to browser zoom level
-        
 test other browsers
     safari 
         mobile
@@ -37,8 +25,6 @@ i'm becoming annoyed by the large numbe of playlists clogging my library
 
 update the logo, flip the map vertically so it looks like a W
 
-cache get user info per session
-
 allow generes in addition to songs and moods?
 
 analytics
@@ -59,6 +45,10 @@ TODO: Transparency and Feedback, show users the origin-destination pattern that 
 
 TODO Mood upgrades:
     experiment: get a subset of seed artists most likely to suit a mood?  How will this impact diversity of recs?
+    experiment: top genre driven instead of artist driven
+        get user's top genres
+        if there is a finite number of generes, map each one to a mood
+        then, grab the genres that map to the desired mood, and use them as seeds
     add moods
         sad
         angry
@@ -161,3 +151,7 @@ EXPERIMENT:
 NOT CURRENTLY SUPPORTED BY SPOTIFY:
     https://community.spotify.com/t5/Closed-Ideas/API-Add-endpoints-for-managing-playlist-folders/idi-p/5267188
     put all playlists within a folder in spotify
+
+minimize number of API calls
+    X rather than doing a track.find() can I get the metadata I need from the search response?
+      de-prioritized.  This adds a lot of complexity and tighter coupling of searching and playlist creation.

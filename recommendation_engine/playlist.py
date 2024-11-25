@@ -35,14 +35,14 @@ def create_song_to_song_playlist(sp: spotipy.Spotify, seed_track_id: str, destin
     recommendation_uris = [track["uri"] for track in recommended_tracks]
     return _create_spotify_playlist(sp, recommendation_uris, seed_track["name"], destination_track["name"])
 
-def create_playlist(request, sp: spotipy.Spotify):
+def create_playlist(request, sp: spotipy.Spotify, session):
     # track to start the playlist
     source_mode = request.json["source_mode"]
     source_track_id = ""
     if source_mode == SONG_MODE:
         source_track_id = request.json["seed_track_id"]
     elif source_mode == MOOD_MODE:
-        track_finder = MoodTrackFinder(sp, request.json["source_mood"], 1)
+        track_finder = MoodTrackFinder(sp, request.json["source_mood"], 1, session)
         source_track_id = track_finder.find()[0]["id"]
 
     # track to end the playlist
@@ -51,7 +51,7 @@ def create_playlist(request, sp: spotipy.Spotify):
     if destination_mode == SONG_MODE:
         destination_track_id = request.json["destination_track_id"]
     elif destination_mode == MOOD_MODE:
-        track_finder = MoodTrackFinder(sp, request.json["destination_mood"], 2)
+        track_finder = MoodTrackFinder(sp, request.json["destination_mood"], 2, session)
         recs = track_finder.find()
         for rec in recs:
             if rec["id"] != source_track_id:

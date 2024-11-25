@@ -93,4 +93,78 @@ def test_no_top_artists(mock_spotify):
     finder = MoodTrackFinder(mock_spotify, MOOD_HAPPY, 3)
     artists_per_range = finder._get_top_artists()
     
-    assert all(len(artists) == 0 for artists in artists_per_range.values()) 
+    assert all(len(artists) == 0 for artists in artists_per_range.values())
+
+
+def test_empty_session(mock_spotify):
+    # Mock the Spotify API response
+    mock_spotify.current_user_top_artists.return_value = {
+        "total": 2,
+        "items": [
+            {"name": "Artist 1", "id": "id1"},
+            {"name": "Artist 2", "id": "id2"}
+        ]
+    }
+
+    mock_spotify.recommendations.return_value = {
+        "tracks": ["track1", "track2", "track3"]
+    }
+
+    mock_session = {}
+    finder = MoodTrackFinder(mock_spotify, MOOD_HAPPY, 3, session=mock_session)
+    tracks = finder.find()
+
+    # Verify Spotify API was called since session was empty
+    assert mock_spotify.current_user_top_artists.call_count == 3  # once for each time range
+    assert len(tracks) == 3
+
+
+def test_none_session(mock_spotify):
+    # Mock the Spotify API response
+    mock_spotify.current_user_top_artists.return_value = {
+        "total": 2,
+        "items": [
+            {"name": "Artist 1", "id": "id1"},
+            {"name": "Artist 2", "id": "id2"}
+        ]
+    }
+
+    mock_spotify.recommendations.return_value = {
+        "tracks": ["track1", "track2", "track3"]
+    }
+
+    mock_session = {}
+    finder = MoodTrackFinder(mock_spotify, MOOD_HAPPY, 3, session=None)
+    tracks = finder.find()
+    # Verify Spotify API was called since session was empty
+    assert mock_spotify.current_user_top_artists.call_count == 3  # once for each time range
+    assert len(tracks) == 3
+
+def test_session_with_stored_artists(mock_spotify):
+    mock_session = {
+        'top_artists': {
+            'short_term': [
+                {'id': 'cached_artist_1', 'name': 'Artist One'},
+                {'id': 'cached_artist_2', 'name': 'Artist Two'}
+            ],
+            'medium_term': [
+                {'id': 'cached_artist_3', 'name': 'Artist Three'},
+                {'id': 'cached_artist_4', 'name': 'Artist Four'}
+            ],
+            'long_term': [
+                {'id': 'cached_artist_5', 'name': 'Artist Five'},
+                {'id': 'cached_artist_6', 'name': 'Artist Six'}
+            ]
+        }
+    }
+
+    finder = MoodTrackFinder(mock_spotify, MOOD_HAPPY, 3, session=mock_session)
+    tracks = finder.find()
+
+    # Verify Spotify API was NOT called since we used cached artists
+    assert mock_spotify.current_user_top_artists.call_count == 0
+    assert len(tracks) == 3
+
+    # Verify recommendations were made using cached artists
+    call_kwargs = mock_spotify.recommendations.call_args[1]
+    assert any('cached_artist' in seed for seed in call_kwargs['seed_artists'])

@@ -23,7 +23,6 @@ from utils.validators import validate_new_playlist_request
 
 def create_app():
     app = Flask(__name__)
-    # note lowercase means flask.session, not flask_session.Session. Should we pick one?
     cache_handler = spotipy.cache_handler.FlaskSessionCacheHandler(session)
     scopes = ["user-library-read", "user-top-read", "playlist-modify-private"]
     # .env file loaded in wsgi.py
@@ -67,10 +66,9 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not validate_token():
-            return redirect("/")
+            return jsonify({"message": "User not logged in"}), 403
         return f(*args, **kwargs)
     return decorated_function
-
 
 @app.route("/")
 def index():
@@ -112,7 +110,7 @@ def log_out():
 @login_required
 def autocomplete():
     if not request.json or "query" not in request.json:
-        abort(400)
+        return jsonify({"message": "Include a query parameter"}), 400
     query = request.json["query"]
     limit = 4
     suggestions = search_tracks(app.spotify, query, limit)

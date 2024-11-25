@@ -156,8 +156,13 @@ export function createDebouncedSearch(
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ query })
         }).then(response => {
+          if (response.status === 403) {
+            alert("Your session has expired. Please log in again.");
+            window.location.href = '/';
+            return;
+          }
           if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`HTTP error. Message: ${response.statusText}. Status: ${response.status}`);
           }
           return response.json();
         });

@@ -15,6 +15,14 @@ MOOD_CALM = "calm"
 SUPPORTED_MOODS = [MOOD_HAPPY, MOOD_ENERGIZED, MOOD_CALM]
 COUNTRY = "US"  # TODO: get this from user metadata
 
+# available genres: https://developer.spotify.com/documentation/web-api/reference/get-recommendation-genres
+# can provide max of 5 seeds (combined track + artist + genre) to spotify API
+mood_genres = {
+    MOOD_HAPPY: ["happy", "pop", "summer"],
+    MOOD_ENERGIZED: ["electronic", "dance", "work-out"],
+    MOOD_CALM: ["classical", "acoustic", "chill"],
+}
+
 
 class MoodTrackFinder:
     # TODO: move mood and num_tracks args to find()
@@ -31,8 +39,6 @@ class MoodTrackFinder:
         self.sp = sp
         self.mood = mood
         self.num_tracks = num_tracks
-        # TODO: handle brand new users who have no top tracks
-        # I think spotify API needs at least one seed
         # TODO: cache this per session.
         self.top_artists = self._get_top_artists()
 
@@ -97,6 +103,14 @@ class MoodTrackFinder:
         # can provide max of 5 seeds (combined track + artist + genre) to spotify API
         # Use a random sample for more diverse recommendations
         seed_artists = self.get_seed_artists()
+        # in case where user has no top artists, use a genre instead
+        if not seed_artists:
+            seed_genre = mood_genres[self.mood]
+            recs = self.sp.recommendations(
+                limit=self.num_tracks, seed_genres=seed_genre, country=COUNTRY, **mood_features,
+            )
+            return recs["tracks"]
+
         recs = self.sp.recommendations(
             limit=self.num_tracks, seed_artists=seed_artists, country=COUNTRY, **mood_features,
         )

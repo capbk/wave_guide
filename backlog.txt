@@ -1,12 +1,39 @@
 test other browsers
-    safari 
-        mobile
-        desktop
     firefox
         mobile
         desktop
+     safari -- not supported by spotify.com?  if not, is it worth testing? does this become the task of opening in spotify app?
+        mobile
+        desktop
+    edge
+        mobile
+        desktop
 
-look into out of the box search input libraries
+Improve search mobile experience
+    it would be great if you were able to see more of the results with mobile keyboard in use
+    some kind of auto scrolling?
+    consider out of the box search input libraries
+
+Mood track selection improvements
+    experiment: get a subset of seed artists most likely to suit a mood?
+        how?
+        track info?  would be slow.
+    experiment: top genre driven instead of top artist driven
+        get user's top genres
+        if there is a finite number of generes, map each one to a mood
+        then, grab the genres that map to the desired mood, and use them as seeds
+    add moods
+        sad
+        angry
+
+
+improve smoothness of song to song recommendation algo
+    right now they often feel like there is a part 1 and part 2 where the transition after the middle is jarring
+        especially when the user gives a very different start and end point.
+    maybe include both endpoints as seed tracks for the 2nd and 2nd to last track
+        also add in genre from the closer track in an attempt to keep smoothness?
+    experiment with seed tracks input for each position in the playlist
+
 
 break apart css into multiple files
 
@@ -34,7 +61,7 @@ analytics
 
 add e2e tests
 
-TODO: Transparency and Feedback, show users the origin-destination pattern that makes waveguide unique
+Transparency and Feedback, show users the origin-destination pattern that makes waveguide unique
     1. As playlist is building show steps
         ?? break out mood selection and playlist creation into different endpoints?
         Show selection of song 1
@@ -43,96 +70,27 @@ TODO: Transparency and Feedback, show users the origin-destination pattern that 
             wave guide is finding a path...
         Playlist created
 
-TODO Mood upgrades:
-    experiment: get a subset of seed artists most likely to suit a mood?  How will this impact diversity of recs?
-    experiment: top genre driven instead of artist driven
-        get user's top genres
-        if there is a finite number of generes, map each one to a mood
-        then, grab the genres that map to the desired mood, and use them as seeds
-    add moods
-        sad
-        angry
-
-TODO: experiment with seed tracks for bookend recommender
-
-TODO:
-    review all TODOs in code
-
-
-TODO:
-    QA
-        non-happy path
-            change mind on start and end points before submitting
-        creating multiple playlists back to back
-
-        recommendation algo
-            song to mood
-                sad song to happy mood
-                chaotic song to calm mood
-            song to song
-                sad song to happy song
-                totally different genres
-                chaotic to calm
-            mood to mood
-                energized to calm
-                calm to energized 
-                    --- should I just optimize one of these and then flip the order?
-                calm to happy
-
-
-MAKE SURE ALL CHANGES ARE PUSHED TO PYTHONANYWHERE
+review all TODOs in code
 
 ---------------------
 Lower priority
 ----------------------
 
-TODO:
-    rename auto complete to search
-
-TODO:
-    read more about Flask-Session, can it be used to cache user data/preferences
-
-TODO:
+unify language for beginning and end points
     replace "seed" with "source" where appropriate for consistency -- or unify on "beginning"???
     replace "track" with "song"?
 
-TODO:
-    improve smoothness of song to song recommendation algo
-        experiment with seed tracks input
+logging, replace all prints
 
-TODO:
-    remove cached "remember me" spotify log in info from the browser upon log out
+type checker
 
-TODO:
-    open in spotify app if installed?
+rename auto complete to search
 
-TODO:
-    logging
+'title' tooltips show up faster
 
-TODO:
-    type checker
+use build manager tool so we don't have to pull deps from CDN
 
-TODO:
-    allow users to like/dislike
-
-TODO:
-    'title' tooltips show up faster
-
-TODO:
-    add url query args so refreshing and link sharing works
-
-TODO:
-    show songs as they are added for more of a streaming experience
-
-TODO:
-    use build manager tool so we don't have to pull deps from CDN
-
-TODO:
-    adjust gradient color based on dominant color of album art images
-    consider canvas api
-
-TODO:
-    support adding multiple "waypoints" not just beginning and destination
+BIG LIFT support adding multiple "waypoints" not just beginning and destination
 
 
 EXPERIMENT:
@@ -142,16 +100,18 @@ EXPERIMENT:
         - combo of the two
 
 EXPERIMENT:
-    How do we guide the recommendations between keys as the positivitey imcreases?
+    How do we guide the recommendations between keys as the positivitey increases?
     https://mixedinkey.com/camelot-wheel/
 
-EXPERIMENT:
-    incorporate more personalization by including more data from top tracks in recommendation seeds
 
 NOT CURRENTLY SUPPORTED BY SPOTIFY:
     https://community.spotify.com/t5/Closed-Ideas/API-Add-endpoints-for-managing-playlist-folders/idi-p/5267188
     put all playlists within a folder in spotify
 
+??add url query args so refreshing and link sharing works
+
 minimize number of API calls
     X rather than doing a track.find() can I get the metadata I need from the search response?
       de-prioritized.  This adds a lot of complexity and tighter coupling of searching and playlist creation.
+
+open in spotify app if installed?

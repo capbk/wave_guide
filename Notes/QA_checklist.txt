@@ -1,0 +1,23 @@
+searching
+mood selection
+toggling between song and mood
+log out
+user with 0 listening history
+
+change mind on start and end points before submitting
+creating multiple playlists back to back
+
+
+recommendation algo
+    song to mood
+        sad song to happy mood
+        chaotic song to calm mood
+    song to song
+        sad song to happy song
+        totally different genres
+        chaotic to calm
+    mood to mood
+        energized to calm
+        calm to energized 
+            --- should I just optimize one of these and then flip the order?
+        calm to happy

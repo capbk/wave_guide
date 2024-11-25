@@ -306,7 +306,6 @@ html {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  border-radius: 0 0 var(--default-border-radius) var(--default-border-radius);
   z-index: 300;
   box-shadow: var(--default-box-shadow);
 }

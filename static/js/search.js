@@ -270,6 +270,25 @@ export class SearchInput {
     init() {
         this.setupSearch();
         this.setupClickOutside();
+        this.setupMobileScroll();
+    }
+
+    setupMobileScroll() {
+        // Check if the device is mobile (you can adjust the width as needed)
+        const isMobile = () => window.innerWidth <= 768;
+
+        this.input.addEventListener('focus', () => {
+            if (isMobile()) {
+                // Use setTimeout to ensure this happens after the keyboard appears
+                setTimeout(() => {
+                    this.input.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                        inline: 'nearest'
+                    });
+                }, 100);
+            }
+        });
     }
 
     setupSearch() {

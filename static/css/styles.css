@@ -665,14 +665,20 @@ html {
   }
 
   .info-btn, .log-out-btn {
-    padding: var(--space-xs);
+    padding: var(--space-sm);
     background: var(--transparent-grey);
     border: none;
+    border-radius: 50%; /* Makes the buttons perfectly round */
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .info-icon, .logout-icon {
-    width: 1.125rem;
-    height: 1.125rem;
+    width: 1.25rem;
+    height: 1.25rem;
   }
 
   .header-bar {
@@ -688,5 +694,25 @@ html {
   .modal {
     padding: var(--space-md);
   }
+
+  .main-container {
+    justify-content: flex-start;
+    min-height: 120vh; /* give space to scroll the search input to the top */
+  }
 }
 
+/* Extra tall mobile screens */
+@media screen and (max-width: 768px) and (min-height: 800px) {
+  .main-container {
+    justify-content: flex-start;
+    min-height: 140vh; /* give space to scroll the search input to the top */
+  }
+}
+
+/* Very tall mobile screens (like iPhone 14 Pro Max) */
+@media screen and (max-width: 768px) and (min-height: 900px) {
+  .main-container {
+    justify-content: flex-start;
+    min-height: 150vh; /* give space to scroll the search input to the top */
+  }
+}

@@ -30,9 +30,9 @@ async function submitPlaylistRequest(playlistData) {
     window.location.href = '/';
     return;
   }
-  // if (!response.ok) {
-  //   throw new Error(`HTTP error. Message: ${response.statusText}. Status: ${response.status}`);
-  // }
+  if (!response.ok) {
+    throw new Error(`HTTP error. Message: ${response.statusText}. Status: ${response.status}`);
+  }
   return response.json();
 }
 

@@ -25,13 +25,16 @@ def create_app():
     app = Flask(__name__)
     # note lowercase means flask.session, not flask_session.Session. Should we pick one?
     cache_handler = spotipy.cache_handler.FlaskSessionCacheHandler(session)
+    scopes = ["user-library-read", "user-top-read", "playlist-modify-private"]
     # .env file loaded in wsgi.py
+    # NOTE: THIS IS CASE SENSITIVE
+    # THE USER MUST INPUT THEIR EMAIL THE SAME AS IT LOOKS ON SPOTIFY DEVELOPER DASHBOARD
     auth_manager = spotipy.oauth2.SpotifyOAuth(
         cache_handler=cache_handler,
         client_id=os.getenv('SPOTIPY_CLIENT_ID'),
         client_secret=os.getenv('SPOTIPY_CLIENT_SECRET'),
         redirect_uri=os.getenv('SPOTIPY_REDIRECT_URI'),
-        scope="user-library-read user-top-read playlist-modify-private",
+        scope=scopes,
         open_browser=False,
     )
     spotify = spotipy.Spotify(auth_manager=auth_manager, requests_timeout=45, retries=0)

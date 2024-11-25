@@ -1,14 +1,3 @@
-add timeout to create playlist flow
-
-make mobile site easier to read
-    cards should take up entire width of screen?
-        consider adding multilpe breakpoints instead of the single breakpoint today
-        everything inside of them should scale up
-        move logo to top left?  Use text logo?
-    Larger fonts all around??
-    white edges should not show up around page when on actual mobile browser
-        this appears related to browser zoom level
-        
 test other browsers
     safari 
         mobile

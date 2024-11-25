@@ -84,16 +84,23 @@ def index():
 
     # Step 3. Signed in, display data
     app.spotify = spotipy.Spotify(auth_manager=app.auth_manager)
-    try:
-        user_name = app.spotify.me()["display_name"]
+    user_name = session.get('user_name')
+
+    if not user_name:
+        app.logger.debug("calling spotify.me()")
+        try:
+            user_name = app.spotify.me()["display_name"]
+        except spotipy.exceptions.SpotifyException as e:
+            if e.http_status == 403:
+                app.logger.info("User not in beta access group")
+                return render_template("beta_access_needed.html")
+            # Re-raise any other Spotify exceptions
+            raise
+
+        session['user_name'] = user_name
         app.logger.info(f"user {user_name} logged in")
-        return render_template("index.html", user_name=user_name)
-    except spotipy.exceptions.SpotifyException as e:
-        if e.http_status == 403:
-            app.logger.info("User not in beta access group")
-            return render_template("beta_access_needed.html")
-        # Re-raise any other Spotify exceptions
-        raise
+
+    return render_template("index.html", user_name=user_name)
 
 
 @app.route("/log_out")

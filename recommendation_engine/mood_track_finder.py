@@ -59,6 +59,7 @@ class MoodTrackFinder:
     # 2 from short term
     # 2 from medium term
     # 1 from long term
+    # TODO: somehow align the artists with the mood
     def get_seed_artists(self):
         # de_duplicate and useful for logging
         artist_name_per_id = {}
@@ -84,11 +85,6 @@ class MoodTrackFinder:
         returns a list of tracks from spotify reccomendations response
         https://developer.spotify.com/documentation/web-api/reference/get-recommendations
         """
-
-        # TODO: handle brand new users who have no top tracks
-        # I think spotify API needs at least one seed
-        top_artists = {}
-
         # get features for corresponding mood
         mood_features = {}
         if self.mood == MOOD_HAPPY:

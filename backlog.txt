@@ -1,4 +1,8 @@
-make sure that non-template endpoints give user feedback if their session expires
+minimize number of API calls
+    cache top tracks
+        MoodTrackFinder.__init__()
+    rather than doing a track.find() can I get the metadata I need from the search response?
+        create_song_to_song_playlist
 
 make mobile site easier to read
     cards should take up entire width of screen?
@@ -36,8 +40,6 @@ i'm becoming annoyed by the large numbe of playlists clogging my library
         could be very frustrating for playlists to disappear if you like them
 
 update the logo, flip the map vertically so it looks like a W
-
-cache get user info per session
 
 allow generes in addition to songs and moods?
 

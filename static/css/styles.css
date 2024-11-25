@@ -561,6 +561,16 @@ html {
   padding: var(--space-xs);
 }
 
+.close-explainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: var(--fs-xl);
+  font-weight: bold;
+  cursor: pointer;
+  margin: 0 0 0 var(--space-xs);
+}
+
 .shimmer {
   background: var(--stencil-gradient);
   background-size: 240% 240%;

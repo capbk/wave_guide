@@ -1,5 +1,3 @@
-fix Erroll's auth error
-
 fix inconsistent border radius for search results
 
 fix floating close button for explainer

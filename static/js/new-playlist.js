@@ -18,22 +18,37 @@ function validateDestinationInput(destinationMode, destinationTrackId, destinati
 
 // API interaction
 async function submitPlaylistRequest(playlistData) {
-  const response = await fetch("/new_playlist", {
-    method: "POST",
-    body: JSON.stringify(playlistData),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  if (response.status === 403) {
-    alert("Your session has expired. Please log in again.");
-    window.location.href = '/';
-    return;
+  // Create an abort controller for the timeout
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 seconds
+
+  try {
+    const response = await fetch("/new_playlist", {
+      method: "POST",
+      body: JSON.stringify(playlistData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      signal: controller.signal
+    });
+
+    clearTimeout(timeoutId); // Clear timeout if request completes
+
+    if (response.status === 403) {
+      alert("Your session has expired. Please log in again.");
+      window.location.href = '/';
+      return;
+    }
+    if (!response.ok) {
+      throw new Error(`HTTP error. Message: ${response.statusText}. Status: ${response.status}`);
+    }
+    return response.json();
+  } catch (error) {
+    if (error.name === 'AbortError') {
+      alert("Sorry there was a problem while creating your playlist. Please refresh the page and try again");
+    }
+    throw error;
   }
-  if (!response.ok) {
-    throw new Error(`HTTP error. Message: ${response.statusText}. Status: ${response.status}`);
-  }
-  return response.json();
 }
 
 // UI Components

@@ -47,7 +47,6 @@ class MoodTrackFinder:
             self.top_artists = top_artists
             if session:
                 session["top_artists"] = top_artists
-        pprint.pprint(self.top_artists)
 
     # returns dict{time_period: [{"name": str, "id": str}]}
     def _get_top_artists(self) -> Dict[str, List[Dict[str, str]]]:
@@ -55,7 +54,7 @@ class MoodTrackFinder:
         artists_per_time_range = {"short_term": [], "medium_term": [], "long_term": []}
         for time_range in artists_per_time_range:
             # 50 is max limit
-            top_artists_resp = self.sp.current_user_top_artists(limit=50, time_range=time_range)
+            top_artists_resp = self.sp.current_user_top_artists(limit=10, time_range=time_range)
             if top_artists_resp["total"] == 0:
                 return artists_per_time_range
             # Only return name and id for each artist

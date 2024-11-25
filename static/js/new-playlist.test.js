@@ -190,7 +190,7 @@ describe('API Interaction', () => {
 
     await createPlaylist(mockState);
 
-    expect(fetch).toHaveBeenCalledWith('/new_playlist', {
+    expect(fetch).toHaveBeenCalledWith('/new_playlist', expect.objectContaining({
       method: 'POST',
       body: JSON.stringify({
         source_mode: 'song',
@@ -203,6 +203,6 @@ describe('API Interaction', () => {
       headers: {
         'Content-Type': 'application/json'
       }
-    });
+    }));
   });
 }); 

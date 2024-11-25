@@ -1,6 +1,5 @@
 import spotipy
 from typing import List, Tuple
-from flask import session as flask_session
 
 from recommendation_engine.bookend_seeds_track_finder import BookendSeedsTrackFinder
 from recommendation_engine.mood_track_finder import MoodTrackFinder
@@ -36,7 +35,7 @@ def create_song_to_song_playlist(sp: spotipy.Spotify, seed_track_id: str, destin
     recommendation_uris = [track["uri"] for track in recommended_tracks]
     return _create_spotify_playlist(sp, recommendation_uris, seed_track["name"], destination_track["name"])
 
-def create_playlist(request, sp: spotipy.Spotify, session: flask_session):
+def create_playlist(request, sp: spotipy.Spotify, session):
     # track to start the playlist
     source_mode = request.json["source_mode"]
     source_track_id = ""

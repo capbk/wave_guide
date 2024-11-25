@@ -2,7 +2,7 @@ import pprint
 from random import sample
 import spotipy
 from statistics import median
-from typing import Dict
+from typing import Dict, List
 from werkzeug.exceptions import abort
 
 
@@ -25,8 +25,7 @@ mood_genres = {
 
 
 class MoodTrackFinder:
-    # TODO: move mood and num_tracks args to find()
-    def __init__(self, sp: spotipy.Spotify, mood:str, num_tracks: int):
+    def __init__(self, sp: spotipy.Spotify, mood:str, num_tracks: int, session=None):
         mood = mood.lower()
         if mood not in SUPPORTED_MOODS:
             raise ValueError(
@@ -39,11 +38,19 @@ class MoodTrackFinder:
         self.sp = sp
         self.mood = mood
         self.num_tracks = num_tracks
-        # TODO: cache this per session.
-        self.top_artists = self._get_top_artists()
+        # TODO: is this ok in __init__?
+        if session and "top_artists" in session:
+            self.top_artists = session.get("top_artists")
+        else:
+            print("calling get top artists") # TODO: proper logger at debug level
+            top_artists = self._get_top_artists()
+            self.top_artists = top_artists
+            if session:
+                session["top_artists"] = top_artists
+        pprint.pprint(self.top_artists)
 
-    # returns dict{time_period: [artists]}
-    def _get_top_artists(self):
+    # returns dict{time_period: [{"name": str, "id": str}]}
+    def _get_top_artists(self) -> Dict[str, List[Dict[str, str]]]:
         print("fetching top artists to seed recommendations")
         artists_per_time_range = {"short_term": [], "medium_term": [], "long_term": []}
         for time_range in artists_per_time_range:
@@ -51,7 +58,11 @@ class MoodTrackFinder:
             top_artists_resp = self.sp.current_user_top_artists(limit=50, time_range=time_range)
             if top_artists_resp["total"] == 0:
                 return artists_per_time_range
-            artists_per_time_range[time_range] = top_artists_resp["items"]
+            # Only return name and id for each artist
+            artists_per_time_range[time_range] = [
+                {"name": artist["name"], "id": artist["id"]}
+                for artist in top_artists_resp["items"]
+            ]
         return artists_per_time_range
 
     # Fetch 5 randomized, distinct seed artists
@@ -59,7 +70,7 @@ class MoodTrackFinder:
     # 2 from short term
     # 2 from medium term
     # 1 from long term
-    # TODO: somehow align the artists with the mood
+    # TODO: somehow align the artists with the mood *******
     def get_seed_artists(self):
         # de_duplicate and useful for logging
         artist_name_per_id = {}

@@ -130,7 +130,7 @@ def autocomplete():
 @login_required
 def new_playlist():
     validate_new_playlist_request(request.json)
-    resp = playlist.create_playlist(request, app.spotify)
+    resp = playlist.create_playlist(request, app.spotify, session)
     return jsonify(resp)
 
 # utility to update pythonanywhere code with latest main branch ===

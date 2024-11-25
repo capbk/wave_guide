@@ -1,9 +1,4 @@
-minimize number of API calls
-    rather than doing a track.find() can I get the metadata I need from the search response?
-        create_song_to_song_playlist
-    cache top tracks
-        MoodTrackFinder.__init__()
-
+add timeout to create playlist flow
 
 make mobile site easier to read
     cards should take up entire width of screen?
@@ -167,3 +162,7 @@ EXPERIMENT:
 NOT CURRENTLY SUPPORTED BY SPOTIFY:
     https://community.spotify.com/t5/Closed-Ideas/API-Add-endpoints-for-managing-playlist-folders/idi-p/5267188
     put all playlists within a folder in spotify
+
+minimize number of API calls
+    X rather than doing a track.find() can I get the metadata I need from the search response?
+      de-prioritized.  This adds a lot of complexity and tighter coupling of searching and playlist creation.

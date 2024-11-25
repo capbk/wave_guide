@@ -87,6 +87,9 @@ describe('PlaylistModal', () => {
 
     // Mock fetch to use our controlled promise
     fetch.mockImplementationOnce(() => apiPromise.then(() => ({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
       json: () => Promise.resolve({
         name: 'Test Playlist',
         url: 'https://spotify.com/playlist/123',
@@ -135,6 +138,9 @@ describe('PlaylistModal', () => {
 
     fetch.mockImplementationOnce(() =>
       Promise.resolve({
+        ok: true,
+        status: 200,
+        statusText: 'OK',
         json: () => Promise.resolve(mockPlaylist)
       })
     );
@@ -175,6 +181,9 @@ describe('API Interaction', () => {
 
     fetch.mockImplementationOnce(() =>
       Promise.resolve({
+        ok: true,
+        status: 200,
+        statusText: 'OK',
         json: () => Promise.resolve({})
       })
     );

@@ -1,9 +1,4 @@
-fix Erroll's auth error
-
-fix inconsistent border radius for search results
-
-fix floating close button for explainer
-    just go back to the styling as it was before and create separate close modal classes for explainer vs playlist modal?
+make sure that non-template endpoints give user feedback if their session expires
 
 make mobile site easier to read
     cards should take up entire width of screen?
@@ -24,6 +19,8 @@ test other browsers
         desktop
 
 look into out of the box search input libraries
+
+break apart css into multiple files
 
 convert to typescript
 

@@ -688,5 +688,26 @@ html {
   .modal {
     padding: var(--space-md);
   }
+
+  .main-container {
+    justify-content: flex-start;
+    min-height: 120vh; /* give space to scroll the search input to the top */
+  }
+}
+
+/* Extra tall mobile screens */
+@media screen and (max-width: 768px) and (min-height: 800px) {
+  .main-container {
+    justify-content: flex-start;
+    min-height: 140vh; /* give space to scroll the search input to the top */
+  }
+}
+
+/* Very tall mobile screens (like iPhone 14 Pro Max) */
+@media screen and (max-width: 768px) and (min-height: 900px) {
+  .main-container {
+    justify-content: flex-start;
+    min-height: 150vh; /* give space to scroll the search input to the top */
+  }
 }
 

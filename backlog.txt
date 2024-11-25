@@ -1,3 +1,10 @@
+fix Erroll's auth error
+
+fix inconsistent border radius for search results
+
+fix floating close button for explainer
+    just go back to the styling as it was before and create separate close modal classes for explainer vs playlist modal?
+
 make mobile site easier to read
     cards should take up entire width of screen?
         consider adding multilpe breakpoints instead of the single breakpoint today

@@ -1,5 +1,6 @@
 {% import "macros/track_input_card.html" as track_input %} {% import
 "macros/explainer.html" as explainer %} {% import "macros/playlist_modal.html" as playlist_modal %}
+{% import "macros/header.html" as header %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -10,37 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
-    <div class="header-bar">
-      <div class="header-logo">
-        <img src="static/images/wave_guide_logo.png" class="logo-small desktop-only" />
-        <img src="static/images/wave_guide_text.png" class="product-name desktop-only" />
-        <img src="static/images/wave_guide_logo.png" class="logo mobile-only" />
-      </div>
-      <div class="header-buttons">
-        <button type="button" class="info-btn" id="info-btn">
-          <span class="desktop-only">Info</span>
-          <span class="mobile-only">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="info-icon">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="16" x2="12" y2="12"></line>
-              <line x1="12" y1="8" x2="12" y2="8"></line>
-            </svg>
-          </span>
-        </button>
-        <form action="/log_out" method="GET">
-          <button type="submit" class="log-out-btn">
-            <span class="desktop-only">Log out {{user_name}}</span>
-            <span class="mobile-only">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="logout-icon">
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                <polyline points="16 17 21 12 16 7"></polyline>
-                <line x1="21" y1="12" x2="9" y2="12"></line>
-              </svg>
-            </span>
-          </button>
-        </form>
-      </div>
-    </div>
+    {{ header.header(user_name) }}
     <div class="main-container">
       <div id="explainer-container" style="display: none;">
         {{ explainer }}

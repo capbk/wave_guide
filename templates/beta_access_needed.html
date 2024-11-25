@@ -1,0 +1,23 @@
+{% import "macros/header.html" as header %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    {{ header.header("", show_info_button=false) }}
+    <div class="main-container">
+      <div class="beta-message">
+        <h2>Coming Soon!</h2>
+        <p>Thank you for your interest in Wave Guide! We are currently in early access mode.</p>
+        <p>The full site will be available to everyone soon. If you'd like to join the beta, please contact us at 
+            <a href="mailto:waveguidehelp@gmail.com" style="color: var(--accent-blue)">WaveGuideHelp@gmail.com</a>.</p>
+      </div>
+    </div>
+    <script type="module" src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+</html> 

@@ -170,6 +170,24 @@ html {
   text-align: center;
 }
 
+.beta-message {
+  color: var(--paper-cream);
+  text-align: center;
+  margin: 2rem 0;
+  padding: 1rem;
+  max-width: 600px;
+}
+
+.beta-message h2 {
+  color: var(--paper-cream);
+  margin-bottom: 1rem;
+}
+
+.beta-message p {
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
 .spotify-logo {
   vertical-align: middle;  /* Aligns Spotify icon with text */
   margin-left: 0.375rem;       /* Space between text and icon */

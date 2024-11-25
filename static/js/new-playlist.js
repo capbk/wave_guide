@@ -25,6 +25,14 @@ async function submitPlaylistRequest(playlistData) {
       "Content-Type": "application/json",
     },
   });
+  if (response.status === 403) {
+    alert("Your session has expired. Please log in again.");
+    window.location.href = '/';
+    return;
+  }
+  // if (!response.ok) {
+  //   throw new Error(`HTTP error. Message: ${response.statusText}. Status: ${response.status}`);
+  // }
   return response.json();
 }
 

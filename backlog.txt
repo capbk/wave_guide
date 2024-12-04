@@ -1,3 +1,43 @@
+OH NO, SPOTIFY LOCKED DOWN ALL THE USEFULA APIs, HOW CAN WE MOVE TO OPENSOURCE?
+
+track database options
+- https://musicbrainz.org/doc/MusicBrainz_Database/Download#ASC_files
+- https://acousticbrainz.org/data has pre-analyzed tracks.  Static set of music, not being updated any longer.
+
+track analysis options
+- https://essentia.upf.edu/ -- under the hood in acousticbrainz
+- https://github.com/Polochon-street/bliss-rs -- rust library that has analysis and built in distance functions
+- https://librosa.org/doc/latest/index.html -- python library
+- https://github.com/libAudioFlux/audioFlux -- newer python library
+
+implementation of recommendation algo
+  -- keep algo that measures vectors equidistant in between bookend vectors
+  -- for each vector, fetch the nearest track from the db
+  -- fetch each track's playback info
+
+
+  simplest path to start
+    - download a portion of the acousticbrainz data
+    - store each vector in a db
+        - opensearch? weaviate? qdrant? vespa? mongo? postgres with pgvector?
+    - plug into recommendation algo
+    - test on small set of bookend tracks
+    - move on to searching for bookend tracks
+
+
+
+
+
+
+
+search input background color
+
+mobile readability
+    don't extend vertical space for login and out of subscription pages
+    widen track input cards to take up almost the whole screen width
+    make all fonts bigger
+    simplify search results??
+
 test other browsers
     firefox
         mobile
@@ -10,13 +50,15 @@ test other browsers
         desktop
 
 Mood track selection improvements
-    experiment: get a subset of seed artists most likely to suit a mood?
-        how?
-        track info?  would be slow.
     experiment: top genre driven instead of top artist driven
         get user's top genres
         if there is a finite number of generes, map each one to a mood
         then, grab the genres that map to the desired mood, and use them as seeds
+    experiment: get a subset of seed artists most likely to suit a mood?
+        how?
+        track info?  would be slow.
+        genre exclusion list?
+            if an artist is in a certain genre that clashes with the mood, skip them.
     add moods
         sad
         angry

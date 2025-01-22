@@ -18,8 +18,9 @@ implementation of recommendation algo
 
   simplest path to start
     - download a portion of the acousticbrainz data
-    - store each vector in a db
-        - opensearch? weaviate? qdrant? vespa? mongo? postgres with pgvector?
+    - store each vector qdrant cloud, upload more data in batches
+        - get a total of 4GB https://cloud.qdrant.io/accounts/dd1a6e04-79da-414c-bee6-272925193796/clusters/c0097ea7-97cb-4782-94b7-59bf045aed66
+        - 524KB from 26 points with 11 dimensions, so I can fit around 198,458 points (tracks)
     - plug into recommendation algo
     - test on small set of bookend tracks
     - move on to searching for bookend tracks

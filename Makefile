@@ -18,3 +18,8 @@ test-frontend:
 
 test-backendcoverage:
 	python3 -m pytest tests/ -v --cov=recommendation_engine --cov-report=term-missing
+
+ping-qdrant-cloud:
+	$(eval QDRANT_URL := $(shell source .env && echo $$QDRANT_URL))
+	$(eval QDRANT_API_KEY := $(shell source .env && echo $$QDRANT_API_KEY))
+	curl -X GET '$(QDRANT_URL)' --header 'api-key: $(QDRANT_API_KEY)'

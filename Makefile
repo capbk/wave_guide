@@ -19,10 +19,7 @@ test-frontend:
 test-backendcoverage:
 	python3 -m pytest tests/ -v --cov=recommendation_engine --cov-report=term-missing
 
-install-qdrant:
-	# stuck on docker 4.25.0 with mac OS big sur https://desktop.docker.com/mac/main/amd64/126437/Docker.dmg
-	# docker login; enter credentials
-	docker pull qdrant/qdrant:v1.7.4
-
-run-qdrant:
-	docker run -p 6333:6333 -p 6334:6334 -v "$(pwd)/qdrant_storage:/qdrant/storage:z" qdrant/qdrant:v1.7.4
+ping-qdrant-cloud:
+	$(eval QDRANT_URL := $(shell source .env && echo $$QDRANT_URL))
+	$(eval QDRANT_API_KEY := $(shell source .env && echo $$QDRANT_API_KEY))
+	curl -X GET '$(QDRANT_URL)' --header 'api-key: $(QDRANT_API_KEY)'

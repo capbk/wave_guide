@@ -5,3 +5,4 @@ GitPython
 python-dotenv==0.21.1
 pytest
 qdrant-client==1.4.0
+musicbrainzngs

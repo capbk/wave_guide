@@ -26,6 +26,7 @@ if "tracks" not in collection_names:
         vectors_config=VectorParams(size=11, distance=Distance.COSINE),
     )
 
+# TODO: loop through directory until we get to 190,000 points
 tracks_dicts = ingest_json("/Users/jeffreycapobianco/coding/wave_guide/data/acousticbrainz-highlevel-json-20220623/highlevel/00/0/")
 points = []
 for track in tracks_dicts:

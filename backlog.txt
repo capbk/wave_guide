@@ -1,28 +1,17 @@
-OH NO, SPOTIFY LOCKED DOWN ALL THE USEFULA APIs, HOW CAN WE MOVE TO OPENSOURCE?
+- figure out playback so you can test the with a tiny set of data
+- store each vector qdrant cloud, upload more data in batches
+    - get a total of 4GB https://cloud.qdrant.io/accounts/dd1a6e04-79da-414c-bee6-272925193796/clusters/c0097ea7-97cb-4782-94b7-59bf045aed66
+    - 524KB from 26 points with 11 dimensions, so I can fit around 198,458 points (tracks)
+- plug into recommendation algo
+- test on small set of bookend tracks
+- move on to searching for bookend tracks or implementing moods
 
-track database options
-- https://musicbrainz.org/doc/MusicBrainz_Database/Download#ASC_files
-- https://acousticbrainz.org/data has pre-analyzed tracks.  Static set of music, not being updated any longer.
+TODO: consider quantizing
+    how much of the acousticbrainz library could I fit in the free qdrant tier?
+    how would it impact my similarity performance?
 
-track analysis options
-- https://essentia.upf.edu/ -- under the hood in acousticbrainz
-- https://github.com/Polochon-street/bliss-rs -- rust library that has analysis and built in distance functions
-- https://librosa.org/doc/latest/index.html -- python library
-- https://github.com/libAudioFlux/audioFlux -- newer python library
-
-implementation of recommendation algo
-  -- keep algo that measures vectors equidistant in between bookend vectors
-  -- for each vector, fetch the nearest track from the db
-  -- fetch each track's playback info
-
-
-  simplest path to start
-    - download a portion of the acousticbrainz data
-    - store each vector in a db
-        - opensearch? weaviate? qdrant? vespa? mongo? postgres with pgvector?
-    - plug into recommendation algo
-    - test on small set of bookend tracks
-    - move on to searching for bookend tracks
+POSSIBLE VECTOR FEATURES:
+    - genre_dortmund, and other genre probability features
 
 
 

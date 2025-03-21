@@ -1,0 +1,25 @@
+OH NO, SPOTIFY LOCKED DOWN ALL THE USEFULA APIs, HOW CAN WE MOVE TO OPENSOURCE?
+
+track database options
+- https://musicbrainz.org/doc/MusicBrainz_Database/Download#ASC_files
+- https://acousticbrainz.org/data has pre-analyzed tracks.  Static set of music, not being updated any longer.
+    https://data.metabrainz.org/pub/musicbrainz/acousticbrainz/dumps/acousticbrainz-highlevel-json-20220623/
+    https://github.com/metabrainz/acousticbrainz-server/blob/master/db/similarity.py
+    https://acousticbrainz.readthedocs.io/dev/similarity.html
+
+
+track analysis options
+- https://essentia.upf.edu/ -- under the hood in acousticbrainz
+- https://github.com/Polochon-street/bliss-rs -- rust library that has analysis and built in distance functions
+- https://librosa.org/doc/latest/index.html -- python library
+- https://github.com/libAudioFlux/audioFlux -- newer python library
+
+implementation of recommendation algo
+  -- keep algo that measures vectors equidistant in between bookend vectors
+  -- for each vector, fetch the nearest track from the db
+  -- fetch each track's playback info
+  -- take inspiration from here https://github.com/CDrummond/music-similarity/blob/master/lib/essentia_analysis.py
+
+
+
+see scripts/get_acoustic_brainz_data.py
